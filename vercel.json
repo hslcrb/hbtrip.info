@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/char.html",
+      "destination": "/ready.html",
+      "permanent": true
+    }
+  ]
+}
