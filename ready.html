@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>서비스 준비중입니다</title>
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Noto Sans KR Thin (100) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-start:#051d3b; /* 깊은 바다 느낌의 네이비 */
+      --bg-end:#0b3e68;   /* 청록빛 딥블루 */
+      --wave-1:#0a5493;
+      --wave-2:#0b6fb3;
+      --wave-3:#118cd4;
+      --text:#ffffff;
+      --muted:#d8e6f7;
+    }
+    /* Reset (필요 최소한) */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Noto Sans KR","Noto Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      font-weight:100;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 70% 10%, #0a2a4f 0%, transparent 60%),
+                  linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    /* 메인 컨테이너 */
+    .wrap{
+      position:relative;
+      z-index:1; /* 파도 위에 표시 */
+      text-align:center;
+      padding:3.5rem 2rem 2.75rem;
+      max-width:720px;
+      width:min(92vw,720px);
+      backdrop-filter: blur(6px);
+    }
+
+    /* SVG i 아이콘 */
+    .icon{
+      width:72px; height:72px; margin:0 auto 16px;
+      display:block;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,.25));
+    }
+
+    h1{
+      margin:0 0 .5rem;
+      font-size: clamp(1.35rem, 2.5vw + 1rem, 2.25rem);
+      line-height:1.25;
+      font-weight:100; /* 얇게 */
+      letter-spacing:.02em;
+    }
+    .desc{
+      margin:0 auto 1.75rem;
+      max-width:48ch;
+      font-weight:300;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:clamp(.95rem, .5vw + .85rem, 1.05rem);
+    }
+
+    /* 버튼 */
+    .btn{
+      appearance:none; border:0; cursor:pointer;
+      padding:.9rem 1.2rem;
+      font-family:inherit; font-weight:300;
+      border-radius:14px;
+      background: rgba(255,255,255,.12);
+      color:var(--text);
+      box-shadow: 0 8px 24px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.25);
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+      width:fit-content; min-width:200px;
+    }
+    .btn:hover{ transform: translateY(-2px); background: rgba(255,255,255,.16); }
+    .btn:active{ transform: translateY(0); }
+    .btn:focus-visible{ outline:2px solid rgba(255,255,255,.7); outline-offset:3px; }
+
+    /* 파도 배경 (실제 CSS/SVG 파도 효과) */
+    .ocean{
+      position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
+    }
+    .wave{
+      position:absolute; left:-10%; width:120%; height:22vh; min-height:160px;
+      opacity:.55;
+      filter: blur(.2px);
+      transform: translate3d(0,0,0);
+      will-change: transform;
+      mix-blend-mode: screen;
+    }
+    .wave svg{ width:100%; height:100%; display:block; }
+    .wave path{ transform-origin:center; }
+
+    /* 서로 다른 속도/방향으로 부드럽게 이동 */
+    .w1{ bottom:12vh; animation: drift1 19s linear infinite; }
+    .w2{ bottom:6vh;  animation: drift2 27s linear infinite; opacity:.5; }
+    .w3{ bottom:-2vh; animation: drift3 38s linear infinite; opacity:.45; }
+
+    @keyframes drift1{ from{ transform:translateX(-4%);} to{ transform:translateX(4%);} }
+    @keyframes drift2{ from{ transform:translateX(6%);} to{ transform:translateX(-6%);} }
+    @keyframes drift3{ from{ transform:translateX(-8%);} to{ transform:translateX(8%);} }
+
+    /* 파도에 미세한 위/아래 호흡감 */
+    .wave path{ animation: breathe 7s ease-in-out infinite; }
+    @keyframes breathe{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+    }
+
+    /* 모션 최소화 환경 존중 */
+    @media (prefers-reduced-motion: reduce){
+      .wave, .wave path{ animation:none !important }
+      .btn{ transition:none }
+    }
+  </style>
+</head>
+<body>
+  <!-- 파도 레이어 -->
+  <div class="ocean" aria-hidden="true">
+    <!-- wave 1 -->
+    <div class="wave w1">
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path fill="url(#g1)" d="M0,120 C180,160 320,80 520,110 C760,150 940,90 1200,130 L1200,200 L0,200 Z"></path>
+        <defs>
+          <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="var(--wave-1)" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="var(--wave-1)" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <!-- wave 2 -->
+    <div class="wave w2">
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path fill="url(#g2)" d="M0,135 C160,95 360,165 540,135 C740,100 980,150 1200,120 L1200,200 L0,200 Z"></path>
+        <defs>
+          <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="var(--wave-2)" stop-opacity="0.50"/>
+            <stop offset="100%" stop-color="var(--wave-2)" stop-opacity="0.12"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <!-- wave 3 -->
+    <div class="wave w3">
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path fill="url(#g3)" d="M0,150 C210,190 420,110 600,145 C820,190 980,120 1200,160 L1200,200 L0,200 Z"></path>
+        <defs>
+          <linearGradient id="g3" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="var(--wave-3)" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="var(--wave-3)" stop-opacity="0.10"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 콘텐츠 -->
+  <main class="wrap" role="main" aria-labelledby="title">
+    <!-- 정보 아이콘 (SVG, 흰색) -->
+    <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="none" stroke="white" stroke-width="2.4" />
+      <rect x="30" y="26" width="4" height="20" rx="2" fill="white" />
+      <circle cx="32" cy="18" r="3" fill="white" />
+    </svg>
+
+    <h1 id="title">서비스 준비중입니다</h1>
+    <p class="desc">더 나은 서비스를 위해 준비 중입니다. 잠시 후 다시 방문해 주세요.</p>
+
+    <button class="btn" type="button" onclick="location.href='index.html'" aria-label="메인으로 돌아가기">
+      돌아가기
+    </button>
+  </main>
+</body>
+</html>
