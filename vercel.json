@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/char.html",
-      "destination": "/ready.html",
+      "destination": "/char.html",
       "permanent": true
     }
   ]
