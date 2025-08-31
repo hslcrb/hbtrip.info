@@ -1,9 +1,0 @@
-{
-  "redirects": [
-    {
-      "source": "/char.html",
-      "destination": "/char.html",
-      "permanent": true
-    }
-  ]
-}
