@@ -4,25 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-        <!-- 업데이트 모달 -->
-        <div id="updateModal" style="position:fixed;z-index:9999;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.18);backdrop-filter:blur(2px);">
-            <div id="modalContent" style="background:#f7f8fa;color:#222;box-shadow:0 4px 32px rgba(0,0,0,0.10);border-radius:22px;padding:40px 32px 32px 32px;display:flex;flex-direction:column;align-items:center;min-width:320px;max-width:90vw;max-height:90vh;position:relative;">
-                <button id="modalThemeToggle" aria-label="다크모드 토글" style="position:absolute;top:18px;right:18px;background:var(--card);border:1px solid var(--line);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;box-shadow:0 2px 8px rgba(0,0,0,.04);">
-                    <svg id="modalSunIcon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg id="modalMoonIcon" viewBox="0 0 24 24" style="display:none;width:20px;height:20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </button>
-                <img src="modal.png" alt="업데이트" style="width:120px;height:120px;object-fit:contain;margin-bottom:24px;" />
-                <div style="text-align:center;margin-bottom:18px;">
-                    <span style="font-family:'Pretendard-Regular',sans-serif;font-size:1.35rem;font-weight:700;line-height:1.3;display:block;">KTX 자리 배정 / 소노문 호텔 방배정 안내</span>
-                    <span style="font-family:'Pretendard-Regular',sans-serif;font-size:1.08rem;line-height:1.5;display:block;margin-top:6px;">KTX 자리 배정, 소노문 호텔 방배정은 각 학급 공지를 참고하시오</span>
-                </div>
-                <label style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:18px;cursor:pointer;font-size:0.98rem;">
-                    <input type="checkbox" id="modalNoShow" style="accent-color:#2563eb;width:18px;height:18px;" />
-                    하루 동안 안 보기
-                </label>
-                <button id="modalCloseBtn" style="margin-top:0;background:#2563eb;color:#fff;font-weight:700;font-size:1.08rem;padding:10px 32px;border:none;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,0.08);cursor:pointer;transition:background 0.2s;">닫기</button>
-            </div>
-        </div>
+        <!-- modal moved to body for correct behavior -->
 
     
     <!-- SEO Meta Tags -->
@@ -133,6 +115,8 @@
             background: linear-gradient(135deg, #1f4e79, #2980b9, #154360);
             position: relative;
         }
+        /* hide update modal when data-hide attribute is set */
+        #updateModal[data-hide="true"] { display: none !important; }
         
         /* 바다 파도 SVG 배경 */
         .ocean-waves {
@@ -522,6 +506,25 @@
     </script>
 </head>
 <body>
+    <!-- 업데이트 모달 (body 상단에 위치) -->
+    <div id="updateModal" data-hide="false" style="position:fixed;z-index:9999;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.18);backdrop-filter:blur(2px);">
+        <div id="modalContent" style="background:#f7f8fa;color:#222;box-shadow:0 4px 32px rgba(0,0,0,0.10);border-radius:22px;padding:40px 32px 32px 32px;display:flex;flex-direction:column;align-items:center;min-width:320px;max-width:90vw;max-height:90vh;position:relative;font-family: 'NanumSquare', sans-serif;">
+            <button id="modalThemeToggle" aria-label="다크모드 토글" style="position:absolute;top:18px;right:18px;background:var(--card);border:1px solid var(--line);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+                <svg id="modalSunIcon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg id="modalMoonIcon" viewBox="0 0 24 24" style="display:none;width:20px;height:20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <img src="modal.png" alt="업데이트" style="width:120px;height:120px;object-fit:contain;margin-bottom:24px;" />
+            <div style="text-align:center;margin-bottom:18px;">
+                <span class="modal-title" style="font-size:1.35rem;font-weight:700;line-height:1.3;display:block;">KTX 자리 배정 / 소노문 호텔 방배정 안내</span>
+                <span class="modal-sub" style="font-size:1.08rem;line-height:1.5;display:block;margin-top:6px;">KTX 자리 배정, 소노문 호텔 방배정은 각 학급 공지를 참고하시오</span>
+            </div>
+            <label style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:18px;cursor:pointer;font-size:0.98rem;">
+                <input type="checkbox" id="modalNoShow" style="accent-color:#2563eb;width:18px;height:18px;" />
+                하루 동안 안 보기
+            </label>
+            <button id="modalCloseBtn" style="margin-top:0;background:#2563eb;color:#fff;font-weight:700;font-size:1.08rem;padding:10px 32px;border:none;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,0.08);cursor:pointer;transition:background 0.2s;">닫기</button>
+        </div>
+    </div>
     <svg class="ocean-waves" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -586,22 +589,79 @@
     </div>
 
     <script>
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            
-            // 테마 상태를 저장 (새로고침 시에도 유지)
-            const isDark = document.body.classList.contains('dark-mode');
-            // 브라우저 스토리지 대신 쿠키 사용
-            document.cookie = `theme=${isDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
+        // Cookie helpers
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+        function setCookie(name, value, days) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = name + '=' + value + '; expires=' + expires + '; path=/';
         }
 
-        // 페이지 로드 시 저장된 테마 적용
-        window.addEventListener('load', function() {
-            const cookies = document.cookie.split(';');
-            const themeCookie = cookies.find(cookie => cookie.trim().startsWith('theme='));
-            
-            if (themeCookie && themeCookie.includes('dark')) {
+        // Centralized theme setter so we can sync icons
+        function setTheme(theme, save) {
+            if (theme === 'dark') {
                 document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            // update modal icons if present
+            const modalSun = document.getElementById('modalSunIcon');
+            const modalMoon = document.getElementById('modalMoonIcon');
+            if (modalSun && modalMoon) {
+                if (theme === 'dark') { modalSun.style.display = 'block'; modalMoon.style.display = 'none'; }
+                else { modalSun.style.display = 'none'; modalMoon.style.display = 'block'; }
+            }
+            if (save) setCookie('theme', theme, 365);
+        }
+
+        // toggle used by top button
+        function toggleTheme() {
+            const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            setTheme(current === 'light' ? 'dark' : 'light', true);
+        }
+
+        // Wire modal buttons and theme on load
+        window.addEventListener('load', function() {
+            const saved = getCookie('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            setTheme(theme, false);
+
+            // modal wiring
+            const updateModal = document.getElementById('updateModal');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalNoShow = document.getElementById('modalNoShow');
+            const modalThemeToggle = document.getElementById('modalThemeToggle');
+
+            if (getCookie('indexUpdateModalNoShow') === '1') {
+                if (updateModal) updateModal.setAttribute('data-hide', 'true');
+            } else {
+                if (updateModal) updateModal.removeAttribute('data-hide');
+            }
+
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', function() {
+                    if (modalNoShow && modalNoShow.checked) setCookie('indexUpdateModalNoShow', '1', 1);
+                    if (updateModal) updateModal.setAttribute('data-hide', 'true');
+                });
+            }
+
+            if (modalThemeToggle) {
+                modalThemeToggle.addEventListener('click', function() {
+                    toggleTheme();
+                });
+            }
+
+            if (updateModal) {
+                updateModal.addEventListener('click', function(e) {
+                    if (e.target === updateModal) {
+                        if (modalNoShow && modalNoShow.checked) setCookie('indexUpdateModalNoShow', '1', 1);
+                        updateModal.setAttribute('data-hide', 'true');
+                    }
+                });
             }
         });
     </script>
