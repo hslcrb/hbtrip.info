@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Forbiddened</title>
   <style>
-    html,body {
+    html, body {
       height: 100%;
       margin: 0;
     }
     body {
       background: #911010;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -23,10 +24,16 @@
       color: #ffffff;
       letter-spacing: 0.02em;
     }
+    h2 {
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: clamp(14px, 2vw, 32px);
+      color: #ffffffcc; /* 약간 흐리게 */
+    }
   </style>
 </head>
 <body>
   <h1>Forbiddened</h1>
-  <h1>접근 금지됨</h1>
+  <h2>접근 금지됨</h2>
 </body>
 </html>
