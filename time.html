@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>부산 수학여행 D-Day</title>
+    <style>
+        /* iframe 숨김(화면 표시 안함), 오디오 재생만 시도 */
+        .audio-iframe-hidden{width:1px;height:1px;position:absolute;left:-9999px;top:auto;overflow:hidden;}
+
+        /* Final screen style */
+        #finalScreen{position:fixed;inset:0;background:#fff;display:flex;justify-content:center;align-items:center;z-index:2000;opacity:0;pointer-events:none;transition:opacity 1s ease;}
+        #finalScreen.show{opacity:1;pointer-events:auto}
+        #finalContent{font-family:'GowunBatang',serif;color:#000;text-align:center}
+        #finalText{font-size:3rem;font-weight:700}
+        /* Neumorphism button style for Coktail love */
+        #cocktailBtn{
+            background:#ffffff;border:none;border-radius:12px;padding:10px 18px;font-size:0.95rem;font-weight:700;cursor:pointer;margin:0 auto;display:inline-block;box-shadow: 6px 6px 14px rgba(0,0,0,0.12), -6px -6px 14px rgba(255,255,255,0.8);
+            transition:transform .15s ease, box-shadow .15s ease;
+        }
+        #cocktailBtn:active{transform:translateY(1px);box-shadow: 3px 3px 6px rgba(0,0,0,0.08), -3px -3px 6px rgba(255,255,255,0.9);}
+        /* (스타일은 원본과 동일 — 필요시 유지/수정) */
+        @font-face {
+            font-family: 'GowunBatang';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+            font-weight: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'GowunBatang';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Bold.woff') format('woff');
+            font-weight: 700;
+            font-display: swap;
+        }
+        /* Paperozi webfont for the intro modal only */
+        @font-face {
+            font-family: 'Paperozi';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-1Thin.woff2') format('woff2');
+            font-weight: 100; font-display: swap;
+        }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-2ExtraLight.woff2') format('woff2'); font-weight:200; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2') format('woff2'); font-weight:300; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2'); font-weight:800; font-display:swap; }
+        @font-face { font-family: 'Paperozi'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2') format('woff2'); font-weight:900; font-display:swap; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'GowunBatang',serif;height:100vh;overflow:hidden;position:relative;}
+        .video-background{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-2;}
+        .video-background iframe{width:100vw;height:100vh;border:none;pointer-events:none;object-fit:cover;transform:scale(1.2);}
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:-1;}
+        .current-time{position:fixed;top:20px;right:20px;color:white;font-size:0.9rem;text-shadow:2px 2px 4px rgba(0,0,0,0.8);background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;backdrop-filter:blur(5px);z-index:10;}
+        .container{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;text-align:center;color:white;padding:20px;}
+        .title{font-size:3.5rem;font-weight:700;margin-bottom:30px;text-shadow:2px 2px 4px rgba(0,0,0,0.8);}
+        .countdown{font-size:2.5rem;font-weight:700;margin-bottom:30px;text-shadow:2px 2px 4px rgba(0,0,0,0.8);color:#FFD700;}
+        .remaining{font-size:2rem;font-weight:normal;text-shadow:2px 2px 4px rgba(0,0,0,0.8);}
+        .time-display{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:20px 0;}
+        .time-unit{background:rgba(255,255,255,0.1);padding:15px 20px;border-radius:10px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);}
+        .time-value{font-size:2rem;font-weight:700;display:block;color:#FFD700;}
+        .time-label{font-size:0.9rem;color:#ccc;margin-top:5px;}
+        .button{background:linear-gradient(45deg,#FF6B6B,#4ECDC4);border:none;color:white;padding:12px 24px;font-size:1rem;font-family:'GowunBatang',serif;font-weight:700;border-radius:25px;cursor:pointer;transition:all .3s;text-shadow:1px 1px 2px rgba(0,0,0,0.5);margin:10px;text-decoration:none;display:inline-block;}
+        .button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+        .button.secondary{background:linear-gradient(45deg,#667eea,#764ba2);}
+        .buttons-container{margin-top:30px;display:flex;gap:15px;flex-wrap:wrap;justify-content:center;}
+        .dday-celebration{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#FF6B6B,#4ECDC4,#45B7D1,#96CEB4);background-size:400% 400%;animation:celebrationGradient 3s ease infinite;z-index:1000;justify-content:center;align-items:center;flex-direction:column;}
+        @keyframes celebrationGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        .celebration-content{text-align:center;color:white;text-shadow:3px 3px 6px rgba(0,0,0,0.5);}
+        .celebration-title{font-size:4rem;font-weight:700;margin-bottom:20px;animation:bounce 1s ease-in-out infinite alternate;}
+        @keyframes bounce{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
+        .celebration-emoji{font-size:3rem;margin:20px 0;animation:spin 2s linear infinite;}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .close-celebration{margin-top:30px;background:rgba(255,255,255,0.2);border:2px solid white;}
+        /* responsive (omitted duplicates) */
+        @media (max-width:768px){.current-time{top:15px;right:15px;font-size:0.8rem;padding:6px 10px}.title{font-size:2.5rem;margin-bottom:20px}.countdown{font-size:1.8rem;margin-bottom:20px}.remaining{font-size:1.5rem}.time-display{gap:10px;margin:15px 0}.time-unit{padding:10px 15px}.time-value{font-size:1.5rem}.time-label{font-size:0.8rem}.video-background iframe{width:100vw;height:56.25vw;min-height:100vh;transform:scale(1.3)}.button{padding:10px 20px;font-size:0.9rem;margin:8px}.buttons-container{margin-top:20px;gap:10px}.celebration-title{font-size:3rem}.celebration-emoji{font-size:2.5rem}}
+        @media (max-width:480px){.current-time{top:10px;right:10px;font-size:0.7rem;padding:5px 8px}.title{font-size:2rem}.countdown{font-size:1.5rem}.remaining{font-size:1.2rem}.time-display{gap:8px}.time-unit{padding:8px 12px}.time-value{font-size:1.2rem}.button{padding:8px 16px;font-size:0.8rem;margin:6px}.celebration-title{font-size:2.5rem}.celebration-emoji{font-size:2rem}}
+        /* 전체 UI를 비례 유지하면서 화면 중앙(세로중간)에 배치하기 위한 루트 컨테이너 */
+        #scaleRoot{
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform-origin:center center;
+            transform: translate(-50%, -50%) scale(0.8);
+            -webkit-transform: translate(-50%, -50%) scale(0.8);
+            /* prevent overflow from scaling */
+            width:100%;
+            max-width:1200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+    <!-- 화면에 보이는 원래 배경 비디오 복원 -->
+    <iframe id="backgroundIframe" src="https://www.youtube.com/embed/OSnuM2fNovg?si=YXNUziQKWy7ExPDb&autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playlist=OSnuM2fNovg"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+        <!-- 숨겨진 오디오 전용 플레이어 컨테이너 (화면에 표시하지 않음) -->
+        <div id="audioPlayerContainer" class="audio-iframe-hidden" aria-hidden="true">
+            <div id="audioIframe"></div>
+            <!-- hidden final audio player (plays FINAL_VIDEO_ID audio-only) -->
+            <div id="finalAudioIframe"></div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+
+    <div id="scaleRoot">
+        <div class="current-time" id="currentTime">동기화 중...</div>
+
+        <div class="container">
+        <h1 class="title">부산 수학여행</h1>
+
+        <div class="countdown" id="countdown">D-Day</div>
+        <div id="ddayTargetDate" style="font-size:0.95rem;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.7);margin-bottom:8px;opacity:0.8;">2025년 10월 15일 오전 7시</div>
+        <div id="progressBarWrap" style="width:100%;max-width:400px;margin:0 auto 10px auto;display:none;">
+            <div id="progressBar" style="height:10px;background:#FFD700;border-radius:5px;width:0%;transition:width 0.7s;"></div>
+        </div>
+        <div class="time-display" id="timeDisplay"></div>
+        <div id="specialEffectArea"></div>
+        <p class="remaining">남았습니다</p>
+        <div class="buttons-container">
+            <button class="button" onclick="showDdayPreview()">D-Day 미리보기</button>
+            <button class="button secondary" onclick="window.location.href='https://hbtripinfo.vercel.app'">일정안내 사이트 바로가기</button>
+            <button id="syncNowBtn" class="button" style="padding:8px 12px;font-size:0.85rem;">서버 동기화</button>
+        </div>
+
+        <!-- Intro modal -->
+        <div id="introModal" style="display:none;position:fixed;inset:0;z-index:1500;justify-content:center;align-items:center;">
+            <div id="introModalBox" style="background:rgba(255,255,255,0.98);padding:28px 36px;border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.28);width:560px;max-width:94vw;text-align:center;font-family:'Paperozi',serif;cursor:grab;">
+                <div id="introText" style="font-size:1.4rem;color:#333;font-weight:700;">이스터에그를 찾아보세요!</div>
+                <div style="margin-top:14px;display:flex;gap:10px;align-items:center;justify-content:center;">
+                    <label style="font-size:0.95rem;color:#555;display:flex;align-items:center;gap:8px;"><input type="checkbox" id="hideForDay"> 하루동안 보지않기</label>
+                    <button id="introCloseBtn" class="button" style="padding:10px 14px;font-size:0.95rem;background:#0b57d0;border-radius:10px;box-shadow:0 6px 14px rgba(11,87,208,0.18);">확인</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Celebration / final video 영역 등 기존 내용 유지 -->
+        <div class="dday-celebration" id="ddayCelebration">
+            <canvas id="confettiCanvas" style="position:absolute;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:1001;"></canvas>
+            <audio id="celebrationSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3c2.mp3" preload="auto"></audio>
+            <div class="celebration-content">
+                <div class="celebration-title sparkle-text">🎉 부산 수학여행! 🎉</div>
+                <div class="celebration-emoji" id="celebrationEmoji" style="user-select:none;-webkit-user-select:none;" oncontextmenu="return false;" draggable="false">🏖️🚆🎒</div>
+                <div class="typing-text" style="font-size: 1.8rem; font-weight: 700; margin: 20px 0;">드디어 D-Day입니다!</div>
+                <div style="font-size: 1.2rem; margin: 15px 0;">즐거운 수학여행 되세요! 🌊</div>
+                <button class="button close-celebration" onclick="closeDdayPreview()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- /#scaleRoot -->
+
+    <!-- Final white screen (hidden until triggered) -->
+    <div id="finalScreen" style="display:none;">
+        <div id="finalContent">
+                <div id="finalText">Good luck<br><span style="font-size:0.8em;display:block;margin-top:8px;">- from me</span>
+                    <div id="finalHint" style="font-size:0.7rem;color:#555;margin-top:6px;font-weight:600;">Press Enter</div>
+                    <button id="cocktailBtn" style="display:none;margin-top:10px;">Coktail love</button>
+                </div>
+            </div>
+    </div>
+
+    <style>
+        .sparkle-text{animation:sparkle 1.2s infinite alternate}
+        @keyframes sparkle{0%{filter:drop-shadow(0 0 8px #fff) brightness(1.2)}100%{filter:drop-shadow(0 0 24px #FFD700) brightness(1.5)}}
+        .typing-text{border-right:.15em solid #fff;white-space:nowrap;overflow:hidden;width:0;display:inline-block;text-align:center;animation:typing 2.5s steps(20,end) 0.5s forwards, blink-caret .75s step-end infinite;width:fit-content;margin:0 auto;}
+        @keyframes typing{from{width:0}to{width:16.5em}}@keyframes blink-caret{from,to{border-color:transparent}50%{border-color:#fff}}
+    </style>
+
+    <!-- 모바일에서 버튼을 동일 비율로 20% 축소 -->
+    <style>
+        @media (max-width:480px) {
+            .buttons-container .button {
+                /* 기존 모바일 값(대략): padding:8px 16px; font-size:0.8rem; margin:6px; border-radius:25px */
+                padding: 6px 13px !important; /* 0.8 * 원래 모바일 값 */
+                font-size: 0.64rem !important; /* 0.8 * 0.8rem */
+                margin: 5px !important;
+                border-radius: 20px !important;
+            }
+        }
+    </style>
+
+    <script>
+    // ====== 시간 동기화 로직 (RTT 보정 포함) ======
+    // Audio-only YouTube video id (will be played from hidden iframe)
+    const AUDIO_VIDEO_ID = 'bT-pAKr-Ro0'; // provided by user
+    // Final-screen visible YouTube video id (plays when final screen is shown)
+    const FINAL_VIDEO_ID = 'WxH1Vss1pLo';
+        // worldtimeapi.org 사용: https://worldtimeapi.org/api/timezone/Asia/Seoul
+        // 보장: sync 성공 시 UI는 반드시 동기화된 서버 시간을 보여줍니다(밀리초 3자리 포함).
+        // TARGET_ISO: 명시적으로 한국 표준시(+09:00)를 포함한 목표 시각
+        const TARGET_ISO = '2025-10-15T07:00:00+09:00';
+        let offsetMs = 0;           // server_time - client_time => 더해주면 서버시간이 됨
+        let synced = false;
+        let lastSyncRTT = null;
+
+        async function syncServerTime() {
+            const url = "https://worldtimeapi.org/api/timezone/Asia/Seoul";
+            try {
+                const t0 = Date.now();
+                const res = await fetch(url, { cache: "no-store" });
+                const t1 = Date.now();
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const data = await res.json();
+                // worldtimeapi 의 datetime 포맷을 그대로 파싱
+                const serverDate = new Date(data.datetime);
+                // RTT 보정: 클라이언트의 중간 시각을 기준으로 offset 계산
+                const clientMid = Math.floor((t0 + t1) / 2);
+                offsetMs = serverDate.getTime() - clientMid;
+                lastSyncRTT = t1 - t0;
+                // 오프셋을 로컬에 저장해 재시작시 사용
+                try { localStorage.setItem('timeOffsetMs', String(offsetMs)); localStorage.setItem('timeOffsetAt', String(Date.now())); } catch(e){}
+                window.getSyncedNow = () => new Date(Date.now() + offsetMs);
+                synced = true;
+                console.log("시간 동기화 성공. offset(ms):", offsetMs, "RTT(ms):", lastSyncRTT);
+                // 동기화 성공 시 UI가 서버시간을 바로 반영하도록 강제 업데이트
+                renderClockOnce();
+            } catch (err) {
+                console.error("시간 동기화 실패:", err);
+                // 실패 시 fallback으로 로컬 시간을 사용하지만 synced는 false로 유지
+                // 로컬에 저장된 마지막 오프셋이 있으면 복원 시도
+                try {
+                    const stored = localStorage.getItem('timeOffsetMs');
+                    if (stored !== null) {
+                        offsetMs = Number(stored);
+                        window.getSyncedNow = () => new Date(Date.now() + offsetMs);
+                        console.warn('로컬에 저장된 오프셋을 복원하여 근사 서버시간 사용', offsetMs);
+                    } else {
+                        window.getSyncedNow = () => new Date();
+                    }
+                } catch(e) {
+                    window.getSyncedNow = () => new Date();
+                }
+                synced = false;
+                // 계속해서 재시도할 수 있도록 함 (다음 sync 간격에서 재시도)
+            }
+        }
+
+        // 초기 동기화: 페이지 로드 시 반드시 시도하고, 동기화가 완료되기 전까지 UI에 '동기화 중...'이 표시됩니다.
+        // 단, 동기화 실패하면 로컬 시간이 표시되며 백그라운드에서 재시도합니다.
+        (async function initSync() {
+            // 로컬에 저장된 오프셋 복원(빠른 초기 표시용)
+            try {
+                const stored = localStorage.getItem('timeOffsetMs');
+                if (stored !== null) {
+                    offsetMs = Number(stored);
+                    window.getSyncedNow = () => new Date(Date.now() + offsetMs);
+                } else {
+                    window.getSyncedNow = () => new Date();
+                }
+            } catch(e) { window.getSyncedNow = () => new Date(); }
+
+            document.getElementById('currentTime').textContent = '동기화 중...';
+            await syncServerTime();
+            // 페이지에 표시되는 목표 날짜 문자열을 TARGET_ISO에 맞춰 설정
+            try {
+                const t = new Date(TARGET_ISO);
+                const yyyy = t.getFullYear();
+                const MM = String(t.getMonth()+1).padStart(2,'0');
+                const dd = String(t.getDate()).padStart(2,'0');
+                const hh = String(t.getHours()).padStart(2,'0');
+                const min = String(t.getMinutes()).padStart(2,'0');
+                document.getElementById('ddayTargetDate').textContent = `${yyyy}년 ${MM}월 ${dd}일 ${hh}시 ${min}분 (KST)`;
+            } catch(e){}
+            // 주기적 재동기화 (10분)
+            setInterval(syncServerTime, 10 * 60 * 1000);
+
+            // 수동 동기화 버튼 연결(있으면)
+            const syncBtn = document.getElementById('syncNowBtn');
+            if (syncBtn) syncBtn.addEventListener('click', async () => { syncBtn.disabled = true; await syncServerTime(); syncBtn.disabled = false; });
+        })();
+
+        // ====== UI 렌더링 (서버 동기화된 시간 사용) ======
+        function renderClockOnce() {
+            const now = window.getSyncedNow ? window.getSyncedNow() : new Date();
+            const days = ['일','월','화','수','목','금','토'];
+            const day = days[now.getDay()];
+            const yyyy = now.getFullYear();
+            const MM = String(now.getMonth()+1).padStart(2,'0');
+            const dd = String(now.getDate()).padStart(2,'0');
+            const hh = String(now.getHours()).padStart(2,'0');
+            const min = String(now.getMinutes()).padStart(2,'0');
+            const ss = String(now.getSeconds()).padStart(2,'0');
+            const mss = String(now.getMilliseconds()).padStart(3,'0'); // 3자리 밀리초
+            document.getElementById('currentTime').textContent = `${yyyy}.${MM}.${dd} (${day}) ${hh}:${min}:${ss}.${mss}`;
+        }
+
+        // 카운트다운도 동기화된 현재시각으로 계산
+        function renderCountdownOnce() {
+            // 목표일은 명시적 한국시간(TARGET_ISO)를 사용
+            const target = new Date(TARGET_ISO).getTime();
+            const now = (window.getSyncedNow ? window.getSyncedNow().getTime() : Date.now());
+            let diff = target - now;
+            const countdownEl = document.getElementById('countdown');
+            const timeDisplayEl = document.getElementById('timeDisplay');
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000*60*60*24));
+                const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+                const seconds = Math.floor((diff % (1000*60)) / 1000);
+                const milliseconds = Math.floor(diff % 1000); // 0~999
+
+                countdownEl.textContent = `D-${days}`;
+                timeDisplayEl.innerHTML = `
+                    <div class="time-unit">
+                        <span class="time-value">${days}</span>
+                        <div class="time-label">일</div>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value">${String(hours).padStart(2,'0')}</span>
+                        <div class="time-label">시간</div>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value">${String(minutes).padStart(2,'0')}</span>
+                        <div class="time-label">분</div>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value">${String(seconds).padStart(2,'0')}</span>
+                        <div class="time-label">초</div>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-value">${String(milliseconds).padStart(3,'0')}</span>
+                        <div class="time-label">밀리초</div>
+                    </div>
+                `;
+            } else {
+                countdownEl.textContent = 'D-Day!';
+                timeDisplayEl.innerHTML = `
+                    <div class="time-unit">
+                        <span class="time-value">🎉</span>
+                        <div class="time-label">부산 수학여행!</div>
+                    </div>
+                `;
+                if (!ddayShown) {
+                    showDdayPreview(true);
+                    ddayShown = true;
+                }
+            }
+        }
+
+        // 주기 업데이트 루프: synced 여부에 관계없이, window.getSyncedNow()가 반환하는 값을 사용.
+        // synced가 true이면 실제 서버시간(보정됨)을, false이면 로컬을 보여줍니다.
+        const UI_TICK_MS = 100; // 100ms 주기로 부하 완화 (밀리초 감각은 유지됨)
+        setInterval(() => {
+            if (window._stopUI || typeof finalShown !== 'undefined' && finalShown) return;
+            renderClockOnce();
+            renderCountdownOnce();
+            // D-7~D-0 효과 적용(기존 로직 사용 — daysLeft 계산 시 동기화된 시간 사용됨)
+            const targetDate = new Date(TARGET_ISO).getTime();
+            const now = (window.getSyncedNow ? window.getSyncedNow().getTime() : Date.now());
+            let daysLeft = Math.floor((targetDate - now) / (1000*60*60*24));
+            if (daysLeft < 0) daysLeft = 0;
+            if (daysLeft <= 7) applyDdayEffects(daysLeft);
+        }, UI_TICK_MS);
+
+        // ====== 기존의 confetti, preview, effects 등 함수들은 그대로 유지 ======
+        // (원본 스크립트를 그대로 붙여넣음 — 중복 정의 피하기 위해 필요 시 통합)
+        let confettiActive = false;
+    // D-Day 축하 모달이 이미 표시되었는지 여부 (중복 실행 방지)
+    let ddayShown = false;
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let confetti = [];
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#fff', '#f7b42c', '#e96443'];
+            for (let i = 0; i < 180; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * -canvas.height,
+                    r: Math.random() * 8 + 4,
+                    d: Math.random() * 40 + 10,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 10,
+                    tiltAngle: 0,
+                    tiltAngleIncremental: (Math.random() * 0.07) + 0.05
+                });
+            }
+            let angle = 0;
+            confettiActive = true;
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < confetti.length; i++) {
+                    let c = confetti[i];
+                    ctx.beginPath();
+                    ctx.lineWidth = c.r;
+                    ctx.strokeStyle = c.color;
+                    ctx.moveTo(c.x + c.tilt + c.r / 3, c.y);
+                    ctx.lineTo(c.x + c.tilt, c.y + c.d / 2);
+                    ctx.stroke();
+                }
+                updateConfetti();
+            }
+            function updateConfetti() {
+                angle += 0.01;
+                for (let i = 0; i < confetti.length; i++) {
+                    let c = confetti[i];
+                    c.y += (Math.cos(angle + c.d) + 3 + c.r / 2) * 0.8;
+                    c.x += Math.sin(angle);
+                    c.tiltAngle += c.tiltAngleIncremental;
+                    c.tilt = Math.sin(c.tiltAngle) * 15;
+                    if (c.y > canvas.height) {
+                        c.x = Math.random() * canvas.width;
+                        c.y = -10;
+                    }
+                }
+            }
+            function animate() {
+                if (!confettiActive) return;
+                drawConfetti();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+        function stopConfetti() {
+            confettiActive = false;
+            const canvas = document.getElementById('confettiCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        function playCelebrationSound() {
+            const audio = document.getElementById('celebrationSound');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(()=>{/* 자동 재생 제한에 걸리면 무시 */});
+            }
+        }
+        function showDdayPreview(isAuto) {
+            const el = document.getElementById('ddayCelebration');
+            if (!el) return;
+            el.style.display = 'flex';
+            launchConfetti();
+            playCelebrationSound();
+            const typing = document.querySelector('.typing-text');
+            if (typing) {
+                typing.textContent = '';
+                typing.style.width = '0';
+                typing.style.animation = 'none';
+                void typing.offsetWidth;
+                typing.textContent = '드디어 D-Day입니다!';
+                typing.style.animation = 'typing 2.5s steps(20, end) 0.5s forwards, blink-caret .75s step-end infinite';
+            }
+        }
+        function closeDdayPreview() {
+            const el = document.getElementById('ddayCelebration');
+            if (el) el.style.display = 'none';
+            stopConfetti();
+            const audio = document.getElementById('celebrationSound');
+            if (audio) audio.pause();
+        }
+
+        // D-7~D-0 효과 데이터 및 적용 함수 (간결히 유지 — 원본과 호환)
+        const ddayEffects = [
+            { day: 7, bg: '#1e3c72', emoji: '🎒', message: '여행 준비를 시작해볼까요?', photo: '/images/busan1.jpg', quiz: '부산의 대표 해수욕장은?', mission: '여행 가방 꾸리기' },
+            { day: 6, bg: '#2a5298', emoji: '🗺️', message: '여행 경로를 한 번 살펴보세요!', photo: '/images/busan2.jpg', quiz: '부산의 명물 음식은?', mission: '친구와 일정 공유' },
+            { day: 5, bg: '#4e54c8', emoji: '📷', message: '카메라 준비 완료?', photo: '/images/busan3.jpg', quiz: '부산의 대표적인 다리는?', mission: '충전기 준비' },
+            { day: 4, bg: '#8f94fb', emoji: '🍜', message: '맛있는 음식 기대되나요?', photo: '/images/busan4.jpg', quiz: '부산의 대표 시장은?', mission: '먹고 싶은 음식 정하기' },
+            { day: 3, bg: '#43cea2', emoji: '🚆', message: '이제 얼마 안 남았어요!', photo: '/images/busan5.jpg', quiz: '부산의 대표 산은?', mission: '여행 일정 재확인하기!' },
+            { day: 2, bg: '#185a9d', emoji: '🌉', message: '설렘이 커지는 하루!', photo: '/images/busan6.jpg', quiz: '부산의 대표 축제는?', mission: '준비물 최종 점검' },
+            { day: 1, bg: '#f7971e', emoji: '🎆', message: '내일이 바로 출발!', photo: '/images/busan7.jpg', quiz: '부산의 대표 해양관광지는?', mission: '일찍 자기!' },
+            { day: 0, bg: '#ffd700', emoji: '🚌', message: '드디어 출발! 즐거운 수학여행 되세요!', photo: '/images/busan8.jpg', quiz: '', mission: '' }
+        ];
+        function applyDdayEffects(daysLeft) {
+            const effect = ddayEffects.find(e => e.day === daysLeft);
+            const area = document.getElementById('specialEffectArea');
+            const barWrap = document.getElementById('progressBarWrap');
+            const bar = document.getElementById('progressBar');
+            if (!area) return;
+            if (effect) {
+                document.body.style.background = effect.bg;
+                area.innerHTML = `
+                    <div style="margin:10px 0 0 0;display:flex;flex-direction:column;align-items:center;">
+                        <div style="font-size:2.2rem;user-select:none;">${effect.emoji}</div>
+                        <img src="${effect.photo}" alt="busan" style="max-width:90vw;max-height:180px;border-radius:12px;margin:10px 0;box-shadow:0 2px 12px #0003;" onerror="this.style.display='none'"/>
+                        <div style="font-size:1.1rem;margin:6px 0 2px 0;">${effect.message}</div>
+                        ${effect.quiz ? `<div style='font-size:0.95rem;color:#FFD700;margin:2px 0;'>오늘의 퀴즈: ${effect.quiz}</div>` : ''}
+                        ${effect.mission ? `<div style='font-size:0.95rem;color:#43cea2;margin:2px 0;'>오늘의 미션: ${effect.mission}</div>` : ''}
+                    </div>
+                `;
+                if (barWrap && bar) {
+                    barWrap.style.display = '';
+                    const percent = ((7 - daysLeft) / 7) * 100;
+                    bar.style.width = percent + '%';
+                }
+            } else {
+                document.body.style.background = '';
+                area.innerHTML = '';
+                if (barWrap) barWrap.style.display = 'none';
+            }
+        }
+
+        // 창 크기 변경 시 confetti 캔버스 크기 조정
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confettiCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        // 이모지 우클릭 및 드래그 방지
+        document.addEventListener('DOMContentLoaded', function() {
+            const emoji = document.getElementById('celebrationEmoji');
+            if (emoji) {
+                emoji.addEventListener('contextmenu', e => e.preventDefault());
+                emoji.addEventListener('dragstart', e => e.preventDefault());
+                emoji.addEventListener('selectstart', e => e.preventDefault());
+            }
+            // 제목을 클릭하거나 탭하면 final screen으로 전환되도록 (모바일/데스크탑 구분 없이)
+            try {
+                const titleEl = document.querySelector('.title');
+                if (titleEl) {
+                    const triggerShowFinal = (ev) => {
+                        ev && ev.preventDefault && ev.preventDefault();
+                        showFinalScreen('title-click');
+                    };
+                    // 클릭과 터치 모두에서 동작하도록 처리
+                    titleEl.addEventListener('click', triggerShowFinal);
+                    titleEl.addEventListener('touchstart', triggerShowFinal);
+                }
+            } catch(e){}
+            // 키입력으로 'goodluck' 감지 (대소문자 무시, Backspace 지원)
+            let typed = '';
+            window.addEventListener('keydown', (e) => {
+                // Allow normal typing anywhere; ignore modifier-only keys
+                if (e.key === 'Backspace') {
+                    typed = typed.slice(0, -1);
+                    return;
+                }
+                if (e.key === 'Escape') {
+                    typed = '';
+                    return;
+                }
+                if (e.key && e.key.length === 1) {
+                    const ch = e.key.toLowerCase();
+                    if (ch >= 'a' && ch <= 'z') {
+                        typed += ch;
+                        if (typed.length > 8) typed = typed.slice(-8);
+                        if (typed === 'goodluck') {
+                            console.log('goodluck typed -> triggering final screen');
+                            showFinalScreen('manual');
+                        }
+                    }
+                }
+            });
+            // 클릭 이벤트: 노란 D-? 텍스트(#countdown)나 개별 .time-value 클릭 시 오디오를 한 번 재생
+            try {
+                const countdownEl = document.getElementById('countdown');
+                if (countdownEl) countdownEl.addEventListener('click', (ev) => { ev.preventDefault && ev.preventDefault(); playAudioOnce(); });
+                // delegated for current .time-value elements
+                document.getElementById('timeDisplay').addEventListener('click', (ev) => {
+                    const tv = ev.target.closest && ev.target.closest('.time-unit');
+                    if (tv) {
+                        playAudioOnce();
+                    }
+                });
+            } catch(e){}
+            // 시각 체크: finalTime 이후 자동 전환
+            try {
+                const finalTime = new Date('2025-10-17T17:00:00+09:00').getTime();
+                // 빠른 체크(초 단위)
+                setInterval(() => {
+                    const now = window.getSyncedNow ? window.getSyncedNow().getTime() : Date.now();
+                    if (now >= finalTime) showFinalScreen('time');
+                }, 1000);
+            } catch(e){}
+            // Shift 키로도 동일 동작 (오디오 한 번 재생)
+            window.addEventListener('keydown', (ev) => {
+                try {
+                    if (ev.key === 'Shift') {
+                        playAudioOnce();
+                    }
+                } catch(e){}
+            });
+
+                // Intro modal logic: show on load unless 'hideUntil' timestamp in localStorage is in the future
+                try {
+                    const introModal = document.getElementById('introModal');
+                    const introClose = document.getElementById('introCloseBtn');
+                    const hideChk = document.getElementById('hideForDay');
+                    const hideUntil = Number(localStorage.getItem('introHideUntil') || '0');
+                    const now = Date.now();
+                    if (introModal && now < hideUntil) {
+                        // previously set to hide
+                        introModal.style.display = 'none';
+                    } else if (introModal) {
+                        introModal.style.display = 'flex';
+                        // default unchecked
+                        hideChk.checked = false;
+                    }
+                    if (introClose) introClose.addEventListener('click', () => {
+                        try {
+                            if (hideChk && hideChk.checked) {
+                                // set hide for 24 hours
+                                const until = Date.now() + (24 * 60 * 60 * 1000);
+                                localStorage.setItem('introHideUntil', String(until));
+                            }
+                            if (introModal) introModal.style.display = 'none';
+                        } catch(e){}
+                    });
+
+                    // clicking outside modal box closes it
+                    try {
+                        introModal.addEventListener('click', (ev) => {
+                            if (ev.target === introModal) {
+                                try { if (hideChk && hideChk.checked) { const until = Date.now() + (24 * 60 * 60 * 1000); localStorage.setItem('introHideUntil', String(until)); } } catch(e){}
+                                introModal.style.display = 'none';
+                            }
+                        });
+                    } catch(e){}
+
+                    // drag-to-move for the modal box (mouse & touch)
+                    try {
+                        const box = document.getElementById('introModalBox');
+                        let isDown = false, startX=0, startY=0, origLeft=0, origTop=0;
+                        box.addEventListener('mousedown', (e) => {
+                            isDown = true; box.style.cursor = 'grabbing';
+                            startX = e.clientX; startY = e.clientY;
+                            const rect = box.getBoundingClientRect(); origLeft = rect.left; origTop = rect.top;
+                            // position fixed -> convert to translate using left/top
+                            box.style.position = 'fixed';
+                            box.style.left = origLeft + 'px'; box.style.top = origTop + 'px';
+                        });
+                        window.addEventListener('mousemove', (e) => {
+                            if (!isDown) return;
+                            const dx = e.clientX - startX, dy = e.clientY - startY;
+                            box.style.left = (origLeft + dx) + 'px'; box.style.top = (origTop + dy) + 'px';
+                        });
+                        window.addEventListener('mouseup', () => { if (!isDown) return; isDown = false; box.style.cursor = 'grab'; });
+                        // touch support
+                        box.addEventListener('touchstart', (e) => {
+                            isDown = true; const t = e.touches[0]; startX = t.clientX; startY = t.clientY; const rect = box.getBoundingClientRect(); origLeft = rect.left; origTop = rect.top; box.style.position='fixed'; box.style.left = origLeft + 'px'; box.style.top = origTop + 'px';
+                        }, {passive:false});
+                        window.addEventListener('touchmove', (e) => { if (!isDown) return; const t = e.touches[0]; const dx = t.clientX - startX, dy = t.clientY - startY; box.style.left = (origLeft + dx) + 'px'; box.style.top = (origTop + dy) + 'px'; }, {passive:false});
+                        window.addEventListener('touchend', () => { isDown = false; });
+                    } catch(e){}
+                } catch(e){}
+        });
+
+    // Final screen logic
+    let finalShown = false;
+    // YouTube IFrame API player reference
+    let ytAudioPlayer = null;
+    let ytApiReady = false;
+    // Final audio player reference (hidden player that plays final video's audio-only)
+    let ytFinalPlayer = null;
+    // Playback control flags
+    let audioPlayedOnce = false;      // ensures play-once actions only play once until refresh
+    let audioShouldLoop = false;      // controls whether player restarts on END (used by cocktail button)
+        // Load YouTube IFrame API
+        (function loadYouTubeAPI(){
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        })();
+
+        // This function is called by the YouTube API when ready
+        function onYouTubeIframeAPIReady() {
+            ytApiReady = true;
+            // create player but do not autoplay yet
+            // Use AUDIO_VIDEO_ID so the specified video is played via the hidden player (audio only)
+            // Do not force loop in playerVars; loop behavior is managed via audioShouldLoop flag
+            ytAudioPlayer = new YT.Player('audioIframe', {
+                height: '1',
+                width: '1',
+                videoId: AUDIO_VIDEO_ID,
+                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 0, 'iv_load_policy': 3, 'rel': 0, 'modestbranding':1 },
+                events: {
+                    'onReady': function(e){ /* ready */ },
+                    'onStateChange': function(e){
+                        try {
+                            const btn = document.getElementById('cocktailBtn');
+                            if (e.data === YT.PlayerState.ENDED) {
+                                // If looping is desired (cocktail button), restart; otherwise leave stopped
+                                if (audioShouldLoop) { try { e.target.playVideo(); } catch(e){} }
+                                if (btn) btn.textContent = 'Coktail love';
+                            } else if (e.data === YT.PlayerState.PLAYING) {
+                                if (btn) btn.textContent = 'Pause Coktail';
+                            } else if (e.data === YT.PlayerState.PAUSED) {
+                                if (btn) btn.textContent = 'Coktail love';
+                            }
+                        } catch(err){}
+                    },
+                    'onError': function(e){ console.warn('YT audio player error', e); }
+                }
+            });
+
+            // Hide any visible iframe on the page that contains the audio video id in its src
+            try {
+                const iframes = document.getElementsByTagName('iframe');
+                for (let i = 0; i < iframes.length; i++) {
+                    const src = iframes[i].src || '';
+                    if (src.indexOf(AUDIO_VIDEO_ID) !== -1) {
+                        // Hide visually but keep in DOM if you prefer; make it aria-hidden
+                        iframes[i].style.display = 'none';
+                        iframes[i].setAttribute('aria-hidden', 'true');
+                    }
+                    // also hide any iframe that contains the final video id (if page has it), we'll use hidden player
+                    if (src.indexOf(FINAL_VIDEO_ID) !== -1) {
+                        iframes[i].style.display = 'none';
+                        iframes[i].setAttribute('aria-hidden', 'true');
+                    }
+                }
+                // create final hidden player
+                try {
+                    ytFinalPlayer = new YT.Player('finalAudioIframe', {
+                        height: '1', width: '1', videoId: FINAL_VIDEO_ID,
+                        playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 0, 'iv_load_policy': 3, 'rel': 0, 'modestbranding':1 },
+                        events: {
+                            'onReady': function() {},
+                            'onStateChange': function(e){
+                                // no loop by default; we won't auto-restart final audio unless explicitly requested
+                            }
+                        }
+                    });
+                } catch(e){}
+            } catch(e){}
+        }
+
+        // Final audio control helpers (separate from the initial hidden audio)
+        function playFinalAudioOnce() {
+            try {
+                // stop main hidden audio
+                audioShouldLoop = false; if (ytApiReady && ytAudioPlayer) try { ytAudioPlayer.pauseVideo(); } catch(e){}
+                if (ytFinalPlayer) ytFinalPlayer.playVideo();
+            } catch(e){}
+        }
+        function playFinalAudioLoop() {
+            try {
+                if (ytFinalPlayer) {
+                    // set up manual loop by listening for END if needed (not default)
+                    ytFinalPlayer.playVideo();
+                }
+            } catch(e){}
+        }
+        function pauseFinalAudio() {
+            try { if (ytFinalPlayer) ytFinalPlayer.pauseVideo(); } catch(e){}
+        }
+        // Play audio once (used by clicking D-? or pressing Shift). Will only play once per page load.
+        function playAudioOnce() {
+            if (audioPlayedOnce) return;
+            audioPlayedOnce = true;
+            audioShouldLoop = false; // ensure no loop for this action
+            // Update button text to reflect playback attempt
+            const btn = document.getElementById('cocktailBtn'); if (btn) btn.textContent = 'Playing...';
+            try {
+                if (ytApiReady && ytAudioPlayer) {
+                    ytAudioPlayer.playVideo();
+                } else {
+                    const tryPlayInterval = setInterval(() => {
+                        if (ytApiReady && ytAudioPlayer) {
+                            clearInterval(tryPlayInterval);
+                            try { ytAudioPlayer.playVideo(); } catch(e){}
+                        }
+                    }, 250);
+                }
+            } catch(e){}
+        }
+
+        // Play audio and enable loop (used by cocktail button)
+        function playAudioLoop() {
+            audioShouldLoop = true;
+            audioPlayedOnce = true; // consider played to prevent play-once reruns
+            try{ if (ytApiReady && ytAudioPlayer) ytAudioPlayer.playVideo(); } catch(e){}
+            const btn = document.getElementById('cocktailBtn'); if (btn) btn.textContent = 'Pause Coktail';
+        }
+        function showFinalScreen(trigger) {
+            if (finalShown) return;
+            finalShown = true;
+            // stop periodic UI updates by clearing intervals if any (we used setInterval but didn't keep ids) — set a global flag
+            window._stopUI = true;
+            // hide scaleRoot gracefully and show finalScreen
+            const root = document.getElementById('scaleRoot');
+            const final = document.getElementById('finalScreen');
+            if (root) {
+                root.style.transition = 'opacity 1s ease';
+                root.style.opacity = '0';
+                root.style.pointerEvents = 'none';
+            }
+            if (final) {
+                // ensure font family preserved
+                final.classList.add('show');
+                final.style.display = 'flex';
+                // reveal cocktail button and attach click handler
+                const btn = document.getElementById('cocktailBtn');
+                if (btn) {
+                    btn.style.display = 'inline-block';
+                    btn.addEventListener('click', () => {
+                        try {
+                            if (finalShown) {
+                                // play final audio via hidden final player and ensure main hidden audio is stopped
+                                audioShouldLoop = false;
+                                try { if (ytApiReady && ytAudioPlayer) ytAudioPlayer.pauseVideo(); } catch(e){}
+                                try { playFinalAudioOnce(); } catch(e){}
+                            } else {
+                                toggleAudio();
+                            }
+                        } catch(e){}
+                    });
+                }
+            }
+            // When final screen shows: stop any hidden audio playback and show the final visible iframe
+            try {
+                // also hide intro modal if visible
+                try { const im = document.getElementById('introModal'); if (im) im.style.display = 'none'; } catch(e){}
+                // stop hidden player (and prevent further autoplay)
+                audioShouldLoop = false;
+                try { if (ytApiReady && ytAudioPlayer) { ytAudioPlayer.pauseVideo(); } } catch(e){}
+
+                // remove or hide the hidden audio player container to avoid accidental resume
+                const audioContainer = document.getElementById('audioPlayerContainer');
+                if (audioContainer) audioContainer.style.display = 'none';
+
+                // Do NOT auto-insert a visible final iframe here. The cocktail button will show the final video
+                // only when the user intentionally requests it (during final screen). This prevents unexpected
+                // visible playback when the final screen is triggered by time or typing.
+            } catch(e){}
+        }
+
+        // Audio control helpers
+        function playAudio(){ playAudioLoop(); }
+        function pauseAudio(){
+            try{ if (ytApiReady && ytAudioPlayer) ytAudioPlayer.pauseVideo(); } catch(e){}
+            const btn = document.getElementById('cocktailBtn'); if (btn) btn.textContent = 'Coktail love';
+        }
+        function toggleAudio(){
+            try{
+                if (!ytApiReady || !ytAudioPlayer) { playAudioLoop(); return; }
+                const state = ytAudioPlayer.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) {
+                    pauseAudio();
+                    audioShouldLoop = false;
+                } else {
+                    // user toggled via cocktail button or Enter: enable loop
+                    playAudioLoop();
+                }
+            } catch(e){ playAudioLoop(); }
+        }
+
+        // Enter key toggles audio when final screen is shown
+        window.addEventListener('keydown', (e) => {
+            if (!finalShown) return;
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                toggleAudio();
+            }
+        });
+    </script>
+</body>
+</html>
