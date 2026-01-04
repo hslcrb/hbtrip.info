@@ -1,6 +1,6 @@
 # HBTrip.info - 2025 한봄 수학여행 일정 안내 사이트
 
-![HBTrip.info Banner](file:///home/rheehose/문서/rheeworks/hbtripinfoo/images/sigak_screenshot.png)
+![HBTrip.info Banner](file:///final.png)
 
 > [!IMPORTANT]
 > **오픈소스 선언**
