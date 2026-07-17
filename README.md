@@ -43,6 +43,12 @@
 *   `time.html`: 카운트다운 및 타임라인
 *   `aero_design_guide.md`: 프로젝트에 적용된 Aero 디자인 가이드
 
+## 📜 버전 히스토리
+
+> 프로젝트의 전체 변천사와 타임라인 정보는 [버전 히스토리 문서](docs/version-history.md)에서 확인할 수 있습니다.
+>
+> 또한 [타임라인 페이지](newpages/timeline.html)에서 각 버전을 대화형 UI로 탐색할 수 있습니다.
+
 ## 🛠 기술 스택
 
 *   **Frontend**: HTML5, CSS3 (Vanilla CSS), JavaScript

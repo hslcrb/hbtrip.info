@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>한봄고 수학여행 — 타임라인</title>
+  <title>한봄고 수학여행 — 변천사</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     @font-face {
@@ -12,419 +12,278 @@
       font-weight: 400;
     }
     :root {
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --accent: #2563eb;
-      --accent2: #3b82f6;
-      --line: #e5e7eb;
-      --radius: 18px;
+      --bg: #f6f7fb; --card: #ffffff; --text: #1e293b; --muted: #64748b;
+      --accent: #2563eb; --accent2: #3b82f6; --line: #e5e7eb; --radius: 18px;
+      --green: #10b981; --amber: #f59e0b; --rose: #f43f5e; --violet: #8b5cf6;
     }
     [data-theme="dark"] {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --accent: #3b82f6;
-      --line: #334155;
+      --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8;
+      --accent: #3b82f6; --line: #334155;
     }
     *{box-sizing:border-box; margin:0; padding:0;}
     body {
       font-family: 'Pretendard-Regular', 'NanumSquare', 'Apple SD Gothic Neo', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      display: flex; flex-direction: column;
       transition: background 0.3s, color 0.3s;
     }
     header {
-      backdrop-filter: saturate(1.1) blur(6px);
+      backdrop-filter: saturate(1.1) blur(8px);
       background: color-mix(in srgb, var(--card) 85%, transparent);
       border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      position: sticky; top: 0; z-index: 10;
     }
     .header-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1100px; margin: 0 auto; padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
     .header-inner h1 {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
+      font-size: 18px; font-weight: 800; letter-spacing: -0.3px;
+      display: flex; align-items: center; gap: 8px;
     }
-    .header-inner h1 small {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      margin-left: 8px;
+    .header-inner h1 .badge {
+      font-size: 10px; font-weight: 600; color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 2px 10px; border-radius: 999px;
     }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
     .theme-toggle {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      flex-shrink: 0;
+      background: var(--card); border: 1px solid var(--line); border-radius: 50%;
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s; flex-shrink: 0;
     }
-    .theme-toggle:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    .theme-toggle:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+    .theme-toggle svg{width:18px;height:18px;color:var(--text);}
+    .main{flex:1;max-width:1100px;margin:0 auto;padding:24px 20px;width:100%;}
+    .intro{text-align:center;margin:0 0 28px;}
+    .intro h2{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
+    .intro p{color:var(--muted);margin-top:4px;font-size:14px;}
+
+    /* === Timeline === */
+    .tl-wrapper {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 28px 24px 20px; box-shadow: 0 2px 12px rgba(0,0,0,.04); margin-bottom: 20px;
     }
-    .theme-toggle svg {
-      width: 20px;
-      height: 20px;
-      color: var(--text);
+    .tl-scroll {
+      overflow-x: auto; padding: 4px 0 8px; -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin; scrollbar-color: var(--accent) var(--line);
     }
-    .main {
-      flex: 1;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 20px;
-      width: 100%;
+    .tl-scroll::-webkit-scrollbar{height:4px;}
+    .tl-scroll::-webkit-scrollbar-track{background:var(--line);border-radius:2px;}
+    .tl-scroll::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+    .tl-track {
+      position: relative; display: flex; align-items: stretch; min-width: max-content;
+      padding: 0 8px;
     }
-    .intro {
-      text-align: center;
-      margin: 10px 0 30px;
+    .tl-track::before {
+      content: ''; position: absolute; top: 28px; left: 32px; right: 32px;
+      height: 2px; background: var(--line); z-index: 0;
     }
-    .intro h2 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    .tl-node {
+      position: relative; z-index: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 8px; cursor: pointer; padding: 0 10px;
+      min-width: 60px; transition: transform 0.25s;
     }
-    .intro p {
-      color: var(--muted);
-      margin-top: 6px;
-      font-size: 14px;
+    .tl-node:hover{transform:translateY(-3px);}
+    .tl-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--card); border: 2.5px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; transition: all 0.35s;
+      color: var(--muted); flex-shrink: 0; position: relative;
     }
-    .timeline-container {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 32px 24px 28px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.04);
-      margin-bottom: 24px;
-      overflow: hidden;
+    .tl-node.active .tl-dot {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent),
+                  0 0 20px color-mix(in srgb, var(--accent) 15%, transparent);
+      transform: scale(1.12);
     }
-    .timeline-scroll {
-      overflow-x: auto;
-      padding: 8px 0 4px;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) var(--line);
+    .tl-node.past .tl-dot {
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      border-color: var(--accent); color: var(--accent);
     }
-    .timeline-scroll::-webkit-scrollbar { height: 4px; }
-    .timeline-scroll::-webkit-scrollbar-track { background: var(--line); border-radius: 2px; }
-    .timeline-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-    .timeline-track {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      min-width: max-content;
-      padding: 0 12px;
+    .tl-label{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;text-align:center;line-height:1.2;}
+    .tl-label small{display:block;font-size:9px;font-weight:400;color:color-mix(in srgb, var(--muted) 60%, transparent);margin-top:1px;}
+    .tl-node.active .tl-label{color:var(--accent);font-weight:800;}
+    .tl-node.active .tl-label small{color:var(--accent);}
+    .tl-file-count {
+      font-size: 9px; font-weight: 700; color: #fff;
+      background: var(--muted); border-radius: 999px; padding: 0 6px; line-height: 16px;
+      position: absolute; top: -6px; right: -6px;
     }
-    .timeline-track::before {
-      content: '';
-      position: absolute;
-      top: 16px;
-      left: 24px;
-      right: 24px;
-      height: 2px;
-      background: var(--line);
-      z-index: 0;
+    .tl-node.active .tl-file-count, .tl-node.past .tl-file-count { background: var(--accent); }
+
+    .tl-info {
+      text-align: center; padding: 14px 0 4px;
+      display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
     }
-    .timeline-node {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      padding: 0 10px;
-      min-width: 56px;
-      transition: transform 0.2s;
+    .tl-info .vi{font-size:14px;color:var(--muted);}
+    .tl-info .vi strong{color:var(--text);}
+    .tl-info .vi .date{color:color-mix(in srgb, var(--muted) 70%, transparent);font-size:12px;font-weight:400;margin-left:6px;}
+    .tl-info .vi .chips{display:inline-flex;gap:4px;margin-left:8px;}
+    .tl-info .vi .chip{font-size:10px;padding:1px 8px;border-radius:999px;font-weight:700;background:color-mix(in srgb, var(--accent) 10%, transparent);color:var(--accent);}
+
+    .tl-controls{display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;}
+    .tl-controls button {
+      appearance:none; border:1px solid var(--line); background:var(--card); color:var(--text);
+      padding:8px 18px; border-radius:999px; font-weight:700; font-size:12px; cursor:pointer;
+      transition:all 0.25s; font-family:inherit;
     }
-    .timeline-node:hover {
-      transform: translateY(-2px);
+    .tl-controls button:hover{border-color:var(--accent);background:color-mix(in srgb, var(--accent) 6%, var(--card));}
+    .tl-controls button:disabled{opacity:0.35;cursor:default;}
+    .tl-controls .jump-input {
+      border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:12px;
+      font-family:inherit; background:var(--card); color:var(--text); width:80px; text-align:center;
     }
-    .timeline-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 2px solid var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      transition: all 0.3s;
-      color: var(--muted);
-      flex-shrink: 0;
+    .tl-controls .jump-input:focus{outline:none;border-color:var(--accent);}
+
+    /* === Page Cards === */
+    .section-label {
+      font-size: 12px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px 4px;
     }
-    .timeline-node.active .timeline-dot {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
-      transform: scale(1.1);
+    .pgrid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px; margin-bottom: 20px;
     }
-    .timeline-node.past .timeline-dot {
-      background: color-mix(in srgb, var(--accent) 15%, transparent);
-      border-color: var(--accent);
-      color: var(--accent);
+    .pcard {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px 14px; text-align: center; transition: all 0.3s;
+      text-decoration: none; color: var(--text); display: flex; flex-direction: column;
+      align-items: center; gap: 5px; position: relative; overflow: hidden;
     }
-    .timeline-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      text-align: center;
+    .pcard::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent); opacity: 0; transition: opacity 0.3s;
     }
-    .timeline-node.active .timeline-label {
-      color: var(--accent);
-      font-weight: 800;
+    .pcard:hover::before{opacity:1;}
+    .pcard:hover {
+      border-color: var(--accent); box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 12%, transparent);
+      transform: translateY(-3px);
     }
-    .version-info {
-      text-align: center;
-      margin: 16px 0 4px;
-      font-size: 14px;
-      color: var(--muted);
+    .pcard .icon{font-size:26px;line-height:1;}
+    .pcard .name{font-weight:700;font-size:13px;}
+    .pcard .desc{font-size:11px;color:var(--muted);}
+    .pcard.disabled{opacity:0.3;cursor:default;pointer-events:none;filter:grayscale(1);}
+    .pcard.disabled::before{display:none;}
+    .pcard .tag {
+      font-size: 9px; font-weight: 700; padding: 1px 8px; border-radius: 999px;
+      background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green);
     }
-    .version-info strong {
-      color: var(--text);
-    }
-    .pages-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 12px;
-      margin-top: 4px;
-    }
-    .page-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-      transition: all 0.25s;
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-    .page-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 15%, transparent);
-      transform: translateY(-2px);
-    }
-    .page-card .icon {
-      font-size: 28px;
-      line-height: 1;
-    }
-    .page-card .name {
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .page-card .desc {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .page-card.disabled {
-      opacity: 0.35;
-      cursor: default;
-      pointer-events: none;
-      filter: grayscale(1);
-    }
-    .page-card.disabled:hover {
-      transform: none;
-      box-shadow: none;
-      border-color: var(--line);
-    }
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .controls button {
-      appearance: none;
-      border: 1px solid var(--line);
-      background: var(--card);
-      color: var(--text);
-      padding: 10px 20px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.25s;
-      font-family: inherit;
-    }
-    .controls button:hover {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 8%, var(--card));
-    }
-    .controls button:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-    .footer-nav {
-      text-align: center;
-      margin: 30px 0 20px;
-      padding: 16px;
-      background: var(--card);
-      border: 1px solid var(--line);
+    .pcard .tag.new{background:color-mix(in srgb, var(--rose) 12%, transparent);color:var(--rose);}
+
+    /* === Standalone Section === */
+    .standalone-section {
+      margin: 12px 0; padding: 16px 20px;
+      background: color-mix(in srgb, var(--accent) 4%, var(--card));
+      border: 1px dashed color-mix(in srgb, var(--accent) 20%, var(--line));
       border-radius: var(--radius);
     }
-    .footer-nav a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
+    .standalone-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+    .standalone-links{display:flex;flex-wrap:wrap;gap:6px;}
+    .standalone-links a {
+      padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      text-decoration: none; background: var(--card); border: 1px solid var(--line);
+      color: var(--text); transition: all 0.2s; display: flex; align-items: center; gap: 5px;
     }
-        .footer-nav a:hover {
-            text-decoration: underline;
-        }
-        .footer-nav .sep {
-            color: var(--line);
-            margin: 0 10px;
-        }
-        .standalone-section {
-            margin-top: 10px;
-            padding: 18px 20px;
-            background: color-mix(in srgb, var(--accent) 4%, var(--card));
-            border: 1px dashed color-mix(in srgb, var(--accent) 20%, var(--line));
-            border-radius: var(--radius);
-        }
-        .standalone-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-        .standalone-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .standalone-links a {
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            background: var(--card);
-            border: 1px solid var(--line);
-            color: var(--text);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .standalone-links a:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-1px);
-        }
-        .standalone-links a .emoji {
-            font-size: 16px;
-        }
-        @media (max-width: 600px) {
-      .timeline-container { padding: 20px 12px; }
-      .timeline-node { padding: 0 6px; min-width: 44px; }
-      .timeline-dot { width: 26px; height: 26px; font-size: 9px; }
-      .timeline-label { font-size: 10px; }
-      .pages-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .header-inner h1 { font-size: 16px; }
-      .header-inner h1 small { font-size: 11px; }
+    .standalone-links a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+
+    .footer-nav{text-align:center;margin:16px 0 8px;font-size:12px;color:var(--muted);}
+    .footer-nav a{color:var(--accent);text-decoration:none;font-weight:600;}
+    .footer-nav a:hover{text-decoration:underline;}
+    .footer-nav .sep{color:var(--line);margin:0 8px;}
+
+    @media (max-width: 700px) {
+      .header-inner h1{font-size:15px;}
+      .header-inner h1 .badge{font-size:9px;padding:1px 8px;}
+      .tl-wrapper{padding:20px 14px 16px;}
+      .tl-node{padding:0 6px;min-width:48px;}
+      .tl-dot{width:30px;height:30px;font-size:10px;}
+      .tl-label{font-size:10px;}
+      .tl-label small{font-size:8px;}
+      .pgrid{grid-template-columns:repeat(2,1fr);gap:8px;}
+      .pcard{padding:12px 10px;}
+    }
+    @media (max-width: 400px) {
+      .pgrid{grid-template-columns:1fr 1fr;}
     }
   </style>
 </head>
 <body data-theme="light">
   <header>
     <div class="header-inner">
-      <h1>2025 한봄고 수학여행 <small>타임라인</small></h1>
-      <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
-        <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      <h1>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
         </svg>
-        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
+        2025 한봄고 수학여행 <span class="badge">타임라인</span>
+      </h1>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+          <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <div class="main">
     <div class="intro">
       <h2>사이트 변천사</h2>
-      <p>수학여행 사이트가 거쳐온 버전들을 한눈에 살펴보세요</p>
+      <p>수학여행 사이트가 거쳐온 11개 버전을 시간순으로 탐색하세요</p>
     </div>
 
-    <div class="timeline-container">
-      <div class="timeline-scroll" id="timelineScroll">
-        <div class="timeline-track" id="timelineTrack"></div>
+    <div class="tl-wrapper">
+      <div class="tl-scroll" id="tlScroll">
+        <div class="tl-track" id="tlTrack"></div>
       </div>
-      <div class="version-info" id="versionInfo"></div>
-      <div class="controls">
-        <button id="prevBtn">← 이전</button>
-        <button id="nextBtn">다음 →</button>
+      <div class="tl-info" id="tlInfo"></div>
+      <div class="tl-controls">
+        <button id="prevBtn">◀ 이전</button>
+        <input type="number" class="jump-input" id="jumpInput" placeholder="번호" min="1" title="버전 번호 입력">
+        <button id="nextBtn">다음 ▶</button>
       </div>
     </div>
 
-    <div class="pages-grid" id="pagesGrid"></div>
+    <div class="section-label">📄 해당 버전 페이지</div>
+    <div class="pgrid" id="pagesGrid"></div>
 
     <div class="standalone-section">
       <div class="standalone-title">📌 타임라인 독립 페이지</div>
       <div class="standalone-links">
-        <a href="home.html"><span class="emoji">🏁</span> 학과 선택</a>
-        <a href="time.html"><span class="emoji">⏱</span> 카운트다운</a>
-        <a href="ready.html"><span class="emoji">🔧</span> 준비중</a>
+        <a href="home.html">🏁 학과 선택</a>
+        <a href="time.html">⏱ 카운트다운</a>
+        <a href="ready.html">🔧 준비중</a>
       </div>
     </div>
 
     <div class="footer-nav">
-      <a href="index.html">메인페이지</a>
-      <span class="sep">·</span>
-      <a href="home.html">학과 선택</a>
-      <span class="sep">·</span>
+      <a href="index.html">메인</a><span class="sep">·</span>
+      <a href="home.html">학과 선택</a><span class="sep">·</span>
       <a href="time.html">카운트다운</a>
     </div>
   </div>
 
   <script>
     const VERSIONS = [
-      { id:'22', label:'v22', files:{ index:'index(22last).html', sigak:'sigak(22last).html', char:'char(22last).html' } },
-      { id:'22-2', label:'v22-2', files:{ sigak:'sigak(22-2edit).html' } },
-      { id:'23', label:'v23', files:{ index:'index(23edit).html', sigak:'sigak(23eidi).html', char:'char(23edit).html' } },
-      { id:'24', label:'v24', files:{ index:'index(24edit).html', sigak:'sigak(24edit).html', char:'char(24edit).html' } },
-      { id:'24-2', label:'v24-2', files:{ index:'index(24-2edit).html', sigak:'sigak(24-2edit).html', char:'char(24-2edit).html' } },
-      { id:'26', label:'v26', files:{ index:'index(26-edit).html', sigak:'sigak(26-edit).html', char:'char(26-edit).html', bdsc:'bdsc(26-edit).html' } },
-      { id:'28', label:'v28', files:{ index:'index(28-edit).html' } },
-      { id:'last', label:'vFinal', files:{ index:'index(last).html' } },
-      { id:'vsarligs', label:'vsarligs', files:{ index:'index_vsarligs.html', sigak:'sigak_vsarligs.html', index2:'index2_vsarligs.html' } },
-      { id:'31', label:'v31', files:{ char:'char(31-edit).html' } },
-      { id:'latest', label:'최신', files:{ index:'index.html', home:'home.html', sigak:'sigak.html', char:'char.html', bdsc:'bdsc.html', time:'time.html', ready:'ready.html', index2:'index2.html' } }
+      { id:'last',   label:'vFinal',  date:'2025-08-20', desc:'최초 버전 (index(last))',      files:{ index:'index(last).html' } },
+      { id:'22',     label:'v22',     date:'2025-08-22', desc:'첫 학과별 일정 분리',         files:{ index:'index(22last).html', sigak:'sigak(22last).html', char:'char(22last).html' } },
+      { id:'22-2',   label:'v22-2',   date:'2025-08-22', desc:'시각디자인 단독 수정',         files:{ sigak:'sigak(22-2edit).html' } },
+      { id:'23',     label:'v23',     date:'2025-08-23', desc:'전면 개편',                    files:{ index:'index(23edit).html', sigak:'sigak(23eidi).html', char:'char(23edit).html' } },
+      { id:'24',     label:'v24',     date:'2025-08-24', desc:'브랜드 로고 추가',             files:{ index:'index(24edit).html', sigak:'sigak(24edit).html', char:'char(24edit).html' } },
+      { id:'24-2',   label:'v24-2',   date:'2025-08-24', desc:'당일 추가 수정',               files:{ index:'index(24-2edit).html', sigak:'sigak(24-2edit).html', char:'char(24-2edit).html' } },
+      { id:'26',     label:'v26',     date:'2025-08-26', desc:'bdsc 추가 + 야경 영상',        files:{ index:'index(26-edit).html', sigak:'sigak(26-edit).html', char:'char(26-edit).html', bdsc:'bdsc(26-edit).html' } },
+      { id:'28',     label:'v28',     date:'2025-08-28', desc:'index2 분리',                  files:{ index:'index(28-edit).html' } },
+      { id:'31',     label:'v31',     date:'2025-08-31', desc:'뷰티/캐릭터 단독',            files:{ char:'char(31-edit).html' } },
+      { id:'vsarligs', label:'vsarligs', date:'2025-09-12', desc:'변형 버전 (오타 보존)',     files:{ index:'index_vsarligs.html', sigak:'sigak_vsarligs.html', index2:'index2_vsarligs.html' } },
+      { id:'latest', label:'최신',    date:'2025-10-17', desc:'현행 안정 버전',               files:{ index:'index.html', home:'home.html', sigak:'sigak.html', char:'char.html', bdsc:'bdsc.html', time:'time.html', ready:'ready.html', index2:'index2.html' } }
     ];
 
     const PAGE_META = {
@@ -434,39 +293,55 @@
       char:{ icon:'💄', name:'뷰티/캐릭터', desc:'A팀 일정' },
       bdsc:{ icon:'📊', name:'빅데/스제', desc:'C팀 일정' },
       time:{ icon:'⏱', name:'카운트다운', desc:'D-Day 타이머' },
-      ready:{ icon:'🔧', name:'준비중', desc:'서비스 준비 페이지' },
-      index2:{ icon:'📄', name:'인덱스2', desc:'대체 메인 페이지' }
+      ready:{ icon:'🔧', name:'준비중', desc:'서비스 준비' },
+      index2:{ icon:'📄', name:'인덱스2', desc:'대체 메인' }
+    };
+    // 어떤 버전에서 각 페이지가 처음 등장했는지
+    const FIRST_APPEARANCE = {
+      index: 'last', home: 'latest', sigak: '22', char: '22', bdsc: '26',
+      time: 'latest', ready: 'latest', index2: '28'
     };
 
     let currentIdx = VERSIONS.length - 1;
-    const track = document.getElementById('timelineTrack');
+    const track = document.getElementById('tlTrack');
     const pagesGrid = document.getElementById('pagesGrid');
-    const versionInfo = document.getElementById('versionInfo');
+    const tlInfo = document.getElementById('tlInfo');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const jumpInput = document.getElementById('jumpInput');
+    let autoScrollTimer = null;
 
     function renderTimeline() {
       track.innerHTML = '';
       VERSIONS.forEach((v, i) => {
         const node = document.createElement('div');
-        node.className = 'timeline-node' + (i === currentIdx ? ' active' : '') + (i < currentIdx ? ' past' : '');
+        node.className = 'tl-node' + (i === currentIdx ? ' active' : '') + (i < currentIdx ? ' past' : '');
         node.dataset.idx = i;
         const dot = document.createElement('div');
-        dot.className = 'timeline-dot';
+        dot.className = 'tl-dot';
         dot.textContent = v.label.replace('v','');
+        const count = Object.keys(v.files).length;
+        const badge = document.createElement('div');
+        badge.className = 'tl-file-count';
+        badge.textContent = count;
+        dot.appendChild(badge);
         const label = document.createElement('div');
-        label.className = 'timeline-label';
-        label.textContent = v.label;
+        label.className = 'tl-label';
+        label.innerHTML = v.label + (v.date ? ` <small>${v.date}</small>` : '');
         node.appendChild(dot);
         node.appendChild(label);
         node.addEventListener('click', () => selectVersion(i));
         track.appendChild(node);
       });
-      const container = document.getElementById('timelineScroll');
-      const activeNode = track.children[currentIdx];
-      if (activeNode) {
-        const scrollLeft = activeNode.offsetLeft - container.offsetWidth / 2 + activeNode.offsetWidth / 2;
-        container.scrollLeft = Math.max(0, scrollLeft);
+      scrollToActive();
+    }
+
+    function scrollToActive() {
+      const container = document.getElementById('tlScroll');
+      const active = track.children[currentIdx];
+      if (active) {
+        const target = active.offsetLeft - container.offsetWidth / 2 + active.offsetWidth / 2;
+        container.scrollLeft = Math.max(0, target);
       }
     }
 
@@ -474,29 +349,54 @@
       if (idx < 0 || idx >= VERSIONS.length) return;
       currentIdx = idx;
       renderTimeline();
+      renderInfo();
       renderPages();
       updateControls();
     }
 
+    function renderInfo() {
+      const v = VERSIONS[currentIdx];
+      const tags = Object.entries(v.files).map(([key]) => {
+        const meta = PAGE_META[key];
+        return meta ? `<span class="chip">${meta.name}</span>` : '';
+      }).join('');
+      const isNew = Object.entries(v.files).map(([key]) => {
+        const first = FIRST_APPEARANCE[key];
+        return first === v.id ? `<span class="chip" style="background:color-mix(in srgb, var(--rose) 10%, transparent);color:var(--rose);">✨ ${PAGE_META[key]?.name || key} 첫등장</span>` : '';
+      }).filter(Boolean).join('');
+      tlInfo.innerHTML = `
+        <div class="vi">
+          <strong>${v.label}</strong>
+          ${v.date ? `<span class="date">${v.date}</span>` : ''}
+          <span class="chips">${tags}</span>
+        </div>
+        <div class="vi" style="font-size:12px;color:color-mix(in srgb, var(--muted) 60%, transparent);">
+          ${v.desc || ''}
+          ${isNew ? `<span class="chips">${isNew}</span>` : ''}
+        </div>
+      `;
+    }
+
     function renderPages() {
       const v = VERSIONS[currentIdx];
-      versionInfo.innerHTML = `현재 시점: <strong>${v.label}</strong>`;
       pagesGrid.innerHTML = '';
       Object.keys(PAGE_META).forEach(key => {
         const meta = PAGE_META[key];
         const card = document.createElement('a');
-        card.className = 'page-card';
+        card.className = 'pcard';
         const href = v.files[key];
         if (href) {
           card.href = href;
+          const first = FIRST_APPEARANCE[key];
+          if (first === v.id) {
+            card.innerHTML = `<div class="icon">${meta.icon}</div><div class="name">${meta.name}</div><div class="desc">${meta.desc}</div><div class="tag new">✨ 첫등장</div>`;
+          } else {
+            card.innerHTML = `<div class="icon">${meta.icon}</div><div class="name">${meta.name}</div><div class="desc">${meta.desc}</div>`;
+          }
         } else {
           card.className += ' disabled';
+          card.innerHTML = `<div class="icon">${meta.icon}</div><div class="name">${meta.name}</div><div class="desc">이 버전에 없음</div>`;
         }
-        card.innerHTML = `
-          <div class="icon">${meta.icon}</div>
-          <div class="name">${meta.name}</div>
-          <div class="desc">${href ? meta.desc : '해당 버전에 없음'}</div>
-        `;
         pagesGrid.appendChild(card);
       });
     }
@@ -504,17 +404,21 @@
     function updateControls() {
       prevBtn.disabled = currentIdx <= 0;
       nextBtn.disabled = currentIdx >= VERSIONS.length - 1;
+      jumpInput.value = currentIdx + 1;
     }
 
     prevBtn.addEventListener('click', () => selectVersion(currentIdx - 1));
     nextBtn.addEventListener('click', () => selectVersion(currentIdx + 1));
-
+    jumpInput.addEventListener('change', () => {
+      const val = parseInt(jumpInput.value);
+      if (val >= 1 && val <= VERSIONS.length) selectVersion(val - 1);
+      else jumpInput.value = currentIdx + 1;
+    });
     document.addEventListener('keydown', e => {
       if (e.key === 'ArrowLeft') selectVersion(currentIdx - 1);
       if (e.key === 'ArrowRight') selectVersion(currentIdx + 1);
     });
 
-    // URL 해시(#24, #latest 등)로 특정 버전 선택 지원
     const hash = window.location.hash.slice(1);
     if (hash) {
       const found = VERSIONS.findIndex(v => v.id === hash);
@@ -525,18 +429,17 @@
     const themeToggle = document.getElementById('themeToggle');
     const sunIcon = document.getElementById('sunIcon');
     const moonIcon = document.getElementById('moonIcon');
-    function applyTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      sunIcon.style.display = theme === 'dark' ? 'none' : 'block';
-      moonIcon.style.display = theme === 'dark' ? 'block' : 'none';
-      try { localStorage.setItem('timelineTheme', theme); } catch(e) {}
+    function applyTheme(t) {
+      document.body.setAttribute('data-theme', t);
+      sunIcon.style.display = t === 'dark' ? 'none' : 'block';
+      moonIcon.style.display = t === 'dark' ? 'block' : 'none';
+      try { localStorage.setItem('tlTheme', t); } catch(e) {}
     }
-    const saved = localStorage.getItem('timelineTheme');
+    const saved = localStorage.getItem('tlTheme');
     if (saved) applyTheme(saved);
     else if (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) applyTheme('dark');
     themeToggle.addEventListener('click', () => {
-      const cur = document.body.getAttribute('data-theme');
-      applyTheme(cur === 'dark' ? 'light' : 'dark');
+      applyTheme(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     });
   </script>
 </body>
