@@ -219,7 +219,6 @@ async function fetchList() {
     msg: c.commit.message.split('\n')[0],
     type: commitType(c.commit.message.split('\n')[0])
   }));
-  commits.reverse();
   try { sessionStorage.setItem('museumList', JSON.stringify(commits)); } catch(e) {}
   return commits;
 }
