@@ -297,14 +297,56 @@
       font-weight: 700;
       font-size: 14px;
     }
-    .footer-nav a:hover {
-      text-decoration: underline;
-    }
-    .footer-nav .sep {
-      color: var(--line);
-      margin: 0 10px;
-    }
-    @media (max-width: 600px) {
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+        .footer-nav .sep {
+            color: var(--line);
+            margin: 0 10px;
+        }
+        .standalone-section {
+            margin-top: 10px;
+            padding: 18px 20px;
+            background: color-mix(in srgb, var(--accent) 4%, var(--card));
+            border: 1px dashed color-mix(in srgb, var(--accent) 20%, var(--line));
+            border-radius: var(--radius);
+        }
+        .standalone-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .standalone-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .standalone-links a {
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            background: var(--card);
+            border: 1px solid var(--line);
+            color: var(--text);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .standalone-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .standalone-links a .emoji {
+            font-size: 16px;
+        }
+        @media (max-width: 600px) {
       .timeline-container { padding: 20px 12px; }
       .timeline-node { padding: 0 6px; min-width: 44px; }
       .timeline-dot { width: 26px; height: 26px; font-size: 9px; }
@@ -351,6 +393,15 @@
     </div>
 
     <div class="pages-grid" id="pagesGrid"></div>
+
+    <div class="standalone-section">
+      <div class="standalone-title">📌 타임라인 독립 페이지</div>
+      <div class="standalone-links">
+        <a href="home.html"><span class="emoji">🏁</span> 학과 선택</a>
+        <a href="time.html"><span class="emoji">⏱</span> 카운트다운</a>
+        <a href="ready.html"><span class="emoji">🔧</span> 준비중</a>
+      </div>
+    </div>
 
     <div class="footer-nav">
       <a href="index.html">메인페이지</a>
