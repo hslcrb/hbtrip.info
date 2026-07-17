@@ -7,201 +7,311 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     @font-face{font-family:'Pretendard-Regular';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')format('woff');font-weight:400;}
-    :root{--bg:#0f0f14;--card:#1a1a24;--text:#e4e4ec;--muted:#8888a0;--accent:#3b82f6;--line:#2a2a3a;--green:#10b981;--amber:#f59e0b;--rose:#f43f5e;--radius:14px;}
+    :root{--bg:#0d1117;--card:#161b22;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--amber:#d29922;--rose:#f85149;--purple:#bc8cff;--line:#30363d;--radius:12px;}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Pretendard-Regular','Apple SD Gothic Neo',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
     header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;}
-    .hdr{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-    .hdr h1{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px;}
-    .hdr h1 .badge{font-size:10px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent)15%,transparent);padding:2px 10px;border-radius:999px;}
-    .hdr nav{display:flex;gap:6px;flex-wrap:wrap;}
-    .hdr nav a{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;text-decoration:none;background:var(--bg);border:1px solid var(--line);color:var(--muted);transition:all .2s;}
-    .hdr nav a:hover{border-color:var(--accent);color:var(--accent);}
-    .main{max-width:1100px;margin:0 auto;padding:24px 20px;}
-    .intro{text-align:center;margin-bottom:28px;}
-    .intro h2{font-size:24px;font-weight:800;}
-    .intro p{color:var(--muted);font-size:14px;margin-top:4px;}
-    .intro .gh-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 18px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:all .2s;}
-    .intro .gh-link:hover{border-color:var(--accent);}
-    .live-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 12px;border-radius:999px;background:rgba(16,185,129,.15);color:var(--green);font-size:11px;font-weight:700;}
-    .live-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
-    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-    .stats{display:flex;gap:16px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;}
-    .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 20px;text-align:center;}
-    .stat .num{font-size:22px;font-weight:800;color:var(--accent);}
-    .stat .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
-    .commit{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color .2s;}
-    .commit:hover{border-color:color-mix(in srgb,var(--accent)40%,var(--line));}
-    .commit-header{padding:14px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-user-select:none;user-select:none;}
-    .commit-header:hover{background:rgba(255,255,255,.02);}
-    .commit .arrow{transition:transform .3s;font-size:12px;color:var(--muted);flex-shrink:0;}
-    .commit.open .arrow{transform:rotate(90deg);}
-    .commit .date-box{text-align:center;flex-shrink:0;}
-    .commit .date-box .d{font-size:16px;font-weight:800;color:var(--accent);line-height:1.1;}
-    .commit .date-box .m{font-size:10px;color:var(--muted);}
-    .commit .msg-box{flex:1;min-width:0;}
-    .commit .msg-box .msg{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .commit .msg-box .hash{font-size:10px;color:var(--muted);font-family:monospace;display:flex;align-items:center;gap:6px;margin-top:1px;flex-wrap:wrap;}
-    .commit .msg-box .hash a{color:var(--accent);text-decoration:none;}
-    .commit .msg-box .hash a:hover{text-decoration:underline;}
-    .gh-commit-link{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;background:rgba(59,130,246,.1);color:var(--accent);text-decoration:none;font-size:10px;font-weight:600;transition:all .2s;}
-    .gh-commit-link:hover{background:rgba(59,130,246,.2);}
-    .commit-body{display:none;border-top:1px solid var(--line);padding:14px 18px;font-size:12px;color:var(--muted);text-align:center;}
-    .commit.open .commit-body{display:block;}
-    .commit-body .gh-dir-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:999px;background:rgba(59,130,246,.1);color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;transition:all .2s;}
-    .commit-body .gh-dir-btn:hover{background:rgba(59,130,246,.2);}
-    @media(max-width:600px){.hdr{flex-direction:column;align-items:flex-start;gap:8px;}.commit-header{flex-wrap:wrap;gap:8px;}.commit .date-box .d{font-size:14px;}.commit .msg-box .msg{font-size:12px;}.stats{gap:8px;}.stat{padding:10px 14px;}.stat .num{font-size:18px;}}
-    .search-bar{display:flex;gap:8px;margin-bottom:20px;}
-    .search-bar input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
+    .hdr{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .hdr h1{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .hdr h1 .logo{width:20px;height:20px;}
+    .hdr h1 .badge{font-size:9px;font-weight:600;color:var(--green);background:rgba(63,185,80,.12);padding:2px 8px;border-radius:999px;border:1px solid rgba(63,185,80,.2);}
+    .hdr nav{display:flex;gap:4px;flex-wrap:wrap;}
+    .hdr nav a{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);transition:all .2s;}
+    .hdr nav a:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.06);}
+    .main{max-width:1100px;margin:0 auto;padding:20px;}
+    .intro{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+    .intro-text h2{font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .intro-text p{color:var(--muted);font-size:13px;margin-top:2px;}
+    .live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25);color:var(--green);font-size:11px;font-weight:700;}
+    .live-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pus 1.5s infinite;}
+    @keyframes pus{0%,100%{opacity:1}50%{opacity:.25}}
+
+    .stats{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:8px;}
+    .stat .ico{font-size:16px;}
+    .stat .info .n{font-size:18px;font-weight:800;letter-spacing:-.3px;}
+    .stat .info .l{font-size:10px;color:var(--muted);margin-top:-1px;}
+
+    .activity-chart{margin-bottom:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;}
+    .activity-chart .ac-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+    .ac-bars{display:flex;align-items:flex-end;gap:3px;height:60px;}
+    .ac-bar{flex:1;border-radius:3px 3px 0 0;min-height:4px;transition:all .3s;position:relative;cursor:pointer;}
+    .ac-bar:hover{opacity:.8;}
+    .ac-bar .ac-tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:600;color:var(--text);white-space:nowrap;display:none;margin-bottom:4px;z-index:2;}
+    .ac-bar:hover .ac-tip{display:block;}
+    .ac-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:8px;color:var(--muted);}
+
+    .graph-wrap{position:relative;}
+    .graph-line{position:absolute;left:23px;top:0;bottom:0;width:2px;background:var(--line);z-index:0;}
+    .commit-row{position:relative;z-index:1;display:flex;gap:12px;padding:6px 0;cursor:pointer;transition:background .15s;border-radius:8px;margin-bottom:0;}
+    .commit-row:hover{background:rgba(255,255,255,.03);}
+    .commit-row .g-dot{flex-shrink:0;width:16px;height:16px;border-radius:50%;margin:6px 16px 6px 16px;border:2px solid;position:relative;z-index:2;transition:transform .2s;}
+    .commit-row:hover .g-dot{transform:scale(1.2);}
+    .commit-row .g-dot.type-upload{border-color:var(--green);background:rgba(63,185,80,.15);}
+    .commit-row .g-dot.type-rename{border-color:var(--amber);background:rgba(210,153,34,.15);}
+    .commit-row .g-dot.type-update{border-color:var(--accent);background:rgba(88,166,255,.15);}
+    .commit-row .g-dot.type-create{border-color:var(--purple);background:rgba(188,140,255,.15);}
+    .commit-row .g-dot.type-delete{border-color:var(--rose);background:rgba(248,81,73,.15);}
+    .commit-row .g-dot.type-misc{border-color:var(--muted);background:rgba(139,148,158,.12);}
+
+    .commit-row .g-body{flex:1;min-width:0;padding:3px 0;}
+    .commit-row .g-msg{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .commit-row .g-meta{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap;}
+    .commit-row .g-meta .g-hash{font-family:monospace;font-size:10px;color:var(--accent);text-decoration:none;font-weight:700;}
+    .commit-row .g-meta .g-hash:hover{text-decoration:underline;}
+    .commit-row .g-meta .g-date{font-size:10px;color:var(--muted);}
+    .commit-row .g-meta .g-type{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700;}
+    .commit-row .g-meta .g-type.t-upload{background:rgba(63,185,80,.12);color:var(--green);}
+    .commit-row .g-meta .g-type.t-rename{background:rgba(210,153,34,.12);color:var(--amber);}
+    .commit-row .g-meta .g-type.t-update{background:rgba(88,166,255,.12);color:var(--accent);}
+    .commit-row .g-meta .g-type.t-create{background:rgba(188,140,255,.12);color:var(--purple);}
+    .commit-row .g-meta .g-type.t-delete{background:rgba(248,81,73,.12);color:var(--rose);}
+    .commit-row .g-meta .g-type.t-misc{background:rgba(139,148,158,.12);color:var(--muted);}
+    .commit-row .g-links{margin-left:auto;display:flex;gap:4px;align-items:center;flex-shrink:0;}
+    .commit-row .g-links a{padding:2px 8px;border-radius:6px;font-size:9px;font-weight:600;text-decoration:none;background:rgba(88,166,255,.08);color:var(--accent);transition:all .15s;white-space:nowrap;}
+    .commit-row .g-links a:hover{background:rgba(88,166,255,.18);}
+
+    .commit-row.expanded .g-extra{display:block;}
+    .g-extra{display:none;margin-top:8px;padding:8px 0 4px;border-top:1px solid var(--line);}
+    .g-extra .g-extra-links{display:flex;gap:8px;flex-wrap:wrap;}
+    .g-extra .g-extra-links a{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.15);color:var(--accent);transition:all .15s;}
+    .g-extra .g-extra-links a:hover{background:rgba(88,166,255,.18);}
+
+    .search-bar{display:flex;gap:8px;margin-bottom:16px;}
+    .search-bar input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
     .search-bar input:focus{border-color:var(--accent);}
     .search-bar input::placeholder{color:var(--muted);}
-    .loading{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
-    .loading .spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px;}
+    .search-bar .clear-search{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 6px;display:none;}
+    .search-bar .clear-search.show{display:block;}
+    .search-bar .clear-search:hover{color:var(--text);}
+
+    .loading{text-align:center;padding:50px 20px;color:var(--muted);}
+    .loading .sp{display:inline-block;width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;}
     @keyframes spin{to{transform:rotate(360deg);}}
-    .error-msg{text-align:center;padding:30px;color:var(--rose);font-size:13px;}
-    .error-msg a{color:var(--accent);}
-    .footer{text-align:center;padding:20px;font-size:12px;color:var(--muted);}
+    .loading .lt{font-size:13px;}
+    .error-box{text-align:center;padding:40px 20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
+    .error-box .er{font-size:13px;color:var(--rose);margin-bottom:12px;}
+    .error-box a{display:inline-block;padding:8px 20px;border-radius:8px;background:rgba(88,166,255,.1);color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;}
+    .error-box a:hover{background:rgba(88,166,255,.18);}
+    .empty-search{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+
+    .footer{text-align:center;padding:24px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px;}
     .footer a{color:var(--accent);text-decoration:none;}
+    .footer a:hover{text-decoration:underline;}
+
+    .scroll-top{position:fixed;bottom:24px;right:24px;width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;z-index:99;}
+    .scroll-top.show{display:flex;}
+    .scroll-top:hover{border-color:var(--accent);color:var(--accent);}
+
+    @media(max-width:700px){
+      .hdr{flex-wrap:wrap;gap:6px;}
+      .hdr h1{font-size:14px;}
+      .commit-row{gap:8px;padding:5px 0;}
+      .commit-row .g-dot{width:12px;height:12px;margin:5px 10px 5px 10px;}
+      .graph-line{left:17px;}
+      .commit-row .g-msg{font-size:12px;}
+      .commit-row .g-links{display:none;}
+      .commit-row .g-meta .g-date{font-size:9px;}
+      .stats .stat{padding:8px 12px;}
+      .stat .info .n{font-size:15px;}
+    }
   </style>
 </head>
 <body>
 <header>
   <div class="hdr">
     <h1>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-      Git 뮤지엄 <span class="badge">오픈소스</span>
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      Git 뮤지엄 <span class="badge">Live</span>
     </h1>
     <nav>
-      <a href="timeline.html">타임라인</a>
-      <a href="time.html">카운트다운</a>
-      <a href="home.html">학과 선택</a>
-      <a href="index.html">메인</a>
+      <a href="timeline.html">📜 타임라인</a>
+      <a href="time.html">⏱ 카운트다운</a>
+      <a href="home.html">🏁 홈</a>
+      <a href="index.html">🏠 메인</a>
     </nav>
   </div>
 </header>
 <div class="main">
   <div class="intro">
-    <h2>📜 전체 커밋 기록 <span class="live-badge"><span class="dot"></span> GitHub API 실시간</span></h2>
-    <p>GitHub REST API로 저장소 데이터를 실시간 조회합니다</p>
-    <a class="gh-link" href="https://github.com/hslcrb/hbtrip.info" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      hslcrb/hbtrip.info
+    <div class="intro-text">
+      <h2>📦 커밋 히스토리</h2>
+      <p>GitHub REST API로 저장소의 모든 변경을 실시간 조회</p>
+    </div>
+    <a class="live-badge" href="https://github.com/hslcrb/hbtrip.info" target="_blank">
+      <span class="dot"></span> github.com/hslcrb/hbtrip.info
     </a>
   </div>
 
-  <div class="stats" id="stats">
-    <div class="stat"><div class="num">···</div><div class="lbl">깃허브에서 불러오는 중</div></div>
-  </div>
+  <div class="stats" id="stats"></div>
+  <div class="activity-chart" id="activityChart"><div class="ac-title">📊 월별 커밋 활동</div><div class="ac-bars" id="acBars"></div><div class="ac-labels" id="acLabels"></div></div>
 
   <div class="search-bar">
     <input id="searchInput" type="text" placeholder="커밋 메시지 검색..." autocomplete="off">
+    <button class="clear-search" id="clearSearch">✕</button>
   </div>
 
-  <div id="commitList"><div class="loading"><div class="spinner"></div>GitHub API에서 커밋 내역을 불러오는 중...</div></div>
+  <div class="graph-wrap" id="commitList">
+    <div class="loading"><div class="sp"></div><div class="lt">GitHub API에서 커밋 내역 불러오는 중...</div></div>
+  </div>
 </div>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+
 <div class="footer">
   <a href="https://github.com/hslcrb/hbtrip.info" target="_blank">GitHub 저장소</a>
   <span style="color:var(--line);margin:0 6px;">·</span>
-  <a href="timeline.html">타임라인</a>
+  <a href="timeline.html">버전 타임라인</a>
   <span style="color:var(--line);margin:0 6px;">·</span>
-  <a href="docs/version-history.md">버전 히스토리</a>
+  <a href="docs/version-history.md">문서</a>
 </div>
 
 <script>
 const API = 'https://api.github.com/repos/hslcrb/hbtrip.info/commits?per_page=100&sha=main';
 const REPO = 'https://github.com/hslcrb/hbtrip.info';
 
-function sanitize(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+function esc(s) {
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
 }
 
-async function fetchCommits() {
-  const cached = sessionStorage.getItem('museumCommits');
+function commitType(msg) {
+  if (msg.startsWith('Add files via upload')) return 'upload';
+  if (msg.startsWith('Rename')) return 'rename';
+  if (msg.startsWith('Update') || msg.includes('Update') || msg.includes('업데이트')) return 'update';
+  if (msg.startsWith('Create') || msg.startsWith('생성')) return 'create';
+  if (msg.includes('Delete') || msg.includes('삭제')) return 'delete';
+  return 'misc';
+}
+function commitTypeLabel(t) {
+  return {upload:'📦 Upload',rename:'🔄 Rename',update:'✏️ Update',create:'🆕 Create',delete:'❌ Delete',misc:'🔧 Misc'}[t] || '🔧';
+}
+
+async function fetchData() {
+  const cached = sessionStorage.getItem('museumData');
   if (cached) {
     try { return JSON.parse(cached); } catch(e) {}
   }
   const res = await fetch(API);
-  if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
-  const data = await res.json();
-  const commits = data.map(c => ({
-    hash: c.sha,
-    date: c.commit.author ? c.commit.author.date.slice(0,10) : c.commit.committer.date.slice(0,10),
-    msg: c.commit.message.split('\n')[0]
-  }));
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  const raw = await res.json();
+  const commits = raw.map(c => {
+    const msg = c.commit.message.split('\n')[0];
+    return {
+      hash: c.sha,
+      date: (c.commit.author?.date || c.commit.committer.date).slice(0,10),
+      msg,
+      type: commitType(msg)
+    };
+  });
   commits.reverse();
-  try { sessionStorage.setItem('museumCommits', JSON.stringify(commits)); } catch(e) {}
+  try { sessionStorage.setItem('museumData', JSON.stringify(commits)); } catch(e) {}
   return commits;
+}
+
+function buildChart(commits) {
+  const bars = document.getElementById('acBars');
+  const labels = document.getElementById('acLabels');
+  const byMonth = {};
+  commits.forEach(c => {
+    const m = c.date.slice(0,7);
+    byMonth[m] = (byMonth[m] || 0) + 1;
+  });
+  const months = Object.keys(byMonth).sort();
+  if (months.length < 2) { bars.innerHTML = ''; labels.innerHTML = ''; return; }
+  const max = Math.max(...Object.values(byMonth));
+  bars.innerHTML = months.map(m => {
+    const h = Math.max(4, (byMonth[m] / max) * 56);
+    const tip = `${m}: ${byMonth[m]}커밋`;
+    return `<div class="ac-bar" style="height:${h}px;background:var(--accent);opacity:${0.3 + (byMonth[m]/max)*0.7};"><span class="ac-tip">${tip}</span></div>`;
+  }).join('');
+  labels.innerHTML = months.filter((_,i)=>i===0||i===months.length-1||months.length<6||i%Math.ceil(months.length/5)===0).map(m => `<span>${m}</span>`).join(' | ');
 }
 
 function render(commits, allCommits) {
   const list = document.getElementById('commitList');
   const stats = document.getElementById('stats');
+
+  const typeCount = {};
+  allCommits.forEach(c => { typeCount[c.type] = (typeCount[c.type] || 0) + 1; });
+
   stats.innerHTML = `
-    <div class="stat"><div class="num">${allCommits.length}</div><div class="lbl">총 커밋</div></div>
-    <div class="stat"><div class="num">${allCommits[0]?.date || '-'}</div><div class="lbl">최초 커밋</div></div>
-    <div class="stat"><div class="num">${allCommits[allCommits.length-1]?.date || '-'}</div><div class="lbl">최근 커밋</div></div>
+    <div class="stat"><span class="ico">📦</span><div class="info"><div class="n">${allCommits.length}</div><div class="l">총 커밋</div></div></div>
+    <div class="stat"><span class="ico">📂</span><div class="info"><div class="n">${typeCount.upload||0}</div><div class="l">업로드</div></div></div>
+    <div class="stat"><span class="ico">✏️</span><div class="info"><div class="n">${typeCount.update||0}</div><div class="l">수정</div></div></div>
+    <div class="stat"><span class="ico">🔄</span><div class="info"><div class="n">${typeCount.rename||0}</div><div class="l">이름변경</div></div></div>
+    <div class="stat"><span class="ico">🆕</span><div class="info"><div class="n">${typeCount.create||0}</div><div class="l">생성</div></div></div>
+    <div class="stat"><span class="ico">📅</span><div class="info"><div class="n">${allCommits[0]?.date || '-'}</div><div class="l">→ ${allCommits[allCommits.length-1]?.date || '-'}</div></div></div>
   `;
+
   if (commits.length === 0) {
-    list.innerHTML = '<div class="error-msg">검색 결과가 없습니다</div>';
+    list.innerHTML = '<div class="empty-search">🔍 검색 결과가 없습니다</div>';
     return;
   }
-  list.innerHTML = '';
-  commits.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'commit';
-    div.innerHTML = `
-      <div class="commit-header">
-        <span class="arrow">▶</span>
-        <div class="date-box"><div class="d">${c.date.slice(8)}</div><div class="m">${c.date.slice(0,7)}</div></div>
-        <div class="msg-box">
-          <div class="msg">${sanitize(c.msg)}</div>
-          <div class="hash">
-            <a href="${REPO}/commit/${c.hash}" target="_blank" title="GitHub에서 이 커밋 보기">${c.hash.slice(0,7)}</a>
-            <a class="gh-commit-link" href="${REPO}/tree/${c.hash}" target="_blank">🌲 Browse files</a>
-            <a class="gh-commit-link" href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
+
+  list.innerHTML = '<div class="graph-line"></div>';
+  commits.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'commit-row';
+    row.innerHTML = `
+      <div class="g-dot type-${c.type}"></div>
+      <div class="g-body">
+        <div class="g-msg">${esc(c.msg)}</div>
+        <div class="g-meta">
+          <a class="g-hash" href="${REPO}/commit/${c.hash}" target="_blank">${c.hash.slice(0,7)}</a>
+          <span class="g-date">${c.date}</span>
+          <span class="g-type t-${c.type}">${commitTypeLabel(c.type)}</span>
+        </div>
+        <div class="g-extra">
+          <div class="g-extra-links">
+            <a href="${REPO}/tree/${c.hash}" target="_blank">🌲 Browse this commit</a>
+            <a href="${REPO}/commit/${c.hash}" target="_blank">🔍 View diff</a>
           </div>
         </div>
       </div>
-      <div class="commit-body">
-        <a class="gh-dir-btn" href="${REPO}/tree/${c.hash}" target="_blank">📂 GitHub에서 이 커밋 시점 파일 보기</a>
-        <br><br>
-        <a class="gh-dir-btn" href="${REPO}/commit/${c.hash}" target="_blank">📝 GitHub에서 변경 내용 보기 (Diff)</a>
+      <div class="g-links">
+        <a href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
+        <a href="${REPO}/tree/${c.hash}" target="_blank">🌲 Tree</a>
       </div>
     `;
-    div.querySelector('.commit-header').addEventListener('click', () => div.classList.toggle('open'));
-    list.appendChild(div);
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      row.classList.toggle('expanded');
+    });
+    list.appendChild(row);
   });
 }
 
 (async function init() {
   const search = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearSearch');
+  const scrollBtn = document.getElementById('scrollTop');
   let allCommits = [];
 
   try {
-    allCommits = await fetchCommits();
+    allCommits = await fetchData();
   } catch (err) {
-    document.getElementById('commitList').innerHTML = `<div class="error-msg">
-      ❌ GitHub API 호출 실패: ${sanitize(err.message)}
-      <br><br>저장소가 public인지 확인하세요.<br>
-      <a href="${REPO}/commits/main" target="_blank">→ GitHub에서 직접 보기</a>
-    </div>`;
-    document.getElementById('stats').innerHTML = `
-      <div class="stat"><div class="num">-</div><div class="lbl">API 오류</div></div>
-    `;
+    document.getElementById('commitList').innerHTML = `<div class="error-box"><div class="er">❌ ${esc(err.message)}</div><a href="${REPO}/commits/main" target="_blank">→ GitHub에서 직접 보기</a></div>`;
     return;
   }
 
+  buildChart(allCommits);
   let filtered = allCommits;
+
   function apply() {
     const q = search.value.trim().toLowerCase();
-    if (!q) { filtered = allCommits; render(filtered, allCommits); return; }
+    clearBtn.classList.toggle('show', q.length > 0);
+    document.querySelectorAll('.commit-row').forEach(r => r.classList.remove('expanded'));
+    if (!q) { filtered = allCommits; render(allCommits, allCommits); return; }
     filtered = allCommits.filter(c => c.msg.toLowerCase().includes(q));
     render(filtered, allCommits);
   }
+
   render(allCommits, allCommits);
   search.addEventListener('input', apply);
+  clearBtn.addEventListener('click', () => { search.value = ''; apply(); });
+
+  window.addEventListener('scroll', () => scrollBtn.classList.toggle('show', window.scrollY > 600));
+  scrollBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 })();
 </script>
 </body>
