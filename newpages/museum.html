@@ -23,6 +23,9 @@
     .intro p{color:var(--muted);font-size:14px;margin-top:4px;}
     .intro .gh-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 18px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:all .2s;}
     .intro .gh-link:hover{border-color:var(--accent);}
+    .live-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 12px;border-radius:999px;background:rgba(16,185,129,.15);color:var(--green);font-size:11px;font-weight:700;}
+    .live-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
     .stats{display:flex;gap:16px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;}
     .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 20px;text-align:center;}
     .stat .num{font-size:22px;font-weight:800;color:var(--accent);}
@@ -38,25 +41,25 @@
     .commit .date-box .m{font-size:10px;color:var(--muted);}
     .commit .msg-box{flex:1;min-width:0;}
     .commit .msg-box .msg{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .commit .msg-box .hash{font-size:10px;color:var(--muted);font-family:monospace;display:flex;align-items:center;gap:6px;margin-top:1px;}
+    .commit .msg-box .hash{font-size:10px;color:var(--muted);font-family:monospace;display:flex;align-items:center;gap:6px;margin-top:1px;flex-wrap:wrap;}
     .commit .msg-box .hash a{color:var(--accent);text-decoration:none;}
     .commit .msg-box .hash a:hover{text-decoration:underline;}
-    .commit .file-count{font-size:10px;font-weight:700;padding:2px 10px;border-radius:999px;background:rgba(59,130,246,.12);color:var(--accent);flex-shrink:0;white-space:nowrap;}
-    .commit-body{display:none;border-top:1px solid var(--line);}
-    .commit.open .commit-body{display:block;}
-    .commit-body .files{padding:10px 18px 14px;}
-    .commit-body .files .f{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:12px;color:var(--muted);font-family:monospace;text-decoration:none;transition:color .2s;}
-    .commit-body .files .f:hover{color:var(--text);}
-    .commit-body .files .f .ext{font-size:9px;font-weight:700;padding:0 5px;border-radius:3px;background:rgba(255,255,255,.05);text-transform:uppercase;flex-shrink:0;}
-    .commit-body .files .f .gh-link-f{color:var(--accent);margin-left:auto;font-size:9px;text-decoration:none;opacity:0;transition:opacity .2s;}
-    .commit-body .files .f:hover .gh-link-f{opacity:1;}
     .gh-commit-link{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;background:rgba(59,130,246,.1);color:var(--accent);text-decoration:none;font-size:10px;font-weight:600;transition:all .2s;}
     .gh-commit-link:hover{background:rgba(59,130,246,.2);}
+    .commit-body{display:none;border-top:1px solid var(--line);padding:14px 18px;font-size:12px;color:var(--muted);text-align:center;}
+    .commit.open .commit-body{display:block;}
+    .commit-body .gh-dir-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:999px;background:rgba(59,130,246,.1);color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;transition:all .2s;}
+    .commit-body .gh-dir-btn:hover{background:rgba(59,130,246,.2);}
     @media(max-width:600px){.hdr{flex-direction:column;align-items:flex-start;gap:8px;}.commit-header{flex-wrap:wrap;gap:8px;}.commit .date-box .d{font-size:14px;}.commit .msg-box .msg{font-size:12px;}.stats{gap:8px;}.stat{padding:10px 14px;}.stat .num{font-size:18px;}}
     .search-bar{display:flex;gap:8px;margin-bottom:20px;}
     .search-bar input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
     .search-bar input:focus{border-color:var(--accent);}
     .search-bar input::placeholder{color:var(--muted);}
+    .loading{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
+    .loading .spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .error-msg{text-align:center;padding:30px;color:var(--rose);font-size:13px;}
+    .error-msg a{color:var(--accent);}
     .footer{text-align:center;padding:20px;font-size:12px;color:var(--muted);}
     .footer a{color:var(--accent);text-decoration:none;}
   </style>
@@ -78,21 +81,23 @@
 </header>
 <div class="main">
   <div class="intro">
-    <h2>📜 전체 커밋 기록</h2>
-    <p>GitHub 오픈소스 저장소의 모든 커밋을 시간순으로 탐색</p>
+    <h2>📜 전체 커밋 기록 <span class="live-badge"><span class="dot"></span> GitHub API 실시간</span></h2>
+    <p>GitHub REST API로 저장소 데이터를 실시간 조회합니다</p>
     <a class="gh-link" href="https://github.com/hslcrb/hbtrip.info" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       hslcrb/hbtrip.info
     </a>
   </div>
 
-  <div class="stats" id="stats"></div>
-
-  <div class="search-bar">
-    <input id="searchInput" type="text" placeholder="커밋 메시지 또는 파일명 검색..." autocomplete="off">
+  <div class="stats" id="stats">
+    <div class="stat"><div class="num">···</div><div class="lbl">깃허브에서 불러오는 중</div></div>
   </div>
 
-  <div id="commitList"></div>
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder="커밋 메시지 검색..." autocomplete="off">
+  </div>
+
+  <div id="commitList"><div class="loading"><div class="spinner"></div>GitHub API에서 커밋 내역을 불러오는 중...</div></div>
 </div>
 <div class="footer">
   <a href="https://github.com/hslcrb/hbtrip.info" target="_blank">GitHub 저장소</a>
@@ -103,76 +108,101 @@
 </div>
 
 <script>
+const API = 'https://api.github.com/repos/hslcrb/hbtrip.info/commits?per_page=100&sha=main';
 const REPO = 'https://github.com/hslcrb/hbtrip.info';
-const COMMITS = [{"hash": "4afd6de99e22498199bbc515f9043fdd43f61e1d", "date": "2025-08-20", "msg": "Add files via upload", "files": []}, {"hash": "fc1ba0d6f05d97d29cb8ee9e9fc8d75f1abf247f", "date": "2025-08-20", "msg": "Rename index.html to index(last).html", "files": ["index(last).html", "index.html"]}, {"hash": "daba7a3228184e21ca84a2980382596f22ce92d8", "date": "2025-08-20", "msg": "Add files via upload", "files": ["char.html", "index.html", "sigak.html"]}, {"hash": "830f80311e709b93353a6ba9021b2faef4b1a98f", "date": "2025-08-20", "msg": "Add files via upload", "files": ["favicon.ico"]}, {"hash": "c2e83e723ad9e54e09e15e0d1d337698863cfd56", "date": "2025-08-20", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "074c2d608c35b66e5a4e782cabcaa8f1b7e2c4a7", "date": "2025-08-20", "msg": "Update char.html", "files": ["char.html"]}, {"hash": "2a7314e1ce0ff4ab5d6b727193178345589ae7a2", "date": "2025-08-20", "msg": "Update sigak.html", "files": ["sigak.html"]}, {"hash": "83f6e2ce1d111735411b046cb365147656ab3f1d", "date": "2025-08-22", "msg": "Rename index.html to index(22last).html", "files": ["index(22last).html", "index.html"]}, {"hash": "843dec8b6802b3a157819c9f692550ab513ac2d3", "date": "2025-08-22", "msg": "Rename sigak.html to sigak(22last).html", "files": ["sigak(22last).html", "sigak.html"]}, {"hash": "d79e7c9a83dda75deff490c2fc50413c18ebd619", "date": "2025-08-22", "msg": "Rename char.html to char(22last).html", "files": ["char(22last).html", "char.html"]}, {"hash": "ac265567f299cd908b4f8f834f4879fa331e2b47", "date": "2025-08-22", "msg": "Add files via upload", "files": ["char.html", "index.html", "modal.png", "sigak.html", "\\353\\267\\260\\355\\213\\260\\354\\225\\204\\355\\212\\270&\\354\\272\\220\\353\\246\\255\\355\\204\\260\\354\\260\\275\\354\\236\\221.png", "\\354\\213\\234\\352\\260\\201\\353\\224\\224\\354\\236\\220\\354\\235\\270.png"]}, {"hash": "3566bc975fb27e30579859f6388b655b40fcc525", "date": "2025-08-22", "msg": "Add files via upload", "files": ["\\353\\271\\205\\353\\215\\260\\354\\235\\264\\355\\204\\260\\354\\240\\225\\353\\263\\264&\\354\\212\\244\\353\\247\\210\\355\\212\\270\\354\\240\\234\\354\\226\\264.png"]}, {"hash": "dc5605f8565bb9ced9b1793975aa156a00820aac", "date": "2025-08-22", "msg": "Rename sigak.html to sigak(22-2edit).html", "files": ["sigak(22-2edit).html", "sigak.html"]}, {"hash": "3d1e9287a58ee17ee1fe634f5a6384d8a7374f80", "date": "2025-08-22", "msg": "Add files via upload", "files": ["sigak.html"]}, {"hash": "0f8b0cd6ebceb7dada4b7269ec89ec9ddd284629", "date": "2025-08-23", "msg": "Rename char.html to char(23edit).html", "files": ["char(23edit).html", "char.html"]}, {"hash": "5ce796606d7dcde275a64edc25c362c11e50d211", "date": "2025-08-23", "msg": "Rename index.html to index(23edit).html", "files": ["index(23edit).html", "index.html"]}, {"hash": "7a534e04f5d83f724dcbd4f6daaea72102cbf71a", "date": "2025-08-23", "msg": "Rename sigak.html to sigak(23eidi).html", "files": ["sigak(23eidi).html", "sigak.html"]}, {"hash": "bf004ae5209ff0014dc76d6f1fe02ac9cb6df2fb", "date": "2025-08-23", "msg": "Add files via upload", "files": ["char.html", "index.html", "sigak.html"]}, {"hash": "a7bc5fd0720e438f1c2f2862573f954dbab12cd0", "date": "2025-08-24", "msg": "Rename char.html to char(24edit).html", "files": ["char(24edit).html", "char.html"]}, {"hash": "608b0189a356b05615798fad75d0ac2745c7844b", "date": "2025-08-24", "msg": "Rename index.html to index(24edit).html", "files": ["index(24edit).html", "index.html"]}, {"hash": "2a6a4c07d597acf4a1f051dc9a23f18a3d95639b", "date": "2025-08-24", "msg": "Rename sigak.html to sigak(24edit).html", "files": ["sigak(24edit).html", "sigak.html"]}, {"hash": "48e9de6ea45180ab9ca9c77089f165498cd6b4c1", "date": "2025-08-24", "msg": "Add files via upload", "files": ["busanbrand.png", "char.html", "index.html", "sigak.html", "visitbusan.png", "\\353\\266\\200\\354\\202\\260\\352\\264\\221\\354\\227\\255\\354\\213\\234.svg", "\\355\\212\\270\\353\\246\\275\\353\\213\\267\\354\\273\\264.png", "\\355\\212\\270\\353\\246\\275\\354\\226\\264\\353\\223\\234\\353\\260\\224\\354\\235\\264\\354\\240\\200.png", "\\355\\225\\234\\352\\265\\255\\352\\264\\200\\352\\264\\221\\352\\263\\265\\354\\202\\254.svg", "\\355\\225\\234\\353\\264\\204\\352\\263\\240\\353\\223\\261\\355\\225\\231\\352\\265\\220 \\353\\241\\234\\352\\263\\240.svg"]}, {"hash": "60e3abe37cc0cb4ee9679aedb31b03afb798948b", "date": "2025-08-24", "msg": "Rename char.html to char(24-2edit).html", "files": ["char(24-2edit).html", "char.html"]}, {"hash": "d90d90b72a728785f0ab7cbdd198d7141db24610", "date": "2025-08-24", "msg": "Rename index.html to index(24-2edit).html", "files": ["index(24-2edit).html", "index.html"]}, {"hash": "0458704410a24070a5f04c512e4fcc2affdd13e0", "date": "2025-08-24", "msg": "Rename sigak.html to sigak(24-2edit).html", "files": ["sigak(24-2edit).html", "sigak.html"]}, {"hash": "71dec2931e2c0f2f0ed14db14bf0685cdf139874", "date": "2025-08-24", "msg": "Add files via upload", "files": ["bdsc.html", "busan2025.svg", "char.html", "index.html", "sigak.html", "\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\202\\256.mp4", "\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\260\\244.mp4"]}, {"hash": "d39cc4ea9a96a97424293a7e2233c01296ba1e14", "date": "2025-08-26", "msg": "Rename bdsc.html to bdsc(26-edit).html", "files": ["bdsc(26-edit).html", "bdsc.html"]}, {"hash": "cd3fb712180b6df5e6a3d54b4eec2de8b82fab4a", "date": "2025-08-26", "msg": "Rename char.html to char(26-edit).html", "files": ["char(26-edit).html", "char.html"]}, {"hash": "4b08cf9827d6df2cbf060f9bccf5cbe32a127721", "date": "2025-08-26", "msg": "Update and rename index.html to index(26-edit).html", "files": ["index(26-edit).html", "index.html"]}, {"hash": "07a5b7f709c5b542226d8a8739d32636edce0589", "date": "2025-08-26", "msg": "Rename sigak.html to sigak(26-edit).html", "files": ["sigak(26-edit).html", "sigak.html"]}, {"hash": "98be9a98ada1b1ab04e82b6127421f3e2031e8d1", "date": "2025-08-26", "msg": "Add files via upload", "files": ["bdsc.html", "char.html", "index.html", "sigak.html", "\\353\\266\\200\\354\\202\\260_\\353\\260\\244.mp4", "\\354\\240\\204\\354\\262\\264\\354\\235\\274\\354\\240\\225\\355\\221\\234.png", "\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\202\\2562.mp4"]}, {"hash": "3f833d889f0f8a58222db9fe0ac3374875811b63", "date": "2025-08-28", "msg": "Add files via upload", "files": ["index.html", "index2.html"]}, {"hash": "bc03ca913909e4007066938878cb429d17949c40", "date": "2025-08-28", "msg": "Rename index.html to index(28-edit).html", "files": ["index(28-edit).html", "index.html"]}, {"hash": "d27b5ddcdf548c351cfbe6a1995624245dd8b84f", "date": "2025-08-28", "msg": "Add files via upload", "files": ["index.html"]}, {"hash": "72210912a4ea1add9a679361e185b9733adbcee4", "date": "2025-08-29", "msg": "Create ready.html", "files": ["ready.html"]}, {"hash": "a075bd51c15d82f6aab2051990c8c5c899b524ae", "date": "2025-08-29", "msg": "Create vercel.json", "files": ["vercel.json"]}, {"hash": "9a87fc5a9f35163915b9454c75a50acd8dfa1b90", "date": "2025-08-31", "msg": "Rename char.html to char(31-edit).html", "files": ["char(31-edit).html", "char.html"]}, {"hash": "d975ab415063bb98688c6a71bc93848c4a998069", "date": "2025-08-31", "msg": "Add files via upload", "files": ["char.html"]}, {"hash": "8f0aaac34a03747d1f70c7fed3960e821751cbcf", "date": "2025-08-31", "msg": "Update vercel.json", "files": ["vercel.json"]}, {"hash": "d78001d36227ef3ed697ed502fd040e446159ce5", "date": "2025-08-31", "msg": "Delete vercel.json", "files": ["vercel.json"]}, {"hash": "51c565e6e6e9192ab7038bdf8808f701708be8c0", "date": "2025-08-31", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "f658b3035f86b496bc7c39b2595c0ecbad9c0191", "date": "2025-08-31", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "672f70d15824c95ce3ae04ed1888393eebde3b7b", "date": "2025-08-31", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "e3f394d42ace9578871402f3bc4ea104b9e7be31", "date": "2025-08-31", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "534e898969468e87f9565a4afd6737b377b49844", "date": "2025-08-31", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "1bf9a16ffdfc2ad220fc49a11793ce472922c910", "date": "2025-09-12", "msg": "Add files via upload", "files": ["README.md", "aero_design_guide.md", "sigak_vsarligs.html"]}, {"hash": "bbb15e65c64e974bb31507584d439e063374b6aa", "date": "2025-09-12", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "dfde634da0c01508c931fd45767d77dd9ea2ea11", "date": "2025-09-12", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "bc165bd208f6b48f32b35553e8f7814566ad730a", "date": "2025-09-12", "msg": "Add files via upload", "files": ["index_vsarligs.html"]}, {"hash": "6a4435b789b9d162f0a9da68a803f9195e005e41", "date": "2025-09-12", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "fd8a48cd0277fffc7ff3036d937a755465c6a687", "date": "2025-09-12", "msg": "Update index_vsarligs.html", "files": ["index_vsarligs.html"]}, {"hash": "269b19675ec64b77be1a4614de9545c0e4407a19", "date": "2025-09-12", "msg": "Add files via upload", "files": ["index2_vsarligs.html"]}, {"hash": "5ab86a06cb394ef941d02a4645a6c73e4849f8a7", "date": "2025-09-12", "msg": "Update index_vsarligs.html", "files": ["index_vsarligs.html"]}, {"hash": "f65dd750cf09b1ccb4ca73d045b56bb37a752d2b", "date": "2025-10-04", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "a5a813764bdee0b6651899812702ec66fdc86c72", "date": "2025-10-04", "msg": "Update sigak.html", "files": ["sigak.html"]}, {"hash": "c92c3a0dc87270a622d4a4467bf5d79560569bcf", "date": "2025-10-04", "msg": "Update char.html", "files": ["char.html"]}, {"hash": "b39a0cc716fa7f989752f96c3f097a5e2f6238d7", "date": "2025-10-04", "msg": "Update bdsc.html", "files": ["bdsc.html"]}, {"hash": "9a7939437b12203595bb657d6332d0beda2a1bc3", "date": "2025-10-04", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "dae8bc1c3dc10efac9d1766f07538ee7a4ca4667", "date": "2025-10-05", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "ac907ddf55b334bc39cac3077e5a44beb2487a0b", "date": "2025-10-05", "msg": "Add files via upload", "files": ["top.webp"]}, {"hash": "059994fc04226bfa19ea29d15fd2602ec11b450a", "date": "2025-10-05", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "21ba39b35ca7b2c21814fd9740c9f5e27a6f94f8", "date": "2025-10-05", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "e1226e3da5f80303aaf13af555eaf9509e4ac4a9", "date": "2025-10-05", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "c0894b8bc48cc39520703c216b778447d31e02d0", "date": "2025-10-05", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "ef122c204d12918a60423ba980f0087d9471a90e", "date": "2025-10-12", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "0dc5fbb9d08163e2d2287bc085dedec18754ec24", "date": "2025-10-13", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "d2810170743d60cdc17b827ff357db600766d0e7", "date": "2025-10-13", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "e2a002b9f3e464642c3046a101517a3fd000ae19", "date": "2025-10-13", "msg": "Create time.html", "files": ["time.html"]}, {"hash": "ba486da2acd5dc52ad1458048b13d5074908a22a", "date": "2025-10-13", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "e240bdc1966e1bf53db1931bbb819c9cb6333305", "date": "2025-10-13", "msg": "Add files via upload", "files": ["images/busan1.jpg", "images/busan2.jpg", "images/busan3.jpg", "images/busan4.jpg", "images/busan5.jpg", "images/busan6.jpg", "images/busan7.jpg", "images/busan8.jpg", "videos/reprise.mp4"]}, {"hash": "7ea3281ad95449b1ca75a666b85127d3dc195687", "date": "2025-10-14", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "1b8b75e957d8092fb2067d04d4908454ebb8045c", "date": "2025-10-14", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "10e324012273245a3da5f8acf9c1e81b4a893e39", "date": "2025-10-14", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "717a12154eaff95112ab2bb691ff92130c262433", "date": "2025-10-14", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "41e1674bc9126f078b49821603ee51e5857e6a0a", "date": "2025-10-14", "msg": "Update index.html", "files": ["index.html"]}, {"hash": "53cabb43ab2f7199992cc319636cb56a110df2a0", "date": "2025-10-17", "msg": "Rename index.html to home.html", "files": ["home.html", "index.html"]}, {"hash": "4312a03911a7e6033e209c3ea698a72d40a02d90", "date": "2025-10-17", "msg": "Add files via upload", "files": ["final.png", "home.html"]}, {"hash": "8df56a0564742e59da6fdf3147039100da73866f", "date": "2025-10-17", "msg": "Update and rename home.html to index.html", "files": ["home.html", "index.html"]}, {"hash": "4b6ce2ede40c0cbb6f1a07327792909ec3a78d66", "date": "2025-10-17", "msg": "Create home.html", "files": ["home.html"]}, {"hash": "deab659e1ce9b31e7a6caab34bce8c6f89003a75", "date": "2026-01-04", "msg": "전면 오픈소스 공개를 위한 준비(226.01.04.SUN)", "files": ["README.md", "images/home_screenshot.png", "images/index_screenshot.png", "images/sigak_screenshot.png"]}, {"hash": "f472404e854803c9dc3c989538029038fb1cdd22", "date": "2026-01-04", "msg": "오픈소스 개방", "files": ["index.html"]}, {"hash": "dae9f3b12135e69ba7207f4fae939af83a134980", "date": "2026-01-04", "msg": "링크 안내", "files": ["index.html"]}, {"hash": "963516d4938804259d04501fe697c4505039cc8c", "date": "2026-01-04", "msg": "final.png로 변경", "files": ["README.md"]}, {"hash": "e50ab13cf22947f10e47fb9e6f4faae9fc0a9e35", "date": "2026-01-04", "msg": "배너 이미지", "files": ["images/banner1.jpg"]}, {"hash": "3fe2d47f962f131a87f1c4565b133fa11e826170", "date": "2026-01-04", "msg": "Merge branch 'main' of https://github.com/hslcrb/hbtrip.info", "files": []}, {"hash": "bf751b00d810780b2c8c546a2d16058424062231", "date": "2026-01-04", "msg": "리드미 업데이트", "files": ["README.md"]}, {"hash": "359f5fb5a9255624ea3953d1df2687e06ab19bf9", "date": "2026-01-04", "msg": "Update README.md", "files": ["README.md"]}, {"hash": "133664fe3102afd2e2d7426112606524e61597a0", "date": "2026-01-04", "msg": "Update README.md", "files": ["README.md"]}, {"hash": "5a5419e1b0530f6ef3ae71688364940edbba9435", "date": "2026-07-18", "msg": "newpages", "files": ["newpages"]}, {"hash": "bcb61ff6ebc4ae7efe669402d238c74f5ff0a7c3", "date": "2026-07-18", "msg": "타임라인 시스템 도입: timeline.html 신규, time.html 타임라인 모드, 버전 파일 연동, bdsc 링크 수정", "files": ["newpages", "newpages/README.md", "newpages/aero_design_guide.md", "newpages/bdsc(26-edit).html", "newpages/bdsc.html", "newpages/busan2025.svg", "newpages/busanbrand.png", "newpages/char(22last).html", "newpages/char(23edit).html", "newpages/char(24-2edit).html", "newpages/char(24edit).html", "newpages/char(26-edit).html", "newpages/char(31-edit).html", "newpages/char.html", "newpages/favicon.ico", "newpages/final.png", "newpages/home.html", "newpages/images/banner1.jpg", "newpages/images/busan1.jpg", "newpages/images/busan2.jpg", "newpages/images/busan3.jpg", "newpages/images/busan4.jpg", "newpages/images/busan5.jpg", "newpages/images/busan6.jpg", "newpages/images/busan7.jpg", "newpages/images/busan8.jpg", "newpages/images/home_screenshot.png", "newpages/images/index_screenshot.png", "newpages/images/sigak_screenshot.png", "newpages/index(22last).html", "newpages/index(23edit).html", "newpages/index(24-2edit).html", "newpages/index(24edit).html", "newpages/index(26-edit).html", "newpages/index(28-edit).html", "newpages/index(last).html", "newpages/index.html", "newpages/index2.html", "newpages/index2_vsarligs.html", "newpages/index_vsarligs.html", "newpages/modal.png", "newpages/ready.html", "newpages/sigak(22-2edit).html", "newpages/sigak(22last).html", "newpages/sigak(23eidi).html", "newpages/sigak(24-2edit).html", "newpages/sigak(24edit).html", "newpages/sigak(26-edit).html", "newpages/sigak.html", "newpages/sigak_vsarligs.html", "newpages/time.html", "newpages/timeline.html", "newpages/top.webp", "newpages/videos/reprise.mp4", "newpages/visitbusan.png", "newpages/\\353\\266\\200\\354\\202\\260_\\353\\260\\244.mp4", "newpages/\\353\\266\\200\\354\\202\\260\\352\\264\\221\\354\\227\\255\\354\\213\\234.svg", "newpages/\\353\\267\\260\\355\\213\\260\\354\\225\\204\\355\\212\\270&\\354\\272\\220\\353\\246\\255\\355\\204\\260\\354\\260\\275\\354\\236\\221.png", "newpages/\\353\\271\\205\\353\\215\\260\\354\\235\\264\\355\\204\\260\\354\\240\\225\\353\\263\\264&\\354\\212\\244\\353\\247\\210\\355\\212\\270\\354\\240\\234\\354\\226\\264.png", "newpages/\\354\\213\\234\\352\\260\\201\\353\\224\\224\\354\\236\\220\\354\\235\\270.png", "newpages/\\354\\240\\204\\354\\262\\264\\354\\235\\274\\354\\240\\225\\355\\221\\234.png", "newpages/\\355\\212\\270\\353\\246\\275\\353\\213\\267\\354\\273\\264.png", "newpages/\\355\\212\\270\\353\\246\\275\\354\\226\\264\\353\\223\\234\\353\\260\\224\\354\\235\\264\\354\\240\\200.png", "newpages/\\355\\225\\234\\352\\265\\255\\352\\264\\200\\352\\264\\221\\352\\263\\265\\354\\202\\254.svg", "newpages/\\355\\225\\234\\353\\264\\204\\352\\263\\240\\353\\223\\261\\355\\225\\231\\352\\265\\220 \\353\\241\\234\\352\\263\\240.svg", "newpages/\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\202\\256.mp4", "newpages/\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\202\\2562.mp4", "newpages/\\355\\225\\264\\354\\232\\264\\353\\214\\200_\\353\\260\\244.mp4"]}, {"hash": "84904392c3d779eef1bf8c8260085c3fb7018b0f", "date": "2026-07-18", "msg": "루트 index.html에 리뉴얼 버전 안내 팝업 추가 (newpages/timeline.html 연결)", "files": ["index.html"]}, {"hash": "8d65c31c79fd4e2a8b14690af8b5d2f22a3369c5", "date": "2026-07-18", "msg": "루트 index.html 팝업 제거 → 상단 파란색 띠 배너(#0737f7)로 교체, 확성기 SVG 포함, newpages/timeline.html 연결", "files": ["index.html"]}, {"hash": "6bfe32befe49c080db18fe544bf2896ff1dce808", "date": "2026-07-18", "msg": "타임라인 VERSIONS에 누락된 파일 추가: sigak(22-2edit), index2_vsarligs — v22-2 노드 신설, vsarligs에 index2_vsarligs 포함", "files": ["newpages/sigak(22-2edit).html", "newpages/timeline.html"]}, {"hash": "8ae353385597e5f7b4f08bbd84259233f22bc60e", "date": "2026-07-18", "msg": "timeline.html: 타임라인 추적 불가 페이지 전용 '독립 페이지' 바로가기 UI 추가 (home/time/ready)", "files": ["newpages/timeline.html"]}, {"hash": "9df9a9d45352518ac404123a2cf485095da55987", "date": "2026-07-18", "msg": "time.html: 시작 시 시간 모드 선택 모달 추가 (현재시간/직접설정), 하루 유지 쿠키 저장", "files": ["newpages/time.html"]}, {"hash": "45dbe865a31d0c58c29156919ccbb30b7312c792", "date": "2026-07-18", "msg": "s1 채팅 백업", "files": ["AGENTS_BRAIN/sessions/s1/s1session-ses_08f3.md"]}, {"hash": "8aaeafad8a39befc81864c0dedbc0fdcda9e2010", "date": "2026-07-18", "msg": "time.html: 시작 모달 → 인페이지 파란색 시간 설정 UI로 교체, JS 상태관리, 오차없는 시간 변조", "files": ["newpages/time.html"]}, {"hash": "505048885d22c4a45cbb31dc6128e13596309791", "date": "2026-07-18", "msg": "README/docs 업데이트 + timeline.html UI 대대적 개선", "files": ["README.md", "docs/version-history.md", "newpages/timeline.html"]}];
 
-function ext(f) {
-  const m = f.match(/\.(\w+)$/);
-  return m ? m[1].toUpperCase() : '?';
+function sanitize(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
 }
 
-function init() {
+async function fetchCommits() {
+  const cached = sessionStorage.getItem('museumCommits');
+  if (cached) {
+    try { return JSON.parse(cached); } catch(e) {}
+  }
+  const res = await fetch(API);
+  if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+  const data = await res.json();
+  const commits = data.map(c => ({
+    hash: c.sha,
+    date: c.commit.author ? c.commit.author.date.slice(0,10) : c.commit.committer.date.slice(0,10),
+    msg: c.commit.message.split('\n')[0]
+  }));
+  commits.reverse();
+  try { sessionStorage.setItem('museumCommits', JSON.stringify(commits)); } catch(e) {}
+  return commits;
+}
+
+function render(commits, allCommits) {
   const list = document.getElementById('commitList');
   const stats = document.getElementById('stats');
-  const search = document.getElementById('searchInput');
-  let filtered = COMMITS;
-
-  function render(arr) {
-    stats.innerHTML = `
-      <div class="stat"><div class="num">${COMMITS.length}</div><div class="lbl">총 커밋</div></div>
-      <div class="stat"><div class="num">${new Set(COMMITS.flatMap(c => c.files || [])).size}</div><div class="lbl">변경 파일</div></div>
-      <div class="stat"><div class="num">${COMMITS[0]?.date || '-'}</div><div class="lbl">최초 커밋</div></div>
-      <div class="stat"><div class="num">${COMMITS[COMMITS.length-1]?.date || '-'}</div><div class="lbl">최근 커밋</div></div>
-    `;
-    list.innerHTML = '';
-    arr.forEach((c, idx) => {
-      const fileList = (c.files || []).filter(f => f.trim()).map(f => f.replace(/^"|"$/g, ''));
-      const div = document.createElement('div');
-      div.className = 'commit';
-      div.innerHTML = `
-        <div class="commit-header" data-idx="${idx}">
-          <span class="arrow">▶</span>
-          <div class="date-box"><div class="d">${c.date.slice(8)}</div><div class="m">${c.date.slice(0,7)}</div></div>
-          <div class="msg-box">
-            <div class="msg">${c.msg}</div>
-            <div class="hash">
-              <a href="${REPO}/commit/${c.hash}" target="_blank" title="GitHub에서 이 커밋 보기">${c.hash.slice(0,7)}</a>
-              <a class="gh-commit-link" href="${REPO}/tree/${c.hash}" target="_blank">🌲 Browse files</a>
-              <a class="gh-commit-link" href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
-            </div>
-          </div>
-          <span class="file-count">${fileList.length}개 파일</span>
-        </div>
-        <div class="commit-body">
-          <div class="files">${fileList.map(f => {
-            const safeF = f.replace(/^"|"$/g, '').replace(/\\u[\dA-Fa-f]{4}/g, '');
-            const treeUrl = `${REPO}/tree/${c.hash}/${safeF}`;
-            const rawUrl = `https://raw.githubusercontent.com/hslcrb/hbtrip.info/${c.hash}/${safeF}`;
-            return `<a class="f" href="${treeUrl}" target="_blank"><span class="ext">${ext(safeF)}</span> ${safeF} <span class="gh-link-f">GitHub ↗</span></a>`;
-          }).join('')}</div>
-        </div>
-      `;
-      div.querySelector('.commit-header').addEventListener('click', () => {
-        div.classList.toggle('open');
-      });
-      list.appendChild(div);
-    });
+  stats.innerHTML = `
+    <div class="stat"><div class="num">${allCommits.length}</div><div class="lbl">총 커밋</div></div>
+    <div class="stat"><div class="num">${allCommits[0]?.date || '-'}</div><div class="lbl">최초 커밋</div></div>
+    <div class="stat"><div class="num">${allCommits[allCommits.length-1]?.date || '-'}</div><div class="lbl">최근 커밋</div></div>
+  `;
+  if (commits.length === 0) {
+    list.innerHTML = '<div class="error-msg">검색 결과가 없습니다</div>';
+    return;
   }
-
-  render(filtered);
-
-  search.addEventListener('input', () => {
-    const q = search.value.trim().toLowerCase();
-    if (!q) { render(COMMITS); return; }
-    filtered = COMMITS.filter(c =>
-      c.msg.toLowerCase().includes(q) ||
-      (c.files || []).some(f => f.toLowerCase().includes(q))
-    );
-    render(filtered);
+  list.innerHTML = '';
+  commits.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'commit';
+    div.innerHTML = `
+      <div class="commit-header">
+        <span class="arrow">▶</span>
+        <div class="date-box"><div class="d">${c.date.slice(8)}</div><div class="m">${c.date.slice(0,7)}</div></div>
+        <div class="msg-box">
+          <div class="msg">${sanitize(c.msg)}</div>
+          <div class="hash">
+            <a href="${REPO}/commit/${c.hash}" target="_blank" title="GitHub에서 이 커밋 보기">${c.hash.slice(0,7)}</a>
+            <a class="gh-commit-link" href="${REPO}/tree/${c.hash}" target="_blank">🌲 Browse files</a>
+            <a class="gh-commit-link" href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
+          </div>
+        </div>
+      </div>
+      <div class="commit-body">
+        <a class="gh-dir-btn" href="${REPO}/tree/${c.hash}" target="_blank">📂 GitHub에서 이 커밋 시점 파일 보기</a>
+        <br><br>
+        <a class="gh-dir-btn" href="${REPO}/commit/${c.hash}" target="_blank">📝 GitHub에서 변경 내용 보기 (Diff)</a>
+      </div>
+    `;
+    div.querySelector('.commit-header').addEventListener('click', () => div.classList.toggle('open'));
+    list.appendChild(div);
   });
 }
 
-document.addEventListener('DOMContentLoaded', init);
+(async function init() {
+  const search = document.getElementById('searchInput');
+  let allCommits = [];
+
+  try {
+    allCommits = await fetchCommits();
+  } catch (err) {
+    document.getElementById('commitList').innerHTML = `<div class="error-msg">
+      ❌ GitHub API 호출 실패: ${sanitize(err.message)}
+      <br><br>저장소가 public인지 확인하세요.<br>
+      <a href="${REPO}/commits/main" target="_blank">→ GitHub에서 직접 보기</a>
+    </div>`;
+    document.getElementById('stats').innerHTML = `
+      <div class="stat"><div class="num">-</div><div class="lbl">API 오류</div></div>
+    `;
+    return;
+  }
+
+  let filtered = allCommits;
+  function apply() {
+    const q = search.value.trim().toLowerCase();
+    if (!q) { filtered = allCommits; render(filtered, allCommits); return; }
+    filtered = allCommits.filter(c => c.msg.toLowerCase().includes(q));
+    render(filtered, allCommits);
+  }
+  render(allCommits, allCommits);
+  search.addEventListener('input', apply);
+})();
 </script>
 </body>
 </html>
