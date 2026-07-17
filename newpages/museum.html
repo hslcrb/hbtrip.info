@@ -7,113 +7,113 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     @font-face{font-family:'Pretendard-Regular';src:url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')format('woff');font-weight:400;}
-    :root{--bg:#0d1117;--card:#161b22;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--amber:#d29922;--rose:#f85149;--purple:#bc8cff;--line:#30363d;--radius:12px;}
+    :root{--bg:#0d1117;--card:#161b22;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--green:#3fb950;--amber:#d29922;--rose:#f85149;--purple:#bc8cff;--line:#30363d;--radius:10px;}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Pretendard-Regular','Apple SD Gothic Neo',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
     header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;}
-    .hdr{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-    .hdr h1{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;}
-    .hdr h1 .logo{width:20px;height:20px;}
-    .hdr h1 .badge{font-size:9px;font-weight:600;color:var(--green);background:rgba(63,185,80,.12);padding:2px 8px;border-radius:999px;border:1px solid rgba(63,185,80,.2);}
-    .hdr nav{display:flex;gap:4px;flex-wrap:wrap;}
-    .hdr nav a{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);transition:all .2s;}
+    .hdr{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .hdr h1{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;}
+    .hdr h1 svg{width:18px;height:18px;flex-shrink:0;}
+    .hdr h1 .badge{font-size:9px;font-weight:600;color:var(--green);background:rgba(63,185,80,.12);padding:1px 7px;border-radius:999px;border:1px solid rgba(63,185,80,.2);}
+    .hdr nav{display:flex;gap:3px;flex-wrap:wrap;}
+    .hdr nav a{padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);transition:all .2s;}
     .hdr nav a:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,166,255,.06);}
-    .main{max-width:1100px;margin:0 auto;padding:20px;}
-    .intro{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
-    .intro-text h2{font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px;}
-    .intro-text p{color:var(--muted);font-size:13px;margin-top:2px;}
-    .live-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:8px;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25);color:var(--green);font-size:11px;font-weight:700;}
-    .live-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pus 1.5s infinite;}
+    .main{max-width:1100px;margin:0 auto;padding:16px;}
+    .intro{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .intro-text h2{font-size:18px;font-weight:800;display:flex;align-items:center;gap:6px;}
+    .intro-text p{color:var(--muted);font-size:12px;margin-top:1px;}
+    .live-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25);color:var(--green);font-size:10px;font-weight:700;text-decoration:none;}
+    .live-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pus 1.5s infinite;}
     @keyframes pus{0%,100%{opacity:1}50%{opacity:.25}}
-
-    .stats{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
-    .stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:8px;}
-    .stat .ico{font-size:16px;}
-    .stat .info .n{font-size:18px;font-weight:800;letter-spacing:-.3px;}
-    .stat .info .l{font-size:10px;color:var(--muted);margin-top:-1px;}
-
-    .activity-chart{margin-bottom:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;}
-    .activity-chart .ac-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
-    .ac-bars{display:flex;align-items:flex-end;gap:3px;height:60px;}
-    .ac-bar{flex:1;border-radius:3px 3px 0 0;min-height:4px;transition:all .3s;position:relative;cursor:pointer;}
-    .ac-bar:hover{opacity:.8;}
-    .ac-bar .ac-tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:600;color:var(--text);white-space:nowrap;display:none;margin-bottom:4px;z-index:2;}
+    .stats{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 14px;display:flex;align-items:center;gap:6px;}
+    .stat .ico{font-size:14px;}
+    .stat .info .n{font-size:16px;font-weight:800;letter-spacing:-.3px;line-height:1.1;}
+    .stat .info .l{font-size:9px;color:var(--muted);}
+    .activity-chart{margin-bottom:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;}
+    .activity-chart .ac-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+    .ac-bars{display:flex;align-items:flex-end;gap:2px;height:44px;}
+    .ac-bar{flex:1;border-radius:2px 2px 0 0;min-height:3px;position:relative;cursor:pointer;transition:all .2s;}
+    .ac-bar:hover{opacity:.7;}
+    .ac-bar .ac-tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:2px 6px;font-size:8px;font-weight:600;color:var(--text);white-space:nowrap;display:none;margin-bottom:3px;z-index:2;}
     .ac-bar:hover .ac-tip{display:block;}
-    .ac-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:8px;color:var(--muted);}
-
+    .ac-labels{display:flex;justify-content:space-between;margin-top:3px;font-size:7px;color:var(--muted);}
+    .search-bar{display:flex;gap:6px;margin-bottom:14px;}
+    .search-bar input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-family:inherit;font-size:12px;color:var(--text);outline:none;transition:border-color .2s;}
+    .search-bar input:focus{border-color:var(--accent);}
+    .search-bar input::placeholder{color:var(--muted);}
+    .search-bar .clear-search{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0 5px;display:none;}
+    .search-bar .clear-search.show{display:block;}
+    .search-bar .clear-search:hover{color:var(--text);}
     .graph-wrap{position:relative;}
-    .graph-line{position:absolute;left:23px;top:0;bottom:0;width:2px;background:var(--line);z-index:0;}
-    .commit-row{position:relative;z-index:1;display:flex;gap:12px;padding:6px 0;cursor:pointer;transition:background .15s;border-radius:8px;margin-bottom:0;}
-    .commit-row:hover{background:rgba(255,255,255,.03);}
-    .commit-row .g-dot{flex-shrink:0;width:16px;height:16px;border-radius:50%;margin:6px 16px 6px 16px;border:2px solid;position:relative;z-index:2;transition:transform .2s;}
-    .commit-row:hover .g-dot{transform:scale(1.2);}
-    .commit-row .g-dot.type-upload{border-color:var(--green);background:rgba(63,185,80,.15);}
-    .commit-row .g-dot.type-rename{border-color:var(--amber);background:rgba(210,153,34,.15);}
-    .commit-row .g-dot.type-update{border-color:var(--accent);background:rgba(88,166,255,.15);}
-    .commit-row .g-dot.type-create{border-color:var(--purple);background:rgba(188,140,255,.15);}
-    .commit-row .g-dot.type-delete{border-color:var(--rose);background:rgba(248,81,73,.15);}
-    .commit-row .g-dot.type-misc{border-color:var(--muted);background:rgba(139,148,158,.12);}
-
-    .commit-row .g-body{flex:1;min-width:0;padding:3px 0;}
-    .commit-row .g-msg{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .commit-row .g-meta{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap;}
-    .commit-row .g-meta .g-hash{font-family:monospace;font-size:10px;color:var(--accent);text-decoration:none;font-weight:700;}
+    .graph-line{position:absolute;left:15px;top:0;bottom:0;width:2px;background:var(--line);z-index:0;}
+    .commit-row{position:relative;z-index:1;padding:5px 0 5px 0;cursor:pointer;transition:background .12s;border-radius:6px;}
+    .commit-row:hover{background:rgba(255,255,255,.025);}
+    .commit-row .cr-inner{display:flex;gap:8px;align-items:flex-start;}
+    .commit-row .g-dot{flex-shrink:0;width:12px;height:12px;border-radius:50%;margin:5px 9px;border:2px solid;position:relative;z-index:2;transition:transform .15s;}
+    .commit-row:hover .g-dot{transform:scale(1.15);}
+    .commit-row .g-dot.t-upload{border-color:var(--green);background:rgba(63,185,80,.15);}
+    .commit-row .g-dot.t-rename{border-color:var(--amber);background:rgba(210,153,34,.15);}
+    .commit-row .g-dot.t-update{border-color:var(--accent);background:rgba(88,166,255,.15);}
+    .commit-row .g-dot.t-create{border-color:var(--purple);background:rgba(188,140,255,.15);}
+    .commit-row .g-dot.t-misc{border-color:var(--muted);background:rgba(139,148,158,.08);}
+    .commit-row .g-body{flex:1;min-width:0;padding:1px 0;}
+    .commit-row .g-msg{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .commit-row .g-meta{display:flex;align-items:center;gap:5px;margin-top:1px;flex-wrap:wrap;}
+    .commit-row .g-meta .g-hash{font-family:monospace;font-size:9px;color:var(--accent);text-decoration:none;font-weight:700;letter-spacing:-.2px;}
     .commit-row .g-meta .g-hash:hover{text-decoration:underline;}
-    .commit-row .g-meta .g-date{font-size:10px;color:var(--muted);}
-    .commit-row .g-meta .g-type{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700;}
+    .commit-row .g-meta .g-date{font-size:9px;color:var(--muted);font-family:monospace;}
+    .commit-row .g-meta .g-type{font-size:8px;padding:0 5px;border-radius:3px;font-weight:700;line-height:16px;}
     .commit-row .g-meta .g-type.t-upload{background:rgba(63,185,80,.12);color:var(--green);}
     .commit-row .g-meta .g-type.t-rename{background:rgba(210,153,34,.12);color:var(--amber);}
     .commit-row .g-meta .g-type.t-update{background:rgba(88,166,255,.12);color:var(--accent);}
     .commit-row .g-meta .g-type.t-create{background:rgba(188,140,255,.12);color:var(--purple);}
-    .commit-row .g-meta .g-type.t-delete{background:rgba(248,81,73,.12);color:var(--rose);}
     .commit-row .g-meta .g-type.t-misc{background:rgba(139,148,158,.12);color:var(--muted);}
-    .commit-row .g-links{margin-left:auto;display:flex;gap:4px;align-items:center;flex-shrink:0;}
-    .commit-row .g-links a{padding:2px 8px;border-radius:6px;font-size:9px;font-weight:600;text-decoration:none;background:rgba(88,166,255,.08);color:var(--accent);transition:all .15s;white-space:nowrap;}
-    .commit-row .g-links a:hover{background:rgba(88,166,255,.18);}
+    .commit-row .g-links{margin-left:auto;display:flex;gap:3px;align-items:center;flex-shrink:0;}
+    .commit-row .g-links a{padding:2px 7px;border-radius:4px;font-size:8px;font-weight:600;text-decoration:none;background:rgba(88,166,255,.07);color:var(--accent);transition:all .12s;white-space:nowrap;}
+    .commit-row .g-links a:hover{background:rgba(88,166,255,.16);}
+    .commit-row .cr-extra{display:none;margin-top:4px;padding:8px 0 2px 29px;border-top:1px solid var(--line);}
+    .commit-row.open .cr-extra{display:block;}
+    .cr-extra .cr-loading{font-size:10px;color:var(--muted);padding:6px 0;}
+    .cr-extra .cr-frame{background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+    .cr-extra .cr-frame .cr-fh{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);}
+    .cr-extra .cr-files{padding:4px 0;}
+    .cr-extra .cr-file{display:flex;align-items:center;gap:6px;padding:5px 10px;font-size:11px;font-family:monospace;color:var(--muted);transition:background .1s;text-decoration:none;}
+    .cr-extra .cr-file:hover{background:rgba(255,255,255,.03);color:var(--text);}
+    .cr-extra .cr-file .cr-fs{font-size:7px;font-weight:700;padding:0 4px;border-radius:2px;background:rgba(255,255,255,.05);text-transform:uppercase;}
+    .cr-extra .cr-file .cr-fpreview{margin-left:auto;padding:1px 8px;border-radius:3px;font-size:8px;font-weight:600;background:rgba(88,166,255,.08);color:var(--accent);border:none;cursor:pointer;transition:all .12s;font-family:inherit;flex-shrink:0;}
+    .cr-extra .cr-file .cr-fpreview:hover{background:rgba(88,166,255,.18);}
 
-    .commit-row.expanded .g-extra{display:block;}
-    .g-extra{display:none;margin-top:8px;padding:8px 0 4px;border-top:1px solid var(--line);}
-    .g-extra .g-extra-links{display:flex;gap:8px;flex-wrap:wrap;}
-    .g-extra .g-extra-links a{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.15);color:var(--accent);transition:all .15s;}
-    .g-extra .g-extra-links a:hover{background:rgba(88,166,255,.18);}
-
-    .search-bar{display:flex;gap:8px;margin-bottom:16px;}
-    .search-bar input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-family:inherit;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
-    .search-bar input:focus{border-color:var(--accent);}
-    .search-bar input::placeholder{color:var(--muted);}
-    .search-bar .clear-search{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 6px;display:none;}
-    .search-bar .clear-search.show{display:block;}
-    .search-bar .clear-search:hover{color:var(--text);}
-
-    .loading{text-align:center;padding:50px 20px;color:var(--muted);}
-    .loading .sp{display:inline-block;width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;}
+    .loader{text-align:center;padding:40px 16px;color:var(--muted);}
+    .loader .sp{display:inline-block;width:24px;height:24px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px;}
     @keyframes spin{to{transform:rotate(360deg);}}
-    .loading .lt{font-size:13px;}
-    .error-box{text-align:center;padding:40px 20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
-    .error-box .er{font-size:13px;color:var(--rose);margin-bottom:12px;}
-    .error-box a{display:inline-block;padding:8px 20px;border-radius:8px;background:rgba(88,166,255,.1);color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;}
-    .error-box a:hover{background:rgba(88,166,255,.18);}
-    .empty-search{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
-
-    .footer{text-align:center;padding:24px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px;}
+    .loader .lt{font-size:12px;}
+    .error-box{text-align:center;padding:30px 16px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
+    .error-box .er{font-size:12px;color:var(--rose);margin-bottom:10px;}
+    .error-box a{display:inline-block;padding:6px 16px;border-radius:6px;background:rgba(88,166,255,.1);color:var(--accent);text-decoration:none;font-size:11px;font-weight:600;}
+    .empty-search{text-align:center;padding:30px;color:var(--muted);font-size:12px;}
+    .footer{text-align:center;padding:20px 16px;font-size:10px;color:var(--muted);border-top:1px solid var(--line);margin-top:8px;}
     .footer a{color:var(--accent);text-decoration:none;}
-    .footer a:hover{text-decoration:underline;}
-
-    .scroll-top{position:fixed;bottom:24px;right:24px;width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;z-index:99;}
+    .scroll-top{position:fixed;bottom:20px;right:20px;width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--line);color:var(--muted);font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;z-index:99;}
     .scroll-top.show{display:flex;}
     .scroll-top:hover{border-color:var(--accent);color:var(--accent);}
 
+    .preview-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:none;flex-direction:column;}
+    .preview-overlay.show{display:flex;}
+    .preview-overlay .po-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);}
+    .preview-overlay .po-hdr .po-title{font-size:12px;font-weight:700;color:var(--text);font-family:monospace;}
+    .preview-overlay .po-hdr .po-close{background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--muted);padding:4px 10px;cursor:pointer;font-size:10px;font-weight:600;transition:all .15s;font-family:inherit;}
+    .preview-overlay .po-hdr .po-close:hover{color:var(--text);border-color:var(--muted);}
+    .preview-overlay .po-body{flex:1;overflow:auto;padding:0;background:var(--bg);}
+    .preview-overlay .po-body iframe{width:100%;height:100%;border:none;background:#fff;}
+    .preview-overlay .po-body .po-code{width:100%;height:100%;border:none;padding:16px;font-family:monospace;font-size:12px;background:var(--bg);color:var(--text);white-space:pre-wrap;word-break:break-all;}
+
     @media(max-width:700px){
-      .hdr{flex-wrap:wrap;gap:6px;}
-      .hdr h1{font-size:14px;}
-      .commit-row{gap:8px;padding:5px 0;}
-      .commit-row .g-dot{width:12px;height:12px;margin:5px 10px 5px 10px;}
-      .graph-line{left:17px;}
-      .commit-row .g-msg{font-size:12px;}
+      .hdr{flex-wrap:wrap;gap:5px;}
+      .commit-row .g-dot{width:10px;height:10px;margin:4px 7px;}
+      .cr-extra .cr-file{font-size:10px;padding:4px 8px;}
+      .graph-line{left:12px;}
       .commit-row .g-links{display:none;}
-      .commit-row .g-meta .g-date{font-size:9px;}
-      .stats .stat{padding:8px 12px;}
-      .stat .info .n{font-size:15px;}
     }
   </style>
 </head>
@@ -121,7 +121,7 @@
 <header>
   <div class="hdr">
     <h1>
-      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
       Git 뮤지엄 <span class="badge">Live</span>
     </h1>
     <nav>
@@ -136,11 +136,9 @@
   <div class="intro">
     <div class="intro-text">
       <h2>📦 커밋 히스토리</h2>
-      <p>GitHub REST API로 저장소의 모든 변경을 실시간 조회</p>
+      <p>GitHub REST API 실시간 · 파일 프리뷰 포함</p>
     </div>
-    <a class="live-badge" href="https://github.com/hslcrb/hbtrip.info" target="_blank">
-      <span class="dot"></span> github.com/hslcrb/hbtrip.info
-    </a>
+    <a class="live-badge" href="https://github.com/hslcrb/hbtrip.info" target="_blank"><span class="dot"></span> github.com/hslcrb/hbtrip.info</a>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -152,8 +150,16 @@
   </div>
 
   <div class="graph-wrap" id="commitList">
-    <div class="loading"><div class="sp"></div><div class="lt">GitHub API에서 커밋 내역 불러오는 중...</div></div>
+    <div class="loader"><div class="sp"></div><div class="lt">GitHub API에서 불러오는 중...</div></div>
   </div>
+</div>
+
+<div class="preview-overlay" id="previewOverlay">
+  <div class="po-hdr">
+    <span class="po-title" id="previewTitle">파일명</span>
+    <button class="po-close" id="previewClose">✕ 닫기</button>
+  </div>
+  <div class="po-body" id="previewBody"></div>
 </div>
 
 <button class="scroll-top" id="scrollTop">↑</button>
@@ -167,115 +173,186 @@
 </div>
 
 <script>
-const API = 'https://api.github.com/repos/hslcrb/hbtrip.info/commits?per_page=100&sha=main';
+const API_LIST = 'https://api.github.com/repos/hslcrb/hbtrip.info/commits?per_page=100&sha=main';
+const API_DETAIL = hash => `https://api.github.com/repos/hslcrb/hbtrip.info/commits/${hash}`;
+const RAW = (hash, path) => `https://raw.githubusercontent.com/hslcrb/hbtrip.info/${hash}/${path}`;
+const BLOB = (hash, path) => `https://github.com/hslcrb/hbtrip.info/blob/${hash}/${path}`;
 const REPO = 'https://github.com/hslcrb/hbtrip.info';
 
-function esc(s) {
-  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+function fmtTime(iso) {
+  const d = new Date(iso);
+  const pad = n => String(n).padStart(2,'0');
+  const y = d.getFullYear();
+  const mo = pad(d.getMonth()+1);
+  const dd = pad(d.getDate());
+  const h = pad(d.getHours());
+  const mi = pad(d.getMinutes());
+  const s = pad(d.getSeconds());
+  const day = ['일','월','화','수','목','금','토'][d.getDay()];
+  return `${y}-${mo}-${dd} (${day}) ${h}:${mi}:${s}`;
 }
 
 function commitType(msg) {
   if (msg.startsWith('Add files via upload')) return 'upload';
   if (msg.startsWith('Rename')) return 'rename';
-  if (msg.startsWith('Update') || msg.includes('Update') || msg.includes('업데이트')) return 'update';
-  if (msg.startsWith('Create') || msg.startsWith('생성')) return 'create';
-  if (msg.includes('Delete') || msg.includes('삭제')) return 'delete';
+  if (msg.startsWith('Update')||msg.includes('Update')||msg.includes('업데이트')) return 'update';
+  if (msg.startsWith('Create')||msg.startsWith('생성')) return 'create';
   return 'misc';
 }
-function commitTypeLabel(t) {
-  return {upload:'📦 Upload',rename:'🔄 Rename',update:'✏️ Update',create:'🆕 Create',delete:'❌ Delete',misc:'🔧 Misc'}[t] || '🔧';
-}
+function typeLabel(t){return{upload:'📦 Upload',rename:'🔄 Rename',update:'✏️ Update',create:'🆕 Create',misc:'🔧 Misc'}[t];}
 
-async function fetchData() {
-  const cached = sessionStorage.getItem('museumData');
-  if (cached) {
-    try { return JSON.parse(cached); } catch(e) {}
-  }
-  const res = await fetch(API);
+function ext(f){const m=f.match(/\.(\w+)$/);return m?m[1].toUpperCase():'?';}
+function isHtml(f){return /\.html?$/i.test(f);}
+
+async function fetchList() {
+  const cached = sessionStorage.getItem('museumList');
+  if (cached) { try { return JSON.parse(cached); } catch(e){} }
+  const res = await fetch(API_LIST);
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   const raw = await res.json();
-  const commits = raw.map(c => {
-    const msg = c.commit.message.split('\n')[0];
-    return {
-      hash: c.sha,
-      date: (c.commit.author?.date || c.commit.committer.date).slice(0,10),
-      msg,
-      type: commitType(msg)
-    };
-  });
+  const commits = raw.map(c => ({
+    hash: c.sha,
+    iso: c.commit.author?.date || c.commit.committer.date,
+    date: c.commit.author?.date?.slice(0,10) || c.commit.committer.date?.slice(0,10),
+    msg: c.commit.message.split('\n')[0],
+    type: commitType(c.commit.message.split('\n')[0])
+  }));
   commits.reverse();
-  try { sessionStorage.setItem('museumData', JSON.stringify(commits)); } catch(e) {}
+  try { sessionStorage.setItem('museumList', JSON.stringify(commits)); } catch(e) {}
   return commits;
+}
+
+async function fetchDetail(hash) {
+  const cached = sessionStorage.getItem('detail_' + hash);
+  if (cached) { try { return JSON.parse(cached); } catch(e){} }
+  const res = await fetch(API_DETAIL(hash));
+  if (!res.ok) return null;
+  const d = await res.json();
+  const files = (d.files || []).map(f => ({ path: f.filename, status: f.status }));
+  try { sessionStorage.setItem('detail_' + hash, JSON.stringify(files)); } catch(e) {}
+  return files;
 }
 
 function buildChart(commits) {
   const bars = document.getElementById('acBars');
   const labels = document.getElementById('acLabels');
   const byMonth = {};
-  commits.forEach(c => {
-    const m = c.date.slice(0,7);
-    byMonth[m] = (byMonth[m] || 0) + 1;
-  });
+  commits.forEach(c => { const m = c.date.slice(0,7); byMonth[m] = (byMonth[m]||0)+1; });
   const months = Object.keys(byMonth).sort();
-  if (months.length < 2) { bars.innerHTML = ''; labels.innerHTML = ''; return; }
+  if (months.length<2) { bars.innerHTML='';labels.innerHTML='';return; }
   const max = Math.max(...Object.values(byMonth));
   bars.innerHTML = months.map(m => {
-    const h = Math.max(4, (byMonth[m] / max) * 56);
-    const tip = `${m}: ${byMonth[m]}커밋`;
-    return `<div class="ac-bar" style="height:${h}px;background:var(--accent);opacity:${0.3 + (byMonth[m]/max)*0.7};"><span class="ac-tip">${tip}</span></div>`;
+    const h = Math.max(3, (byMonth[m]/max)*40);
+    return `<div class="ac-bar" style="height:${h}px;background:var(--accent);opacity:${0.25+(byMonth[m]/max)*0.75};"><span class="ac-tip">${m}: ${byMonth[m]}커밋</span></div>`;
   }).join('');
-  labels.innerHTML = months.filter((_,i)=>i===0||i===months.length-1||months.length<6||i%Math.ceil(months.length/5)===0).map(m => `<span>${m}</span>`).join(' | ');
+  const step = Math.max(1, Math.floor(months.length/7));
+  labels.innerHTML = months.filter((_,i)=>i===0||i===months.length-1||i%step===0).map(m=>`<span>${m}</span>`).join(' · ');
 }
 
-function render(commits, allCommits) {
+function render(commits, all) {
   const list = document.getElementById('commitList');
   const stats = document.getElementById('stats');
-
-  const typeCount = {};
-  allCommits.forEach(c => { typeCount[c.type] = (typeCount[c.type] || 0) + 1; });
-
+  const tc = {};
+  all.forEach(c=>{tc[c.type]=(tc[c.type]||0)+1;});
   stats.innerHTML = `
-    <div class="stat"><span class="ico">📦</span><div class="info"><div class="n">${allCommits.length}</div><div class="l">총 커밋</div></div></div>
-    <div class="stat"><span class="ico">📂</span><div class="info"><div class="n">${typeCount.upload||0}</div><div class="l">업로드</div></div></div>
-    <div class="stat"><span class="ico">✏️</span><div class="info"><div class="n">${typeCount.update||0}</div><div class="l">수정</div></div></div>
-    <div class="stat"><span class="ico">🔄</span><div class="info"><div class="n">${typeCount.rename||0}</div><div class="l">이름변경</div></div></div>
-    <div class="stat"><span class="ico">🆕</span><div class="info"><div class="n">${typeCount.create||0}</div><div class="l">생성</div></div></div>
-    <div class="stat"><span class="ico">📅</span><div class="info"><div class="n">${allCommits[0]?.date || '-'}</div><div class="l">→ ${allCommits[allCommits.length-1]?.date || '-'}</div></div></div>
+    <div class="stat"><span class="ico">📦</span><div class="info"><div class="n">${all.length}</div><div class="l">커밋</div></div></div>
+    <div class="stat"><span class="ico">📂</span><div class="info"><div class="n">${tc.upload||0}</div><div class="l">업로드</div></div></div>
+    <div class="stat"><span class="ico">✏️</span><div class="info"><div class="n">${tc.update||0}</div><div class="l">수정</div></div></div>
+    <div class="stat"><span class="ico">🔄</span><div class="info"><div class="n">${tc.rename||0}</div><div class="l">이름변경</div></div></div>
+    <div class="stat"><span class="ico">📅</span><div class="info"><div class="n">${all[0]?.date||'-'}</div><div class="l">→ ${all[all.length-1]?.date||'-'}</div></div></div>
   `;
-
-  if (commits.length === 0) {
-    list.innerHTML = '<div class="empty-search">🔍 검색 결과가 없습니다</div>';
-    return;
-  }
-
+  if (commits.length===0) { list.innerHTML='<div class="empty-search">🔍 없음</div>'; return; }
   list.innerHTML = '<div class="graph-line"></div>';
-  commits.forEach((c, i) => {
+  commits.forEach(c => {
     const row = document.createElement('div');
     row.className = 'commit-row';
     row.innerHTML = `
-      <div class="g-dot type-${c.type}"></div>
-      <div class="g-body">
-        <div class="g-msg">${esc(c.msg)}</div>
-        <div class="g-meta">
-          <a class="g-hash" href="${REPO}/commit/${c.hash}" target="_blank">${c.hash.slice(0,7)}</a>
-          <span class="g-date">${c.date}</span>
-          <span class="g-type t-${c.type}">${commitTypeLabel(c.type)}</span>
-        </div>
-        <div class="g-extra">
-          <div class="g-extra-links">
-            <a href="${REPO}/tree/${c.hash}" target="_blank">🌲 Browse this commit</a>
-            <a href="${REPO}/commit/${c.hash}" target="_blank">🔍 View diff</a>
+      <div class="cr-inner">
+        <div class="g-dot t-${c.type}"></div>
+        <div class="g-body">
+          <div class="g-msg">${esc(c.msg)}</div>
+          <div class="g-meta">
+            <a class="g-hash" href="${REPO}/commit/${c.hash}" target="_blank">${c.hash.slice(0,7)}</a>
+            <span class="g-date">${c.iso ? fmtTime(c.iso) : c.date}</span>
+            <span class="g-type t-${c.type}">${typeLabel(c.type)}</span>
+          </div>
+          <div class="cr-extra">
+            <div class="cr-loading" id="load_${c.hash}">⏳ 파일 목록 불러오는 중...</div>
+            <div class="cr-frame" id="frame_${c.hash}" style="display:none"></div>
           </div>
         </div>
-      </div>
-      <div class="g-links">
-        <a href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
-        <a href="${REPO}/tree/${c.hash}" target="_blank">🌲 Tree</a>
+        <div class="g-links">
+          <a href="${REPO}/commit/${c.hash}" target="_blank">🔍 Diff</a>
+          <a href="${REPO}/tree/${c.hash}" target="_blank">🌲 Tree</a>
+        </div>
       </div>
     `;
-    row.addEventListener('click', (e) => {
+    const extra = row.querySelector('.cr-extra');
+    let loaded = false;
+    row.addEventListener('click', async (e) => {
       if (e.target.closest('a')) return;
-      row.classList.toggle('expanded');
+      const wasOpen = row.classList.contains('open');
+      document.querySelectorAll('.commit-row.open').forEach(r => {
+        if (r !== row) r.classList.remove('open');
+      });
+      if (wasOpen) { row.classList.remove('open'); return; }
+      row.classList.add('open');
+      if (loaded) return;
+      loaded = true;
+      const files = await fetchDetail(c.hash);
+      const loadEl = document.getElementById('load_'+c.hash);
+      const frameEl = document.getElementById('frame_'+c.hash);
+      if (!files) {
+        if (loadEl) loadEl.innerHTML = '❌ 불러오기 실패';
+        return;
+      }
+      if (loadEl) loadEl.style.display = 'none';
+      frameEl.style.display = 'block';
+      frameEl.innerHTML = `
+        <div class="cr-fh"><span>${files.length}개 파일</span><span>${REPO.slice(8)}</span></div>
+        <div class="cr-files">${files.map(f => {
+          const p = f.path;
+          const blobUrl = BLOB(c.hash, p);
+          const rawUrl = RAW(c.hash, p);
+          const canPreview = isHtml(p);
+          return `<a class="cr-file" href="${blobUrl}" target="_blank">
+            <span class="cr-fs">${ext(p)}</span> ${esc(p)}
+            ${canPreview ? `<button class="cr-fpreview" data-raw="${esc(rawUrl)}" data-file="${esc(p)}" data-hash="${c.hash}">👁 Preview</button>` : ''}
+          </a>`;
+        }).join('')}</div>
+      `;
+      frameEl.querySelectorAll('.cr-fpreview').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const url = btn.dataset.raw;
+          const fname = btn.dataset.file;
+          const overlay = document.getElementById('previewOverlay');
+          const title = document.getElementById('previewTitle');
+          const body = document.getElementById('previewBody');
+          title.textContent = fname + ' @ ' + c.hash.slice(0,7);
+          body.innerHTML = '<div class="loader"><div class="sp"></div><div class="lt">파일 불러오는 중...</div></div>';
+          overlay.classList.add('show');
+          try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('HTTP '+res.status);
+            const text = await res.text();
+            if (isHtml(fname)) {
+              const blob = new Blob([text], {type:'text/html'});
+              const u = URL.createObjectURL(blob);
+              if (window._blobUrl) URL.revokeObjectURL(window._blobUrl);
+              window._blobUrl = u;
+              body.innerHTML = `<iframe src="${u}"></iframe>`;
+            } else {
+              body.innerHTML = `<pre class="po-code">${esc(text)}</pre>`;
+            }
+          } catch(err) {
+            body.innerHTML = `<div class="error-box" style="margin:20px"><div class="er">❌ ${esc(err.message)}</div></div>`;
+          }
+        });
+      });
     });
     list.appendChild(row);
   });
@@ -285,32 +362,36 @@ function render(commits, allCommits) {
   const search = document.getElementById('searchInput');
   const clearBtn = document.getElementById('clearSearch');
   const scrollBtn = document.getElementById('scrollTop');
-  let allCommits = [];
+  const overlay = document.getElementById('previewOverlay');
+  function hideOverlay() {
+    overlay.classList.remove('show');
+    if (window._blobUrl) { URL.revokeObjectURL(window._blobUrl); window._blobUrl = null; }
+  }
+  document.getElementById('previewClose').addEventListener('click', hideOverlay);
+  overlay.addEventListener('click', (e) => { if (e.target===overlay) hideOverlay(); });
+  document.addEventListener('keydown', (e) => { if (e.key==='Escape') hideOverlay(); });
 
+  let allCommits = [];
   try {
-    allCommits = await fetchData();
-  } catch (err) {
-    document.getElementById('commitList').innerHTML = `<div class="error-box"><div class="er">❌ ${esc(err.message)}</div><a href="${REPO}/commits/main" target="_blank">→ GitHub에서 직접 보기</a></div>`;
+    allCommits = await fetchList();
+  } catch(err) {
+    document.getElementById('commitList').innerHTML = `<div class="error-box"><div class="er">❌ ${esc(err.message)}</div><a href="${REPO}/commits/main" target="_blank">→ GitHub에서 보기</a></div>`;
     return;
   }
 
   buildChart(allCommits);
   let filtered = allCommits;
-
   function apply() {
     const q = search.value.trim().toLowerCase();
-    clearBtn.classList.toggle('show', q.length > 0);
-    document.querySelectorAll('.commit-row').forEach(r => r.classList.remove('expanded'));
-    if (!q) { filtered = allCommits; render(allCommits, allCommits); return; }
+    clearBtn.classList.toggle('show', q.length>0);
+    if (!q) { filtered=allCommits; render(allCommits,allCommits); return; }
     filtered = allCommits.filter(c => c.msg.toLowerCase().includes(q));
     render(filtered, allCommits);
   }
-
   render(allCommits, allCommits);
   search.addEventListener('input', apply);
-  clearBtn.addEventListener('click', () => { search.value = ''; apply(); });
-
-  window.addEventListener('scroll', () => scrollBtn.classList.toggle('show', window.scrollY > 600));
+  clearBtn.addEventListener('click', () => { search.value=''; apply(); });
+  window.addEventListener('scroll', () => scrollBtn.classList.toggle('show', window.scrollY>600));
   scrollBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 })();
 </script>
