@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/assets/favicon" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2025 한봄 수학여행 일정안내 사이트(시디/뷰티&캐릭은 곧 업데이트 됩니다)</title>
+
+  <!-- 업데이트 모달 -->
+  <div id="updateModal" style="position:fixed;z-index:9999;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.18);backdrop-filter:blur(2px);">
+    <div id="modalContent" style="background:#f7f8fa;color:#222;box-shadow:0 4px 32px rgba(0,0,0,0.10);border-radius:22px;padding:40px 32px 32px 32px;display:flex;flex-direction:column;align-items:center;min-width:320px;max-width:90vw;max-height:90vh;position:relative;">
+      <button id="modalThemeToggle" aria-label="다크모드 토글" style="position:absolute;top:18px;right:18px;background:var(--card);border:1px solid var(--line);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s ease;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+        <svg id="modalSunIcon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="modalMoonIcon" viewBox="0 0 24 24" style="display:none;width:20px;height:20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <img src="modal.png" alt="업데이트" style="width:120px;height:120px;object-fit:contain;margin-bottom:24px;" />
+      <div style="text-align:center;margin-bottom:18px;">
+        <span style="font-family:'Pretendard-Regular',sans-serif;font-size:1.35rem;font-weight:700;line-height:1.3;display:block;">2025 수학여행 일정 사이트</span>
+        <span style="font-family:'Pretendard-Regular',sans-serif;font-size:1.08rem;line-height:1.5;display:block;margin-top:6px;">지속적 업데이트 중입니다!</span>
+      </div>
+      <label style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:18px;cursor:pointer;font-size:0.98rem;">
+        <input type="checkbox" id="modalNoShow" style="accent-color:#2563eb;width:18px;height:18px;" />
+        하루 동안 안 보기
+      </label>
+      <button id="modalCloseBtn" style="margin-top:0;background:#2563eb;color:#fff;font-weight:700;font-size:1.08rem;padding:10px 32px;border:none;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,0.08);cursor:pointer;transition:background 0.2s;">닫기</button>
+    </div>
+  </div>
+
+  <style>
+    @font-face {
+      font-family: 'Pretendard-Regular';
+      src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+    }
+    #updateModal[data-hide="true"] { display: none !important; }
+    [data-theme="dark"] #modalContent {
+      background: #181c22 !important;
+      color: #e5e7eb !important;
+    }
+    [data-theme="dark"] #modalCloseBtn {
+      background: #232e47 !important;
+      color: #fff !important;
+    }
+    [data-theme="dark"] #modalNoShow {
+      accent-color: #60a5fa !important;
+    }
+  </style>
+  <!-- NanumSquare Webfont -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+  <style>
+    html, body, div, span, p, a, ul, ol, li, h1, h2, h3, h4, h5, h6, header, main, section, article, footer, button, input, select, textarea, label, th, td {
+      font-family: "NanumSquare","Apple SD Gothic Neo","Segoe UI",system-ui,Helvetica,Arial,sans-serif !important;
+    }
+    /* 다크모드 버튼 배경색 변경 */
+    [data-theme="dark"] button[onclick*='sigak.html'] {
+      background: #d72660 !important;
+      color: #fff !important;
+      border-color: #d72660 !important;
+    }
+    [data-theme="dark"] button[onclick*='char.html'] {
+      background: #7c3aed !important;
+      color: #fff !important;
+      border-color: #7c3aed !important;
+    }
+    /* Enhanced Custom Scrollbar: Modern blue gradient, shadow, border, smooth */
+    ::-webkit-scrollbar {
+      width: 14px;
+      background: #fff;
+      border-radius: 12px;
+    }
+    [data-theme="dark"] ::-webkit-scrollbar {
+      background: #111;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f3f6fa;
+      border-radius: 12px;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] ::-webkit-scrollbar-track {
+      background: #181c22;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.18);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #60a5fa 0%, #2563eb 60%, #38bdf8 100%);
+      border-radius: 10px;
+      min-height: 40px;
+      border: 2px solid #e0e7ef;
+      box-shadow: 0 2px 8px rgba(56,189,248,0.18), 0 1px 2px rgba(30,41,59,0.10);
+      transition: background 0.2s, border 0.2s;
+    }
+    [data-theme="dark"] ::-webkit-scrollbar-thumb {
+      border: 2px solid #232e47;
+      box-shadow: 0 2px 8px rgba(56,189,248,0.22), 0 1px 2px rgba(30,41,59,0.18);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+      border: 2px solid #2563eb;
+    }
+    ::-webkit-scrollbar-corner {
+      background: #fff;
+      border-radius: 12px;
+    }
+    [data-theme="dark"] ::-webkit-scrollbar-corner {
+      background: #111;
+    }
+    /* Firefox */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: #2563eb #f3f6fa;
+    }
+    [data-theme="dark"] html {
+      scrollbar-color: #60a5fa #181c22;
+    }
+  </style>
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#1e293b;
+      --muted:#64748b;
+      --accent:#2563eb;
+      --line:#e5e7eb;
+      --radius:18px;
+    }
+    
+    [data-theme="dark"] {
+      --bg:#0f172a;
+      --card:#1e293b;
+      --text:#f1f5f9;
+      --muted:#94a3b8;
+      --accent:#3b82f6;
+      --line:#334155;
+    }
+    
+    *{box-sizing:border-box; font-family:"NanumSquare","Apple SD Gothic Neo","Segoe UI",system-ui,Helvetica,Arial,sans-serif;}
+    button, input, select, textarea {
+      font-family: "NanumSquare","Apple SD Gothic Neo","Segoe UI",system-ui,Helvetica,Arial,sans-serif !important;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"NanumSquare","Apple SD Gothic Neo","Segoe UI",system-ui,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.45;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header{
+      position:sticky; top:0; z-index:5;
+      backdrop-filter:saturate(1.1) blur(6px);
+      background:rgba(246,247,251,.85);
+      border-bottom:1px solid var(--line);
+    }
+    
+    [data-theme="dark"] header {
+      background:rgba(15,23,42,.85);
+    }
+    
+    .wrap{max-width:1000px; margin:0 auto; padding:18px 14px;}
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .header-content {
+      flex: 1;
+    }
+    .title{
+      font-weight:800; font-size:22px; letter-spacing:.2px;
+    }
+    .subtitle{
+      margin-top:4px;
+      color:var(--muted); font-size:13px;
+    }
+
+    .theme-toggle {
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+    
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+    
+    [data-theme="dark"] .theme-toggle:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
+    
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    .view-toggle{
+      margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .view-toggle button{
+      appearance:none; border:1px solid var(--line);
+      background:var(--card); color:var(--text);
+      padding:8px 10px; border-radius:999px; font-weight:700;
+      font-size:13px; cursor:pointer;
+      transition: all 0.3s ease;
+    }
+    .view-toggle button.active{ border-color:var(--accent); color:#fff; background:var(--accent); }
+
+    main{ padding:18px 14px 60px; }
+    .grid{
+      max-width:1000px; margin:0 auto;
+      display:grid; gap:16px;
+      grid-template-columns:1fr;
+    }
+    @media (min-width:820px){
+      .grid{ grid-template-columns:1fr 1fr; }
+    }
+
+    .day-card{
+      background:var(--card); border:1px solid var(--line);
+      border-radius:var(--radius); overflow:hidden;
+      box-shadow:0 8px 30px rgba(0,0,0,.04);
+      transition: all 0.3s ease;
+    }
+    .day-card:hover {
+      border: 1.5px solid #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.25), 0 0 16px 2px #38bdf8, 0 8px 30px rgba(0,0,0,.08);
+      z-index: 2;
+    }
+    
+    [data-theme="dark"] .day-card {
+      box-shadow:0 8px 30px rgba(0,0,0,.2);
+    }
+    
+    .day-head{
+      padding:14px 16px;
+      background:linear-gradient(0deg,var(--card), color-mix(in srgb, var(--card) 95%, var(--accent) 5%));
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .day-name{ font-weight:800; font-size:18px; }
+    .stay{ color:var(--muted); font-size:12px; font-weight:700; }
+
+    .items{ padding:6px 8px 8px; }
+    .item{
+      display:grid; grid-template-columns:auto 1fr; gap:10px;
+      padding:10px 8px; border-bottom:1px dashed var(--line);
+    }
+    .item:last-child{ border-bottom:0; }
+    .time{
+      min-width:132px;
+      font-weight:800; font-size:16px; text-align:right;
+      color:var(--text);
+    }
+    .time .t12{ color:var(--text); font-weight:800; display:block; font-size:16px }
+    /* 둘 다 보기 모드에서 24시간제 시간 파란색, 다크모드 연한 하늘색 */
+    [data-view="both"] .time .t24 {
+      color: #2563eb;
+    }
+    [data-theme="dark"][data-view="both"] .time .t24 {
+      color: #60a5fa;
+    }
+    .what{ font-size:14px; }
+    .what b{ font-weight:800 }
+    .bullet{ color:var(--accent); font-weight:900; margin-right:4px; }
+
+    /* view modes */
+    [data-view="both"] .time .t24{display:block}
+    [data-view="both"] .time .t12{display:block}
+    [data-view="24"]   .time .t24{display:block}
+    [data-view="24"]   .time .t12{display:none}
+    [data-view="12"]   .time .t24{display:none}
+    [data-view="12"]   .time .t12{display:block}
+
+    /* small helpers */
+    .tag{
+      display:inline-block; padding:2px 8px; border-radius:999px;
+      background:color-mix(in srgb, var(--accent) 10%, transparent);
+      color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+      font-size:11px; font-weight:800; margin-left:6px;
+    }
+
+    footer{max-width:1000px;margin:18px auto 40px; color:var(--muted); font-size:12px; text-align:center}
+  </style>
+</head>
+<body data-view="both" data-theme="light">
+<a href="timeline.html#22" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(37,99,235,0.92);color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.18);font-family:sans-serif;transition:transform 0.2s;">⌛ 타임라인</a>
+
+
+  <header>
+    <div class="wrap">
+
+      <div class="header-top">
+        <div class="header-content">
+          <div class="title">2025 한봄 수학여행 일정안내 사이트 <span class="tag">시각디자인과</span></div>
+          <div class="subtitle">시간은 24시간제와 12시간제를 함께 표기합니다. 필요하면 보기 방식을 바꿔보세요.</div>
+        </div>
+        <button id="downloadBtn" class="download-btn" aria-label="원본 파일 다운로드">원본 파일 다운로드</button>
+        <button class="theme-toggle" id="themeToggle" aria-label="다크모드 토글">
+          <svg id="sunIcon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moonIcon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+  <!-- 다운로드 모달 -->
+  <div id="downloadModal" class="download-modal" style="display:none;position:fixed;z-index:10000;inset:0;background:rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;">
+  <div class="download-modal-content" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:18px;box-shadow:0 4px 32px rgba(0,0,0,0.13);padding:32px 24px 24px 24px;min-width:320px;max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+      <div style="font-size:1.25rem;font-weight:800;margin-bottom:18px;">원본 파일 다운로드</div>
+      <div class="download-list">
+        <div class="download-item" data-file="시각디자인.png">
+          <span class="download-label" style="color:#e11d48;font-weight:800;cursor:pointer;">시각디자인과</span>
+          <span class="blueicon" style="margin-left:8px;vertical-align:middle;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <defs>
+                <linearGradient id="blueicon-gradient" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#60a5fa"/>
+                  <stop offset="1" stop-color="#2563eb"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="16" height="16" rx="5" fill="url(#blueicon-gradient)"/>
+              <path d="M10 6.5v5.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M7.5 10.5L10 13l2.5-2.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="preview-link" style="margin-left:10px;cursor:pointer;color:#222;font-weight:600;">미리보기</span>
+        </div>
+        <div class="download-item" data-file="뷰티아트&캐릭터창작.png">
+          <span class="download-label" style="color:#a21caf;font-weight:800;cursor:pointer;">뷰티아트&캐릭터창작과</span>
+          <span class="blueicon" style="margin-left:8px;vertical-align:middle;"> 
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="4" fill="#2563eb"/><path d="M7 8.5V7a3 3 0 1 1 6 0v1.5" stroke="#fff" stroke-width="1.5"/><rect x="6" y="10" width="8" height="5" rx="2" fill="#fff"/><rect x="8.5" y="12" width="3" height="1.5" rx="0.75" fill="#2563eb"/></svg>
+          </span>
+          <span class="preview-link" style="margin-left:10px;cursor:pointer;color:#222;font-weight:600;">미리보기</span>
+        </div>
+        <div class="download-item" data-file="빅데이터정보&스마트제어.png">
+          <span class="download-label" style="color:#2563eb;font-weight:800;cursor:pointer;">빅데이터/스마트제어과</span>
+          <span class="blueicon" style="margin-left:8px;vertical-align:middle;"> 
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="4" fill="#2563eb"/><path d="M7 8.5V7a3 3 0 1 1 6 0v1.5" stroke="#fff" stroke-width="1.5"/><rect x="6" y="10" width="8" height="5" rx="2" fill="#fff"/><rect x="8.5" y="12" width="3" height="1.5" rx="0.75" fill="#2563eb"/></svg>
+          </span>
+          <span class="preview-link" style="margin-left:10px;cursor:pointer;color:#222;font-weight:600;">미리보기</span>
+        </div>
+      </div>
+      <button id="downloadModalClose" style="margin-top:24px;background:#2563eb;color:#fff;font-weight:700;font-size:1.08rem;padding:8px 32px;border:none;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,0.08);cursor:pointer;">닫기</button>
+    </div>
+  </div>
+  <!-- 미리보기 모달 -->
+  <div id="previewModal" class="preview-modal" style="display:none;position:fixed;z-index:11000;inset:0;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;">
+  <div class="preview-modal-content" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;padding:24px 18px 18px 18px;border-radius:18px;box-shadow:0 4px 32px rgba(0,0,0,0.13);max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+      <img id="previewImg" src="" alt="미리보기" style="max-width:420px;max-height:60vh;border-radius:12px;box-shadow:0 2px 12px rgba(37,99,235,0.10);margin-bottom:18px;" />
+      <button id="previewModalClose" style="background:#2563eb;color:#fff;font-weight:700;font-size:1.08rem;padding:8px 32px;border:none;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,0.08);cursor:pointer;">닫기</button>
+    </div>
+  </div>
+  <style>
+    .download-btn {
+      margin-right: 12px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: #ffe600;
+      color: #111;
+      box-shadow: 0 2px 8px rgba(255,230,0,0.08);
+      transition: background 0.2s, color 0.2s;
+    }
+    .download-btn:hover {
+      background: #fff700;
+    }
+    [data-theme="light"] .download-btn {
+      background: #ffd600;
+      color: #fff;
+    }
+    [data-theme="light"] .download-btn:hover {
+      background: #ffb800;
+      color: #fff;
+    }
+    [data-theme="dark"] .download-btn {
+      background: #ffe600;
+      color: #111;
+    }
+    .download-modal-content {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.13);
+      padding: 32px 24px 24px 24px;
+      min-width: 320px;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    [data-theme="dark"] .download-modal-content {
+      background: #181c22;
+      color: #e5e7eb;
+    }
+    .download-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .download-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1.08rem;
+    }
+    .preview-link {
+      color: #222;
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-left: 8px;
+      cursor: pointer;
+      text-decoration: underline dotted #2563eb 1.5px;
+      transition: color 0.2s;
+    }
+    [data-theme="dark"] .preview-link {
+      color: #fff !important;
+    }
+    .preview-modal-content {
+      background: #fff;
+      color: #222;
+    }
+    [data-theme="dark"] .preview-modal-content {
+      background: #232e47;
+      color: #fff;
+    }
+  </style>
+  <script>
+  const downloadBtn = document.getElementById('downloadBtn');
+  const downloadModal = document.getElementById('downloadModal');
+  const downloadModalClose = document.getElementById('downloadModalClose');
+  const downloadItems = document.querySelectorAll('.download-item');
+  const previewLinks = document.querySelectorAll('.preview-link');
+  const previewModal = document.getElementById('previewModal');
+  const previewModalClose = document.getElementById('previewModalClose');
+  const previewImg = document.getElementById('previewImg');
+
+  downloadBtn.addEventListener('click', () => {
+    downloadModal.style.display = 'flex';
+  });
+  downloadModalClose.addEventListener('click', () => {
+    downloadModal.style.display = 'none';
+  });
+  downloadItems.forEach(item => {
+    item.querySelector('.download-label').addEventListener('click', () => {
+      const file = item.getAttribute('data-file');
+      const a = document.createElement('a');
+      a.href = encodeURI(file);
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  });
+  previewLinks.forEach((link, idx) => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const file = link.parentElement.getAttribute('data-file');
+      previewImg.src = encodeURI(file);
+      previewModal.style.display = 'flex';
+    });
+  });
+  previewModalClose.addEventListener('click', () => {
+    previewModal.style.display = 'none';
+  // 다운로드/미리보기 모달은 오직 버튼 등 사용자 액션으로만 열림. (초기 자동 노출 없음)
+  // (이미 해당 로직이 적용되어 있으나, 혹시라도 자동 노출 코드가 있으면 제거)
+    previewImg.src = '';
+  });
+  // 바깥 클릭시 닫기
+  downloadModal.addEventListener('click', (e) => {
+    if (e.target === downloadModal) downloadModal.style.display = 'none';
+  });
+  previewModal.addEventListener('click', (e) => {
+    if (e.target === previewModal) previewModal.style.display = 'none';
+  });
+  </script>
+      </div>
+      <div class="view-toggle" role="group" aria-label="시간 표기 전환">
+        <button data-mode="both" class="active">둘 다 보기</button>
+        <button data-mode="24">24시간제만</button>
+        <button data-mode="12">12시간제만</button>
+  <button onclick="location.href='sigak.html'" style="margin-left:18px;padding:8px 18px 8px 18px;border-radius:999px;background:#fff0f6;color:#d72660;font-weight:800;border:2px solid #d72660;font-size:13px;vertical-align:middle;box-shadow:none;outline:none;cursor:pointer;display:inline-block;">시각디자인과</button>
+  <button onclick="location.href='char.html'" style="margin-left:6px;padding:8px 18px 8px 18px;border-radius:999px;background:#f3e8ff;color:#7c3aed;font-weight:800;border:2px solid #7c3aed;font-size:13px;vertical-align:middle;box-shadow:none;outline:none;cursor:pointer;display:inline-block;">뷰티아트/캐릭터창작과</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid">
+
+      <!-- Day 1 -->
+      <article class="day-card">
+        <div class="day-head">
+          <div class="day-name">Day 1 (10/15 '수')</div>
+          <div class="stay">숙소: <a href="https://naver.me/5wWe7vV5" class="naver-link">해운대 소노문<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="time">
+              <span class="t24">07:00</span>
+              <span class="t12">오전 7:00</span>
+            </div>
+            <div class="what">수원역 도착 후 인원 파악</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">08:46 → 11:33</span>
+              <span class="t12">오전 8:46 → 오전 11:33</span>
+            </div>
+            <div class="what">수원역 출발 / 부산역 도착</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">13:00 ~ 14:30</span>
+              <span class="t12">오후 1:00 ~ 오후 2:30</span>
+            </div>
+            <div class="what"><b>중식</b> : <a href="https://naver.me/5ne43uZz" class="naver-link">애슐리(동부산점)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> <span class="tag">13:00 예약</span></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">15:15 ~ 16:15</span>
+              <span class="t12">오후 3:15 ~ 오후 4:15</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span><a href="https://naver.me/G2EIFCfv" class="naver-link">스카이 라인 루지<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> <span class="tag">15:15</span></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">16:30 ~ 17:20</span>
+              <span class="t12">오후 4:30 ~ 오후 5:20</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span><a href="https://naver.me/FxFqhUOq" class="naver-link">용궁사<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">18:00 ~ 18:30</span>
+              <span class="t12">오후 6:00 ~ 오후 6:30</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span><a href="https://naver.me/FafyrnAe" class="naver-link">블루라인 파크(미포—송정)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> <span class="tag">18:00</span> <span class="tag">90명</span></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">18:50 ~ 19:30</span>
+              <span class="t12">오후 6:50 ~ 오후 7:30</span>
+            </div>
+            <div class="what"><b>석식</b> : <a href="https://naver.me/xoQRhqP8" class="naver-link">개미집(송점점)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">19:50</span>
+              <span class="t12">오후 7:50</span>
+            </div>
+            <div class="what">숙소 도착, 방 배정, 시설 안내 및 안전교육</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">22:00</span>
+              <span class="t12">오후 10:00</span>
+            </div>
+            <div class="what">점호 및 취침</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Day 2 -->
+      <article class="day-card">
+        <div class="day-head">
+          <div class="day-name">Day 2 (10/16 '목')</div>
+          <div class="stay">숙소: <a href="https://naver.me/5wWe7vV5" class="naver-link">해운대 소노문<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="time">
+              <span class="t24">07:00 ~ 08:00</span>
+              <span class="t12">오전 7:00 ~ 오전 8:00</span>
+            </div>
+            <div class="what">기상 및 조식</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">09:20</span>
+              <span class="t12">오전 9:20</span>
+            </div>
+            <div class="what">숙소 출발</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">10:00 ~ 15:30</span>
+              <span class="t12">오전 10:00 ~ 오후 3:30</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span><a href="https://naver.me/GPdJu3Cn" class="naver-link">롯데월드 (부산)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / <b>중식</b> : 밀쿠폰(식권)</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">16:30 ~ 18:00</span>
+              <span class="t12">오후 4:30 ~ 오후 6:00</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span>레크레이션<a href="https://naver.me/xkt63Pkt" class="naver-link">(그랜드 모먼트)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">18:20 ~ 19:50</span>
+              <span class="t12">오후 6:20 ~ 오후 7:50</span>
+            </div>
+            <div class="what"><b>석식</b> : <a href="https://naver.me/xkt63Pkt" class="naver-link">그랜드 모먼트<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> 만찬</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">20:30 ~ 21:30</span>
+              <span class="t12">오후 8:30 ~ 오후 9:30</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span>요트체험</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">21:40</span>
+              <span class="t12">오후 9:40</span>
+            </div>
+            <div class="what">숙소로 이동</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">22:30</span>
+              <span class="t12">오후 10:30</span>
+            </div>
+            <div class="what">점호 및 취침</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Day 3 -->
+      <article class="day-card">
+        <div class="day-head">
+          <div class="day-name">Day 3 (10/17 '금')</div>
+          <div class="stay">수원으로 복귀</div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="time">
+              <span class="t24">07:00 ~ 08:00</span>
+              <span class="t12">오전 7:00 ~ 오전 8:00</span>
+            </div>
+            <div class="what">기상 및 조식</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">09:00</span>
+              <span class="t12">오전 9:00</span>
+            </div>
+            <div class="what">숙소 출발</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">09:30 ~ 13:00</span>
+              <span class="t12">오전 9:30 ~ 오후 1:00</span>
+            </div>
+            <div class="what">
+              <span class="bullet">▶</span><a href="https://naver.me/Fnm0F16k" class="naver-link">BIFF거리<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / <a href="https://naver.me/FBeZ44gL" class="naver-link">보수동 책방골목<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / <a href="https://naver.me/GNWmX1gC" class="naver-link">용두산공원<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a>
+              <div><b>중식</b> : 자유식(<a href="https://naver.me/5LHcXXsU" class="naver-link">국제시장<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / 현금 15,000 지급)</div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">13:30 ~ 14:30</span>
+              <span class="t12">오후 1:30 ~ 오후 2:30</span>
+            </div>
+            <div class="what"><span class="bullet">▶</span><a href="https://naver.me/GalJspAJ" class="naver-link">감천 문화마을<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">15:00 ~</span>
+              <span class="t12">오후 3:00 ~</span>
+            </div>
+            <div class="what">부산역 도착 후 인원 파악 및 열차 탑승</div>
+          </div>
+
+          <div class="item">
+            <div class="time">
+              <span class="t24">15:46 → 17:52</span>
+              <span class="t12">오후 3:46 → 오후 5:52</span>
+            </div>
+            <div class="what">부산역 출발 / 수원역 도착</div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- 일정 요약 표 -->
+    <div class="schedule-table-wrap">
+  <div class="schedule-table-title">C팀 (빅데/스제) 일정표</div>
+  <style>
+    .schedule-table-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+  </style>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>시간</th>
+            <th>일정/내용</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Day 1 -->
+          <tr><td rowspan="10" class="day-label"><div>Day 1</div><div class="day-date">10/15 (수)</div></td><td>07:00</td><td>수원역 도착 후 인원 파악</td><td></td></tr>
+          <tr><td>08:46 → 11:33</td><td>수원역 출발 / 부산역 도착</td><td></td></tr>
+          <tr><td>13:00 ~ 14:30</td><td>중식 : <a href="https://naver.me/5ne43uZz" class="naver-link">애슐리(동부산점)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td>13:00 예약</td></tr>
+          <tr><td>15:15 ~ 16:15</td><td><a href="https://naver.me/G2EIFCfv" class="naver-link">스카이 라인 루지<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td>15:15</td></tr>
+          <tr><td>16:30 ~ 17:20</td><td><a href="https://naver.me/FxFqhUOq" class="naver-link">용궁사<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td></td></tr>
+          <tr><td>18:00 ~ 18:30</td><td><a href="https://naver.me/FafyrnAe" class="naver-link">블루라인 파크(미포—송정)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td>18:00, 90명</td></tr>
+  <style>
+    .naver-link {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .naver-link .greenicon {
+      display: inline-flex;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    .naver-link:focus .greenicon,
+    .naver-link:hover .greenicon {
+      filter: brightness(1.1) drop-shadow(0 0 2px #7cff6c);
+    }
+  </style>
+          <tr><td>18:50 ~ 19:30</td><td>석식 : <a href="https://naver.me/xoQRhqP8" class="naver-link">개미집(송점점)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td></td></tr>
+          <tr><td>19:50</td><td>숙소 도착, 방 배정, 시설 안내 및 안전교육</td><td></td></tr>
+          <tr><td>22:00</td><td>점호 및 취침</td><td></td></tr>
+          <tr><td></td><td>숙소</td><td colspan="2"><a href="https://naver.me/5wWe7vV5" class="naver-link">해운대 소노문<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td></tr>
+          <!-- Day 2 -->
+          <tr><td rowspan="9" class="day-label"><div>Day 2</div><div class="day-date">10/16 (목)</div></td><td>07:00 ~ 08:00</td><td>기상 및 조식</td><td></td></tr>
+          <tr><td>09:20</td><td>숙소 출발</td><td></td></tr>
+          <tr><td>10:00 ~ 15:30</td><td><a href="https://naver.me/GPdJu3Cn" class="naver-link">롯데월드 (부산)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / 중식 : 밀쿠폰(식권)</td><td></td></tr>
+          <tr><td>16:30 ~ 18:00</td><td>레크레이션<a href="https://naver.me/xkt63Pkt" class="naver-link">(그랜드 모먼트)<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td></td></tr>
+          <tr><td>18:20 ~ 19:50</td><td>석식 : <a href="https://naver.me/xkt63Pkt" class="naver-link">그랜드 모먼트<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> 만찬</td><td></td></tr>
+          <tr><td>20:30 ~ 21:30</td><td>요트체험</td><td></td></tr>
+          <tr><td>21:40</td><td>숙소로 이동</td><td></td></tr>
+          <tr><td>22:30</td><td>점호 및 취침</td><td></td></tr>
+          <tr><td></td><td>숙소</td><td colspan="2"><a href="https://naver.me/5wWe7vV5" class="naver-link">해운대 소노문<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td></tr>
+          <!-- Day 3 -->
+          <tr><td rowspan="7" class="day-label"><div>Day 3</div><div class="day-date">10/17 (금)</div></td><td>07:00 ~ 08:00</td><td>기상 및 조식</td><td></td></tr>
+  <style>
+    .schedule-table .day-label { position: relative; padding-top: 8px; padding-bottom: 8px; }
+    .schedule-table .day-label .day-date {
+      font-size: 0.95em;
+      color: #222;
+      font-weight: 400;
+      margin-top: 2px;
+      line-height: 1.1;
+    }
+    [data-theme="dark"] .schedule-table .day-label .day-date {
+      color: #fff;
+    }
+  </style>
+          <tr><td>09:00</td><td>숙소 출발</td><td></td></tr>
+          <tr><td>09:30 ~ 13:00</td><td><a href="https://naver.me/Fnm0F16k" class="naver-link">BIFF거리<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / <a href="https://naver.me/FBeZ44gL" class="naver-link">보수동 책방골목<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / <a href="https://naver.me/GNWmX1gC" class="naver-link">용두산공원<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a><br>중식 : 자유식(<a href="https://naver.me/5LHcXXsU" class="naver-link">국제시장<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a> / 현금 15,000 지급)</td><td></td></tr>
+          <tr><td>13:30 ~ 14:30</td><td><a href="https://naver.me/GalJspAJ" class="naver-link">감천 문화마을<span class="greenicon" aria-label="네이버 지도 링크"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="18" height="18" rx="4" fill="url(#naverG)"/><path d="M5 5.5h2.2l2.6 3.7V5.5H12v7h-2.2l-2.6-3.7V12H5v-6.5z" fill="#fff"/><defs><linearGradient id="naverG" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7cff6c"/><stop offset="1" stop-color="#1ec800"/></linearGradient></defs></svg></span></a></td><td></td></tr>
+          <tr><td>15:00 ~</td><td>부산역 도착 후 인원 파악 및 열차 탑승</td><td></td></tr>
+          <tr><td>15:46 → 17:52</td><td>부산역 출발 / 수원역 도착</td><td></td></tr>
+          <tr><td></td><td>귀가</td><td colspan="2"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>© C팀 수학여행 일정표 — 모바일·데스크톱 반응형 (추후 전 학과 시간표 추가(업데이트) 예정) made by: LEE HOSE</footer>
+
+  <style>
+    .schedule-table-wrap {
+      max-width: 1000px;
+      margin: 32px auto 0;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      overflow-x: auto;
+      padding: 18px 10px 18px 10px;
+      font-size: 15px;
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: transparent;
+      color: #222;
+    }
+    .schedule-table th, .schedule-table td {
+      border: 1px solid #e5e7eb;
+      padding: 7px 4px;
+      text-align: center;
+      background: #fff;
+    }
+    .schedule-table th {
+      background: #f6f7fb;
+      color: #2563eb;
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .schedule-table .day-label {
+      background: #eaf1ff;
+      color: #2563eb;
+      font-weight: 800;
+      font-size: 15px;
+      min-width: 60px;
+    }
+    .schedule-table tr:nth-child(even) td:not(.day-label) {
+      background: #f8fafc;
+    }
+    @media (max-width: 700px) {
+      .schedule-table th, .schedule-table td { font-size: 13px; padding: 5px 2px; }
+      .schedule-table-wrap { font-size: 13px; }
+    }
+    [data-theme="dark"] .schedule-table-wrap {
+      background: #181f2a;
+      color: #e5e7eb;
+    }
+    [data-theme="dark"] .schedule-table th {
+      background: #232e47;
+      color: #60a5fa;
+    }
+    [data-theme="dark"] .schedule-table td {
+      background: #181f2a;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+    [data-theme="dark"] .schedule-table .day-label {
+      background: #232e47;
+      color: #60a5fa;
+    }
+    [data-theme="dark"] .schedule-table tr:nth-child(even) td:not(.day-label) {
+      background: #202a3c;
+    }
+  </style>
+
+  <script>
+    // View toggle functionality
+    const root = document.body;
+    const buttons = document.querySelectorAll('.view-toggle button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        root.setAttribute('data-view', btn.dataset.mode);
+      });
+    });
+
+        // Theme toggle functionality (main)
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+
+        // Modal theme toggle
+        const modalThemeToggle = document.getElementById('modalThemeToggle');
+        const modalSunIcon = document.getElementById('modalSunIcon');
+        const modalMoonIcon = document.getElementById('modalMoonIcon');
+
+        // Modal elements
+        const updateModal = document.getElementById('updateModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalNoShow = document.getElementById('modalNoShow');
+
+        // Helper: get today's date string (yyyy-mm-dd)
+        function getTodayStr() {
+          const now = new Date();
+          return now.getFullYear() + '-' + (now.getMonth()+1).toString().padStart(2,'0') + '-' + now.getDate().toString().padStart(2,'0');
+        }
+  // Download/Preview modals logic: only open on user action, never on page load
+  // (already declared above)
+  // Ensure modals are hidden on load
+  downloadModal.style.display = 'none';
+  previewModal.style.display = 'none';
+
+  downloadBtn.addEventListener('click', () => {
+    downloadModal.style.display = 'flex';
+  });
+  downloadModalClose.addEventListener('click', () => {
+    downloadModal.style.display = 'none';
+  });
+  downloadItems.forEach(item => {
+    item.querySelector('.download-label').addEventListener('click', () => {
+      const file = item.getAttribute('data-file');
+      const a = document.createElement('a');
+      a.href = encodeURI(file);
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  });
+  previewLinks.forEach((link, idx) => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const file = link.parentElement.getAttribute('data-file');
+      previewImg.src = encodeURI(file);
+      previewModal.style.display = 'flex';
+    });
+  });
+  previewModalClose.addEventListener('click', () => {
+    previewModal.style.display = 'none';
+    previewImg.src = '';
+  });
+  // Click outside to close
+  downloadModal.addEventListener('click', (e) => {
+    if (e.target === downloadModal) downloadModal.style.display = 'none';
+  });
+  previewModal.addEventListener('click', (e) => {
+    if (e.target === previewModal) previewModal.style.display = 'none';
+  });
+
+        // Theme toggle events
+
+        // 테마 적용 함수 (아이콘 동기화 포함)
+        function setTheme(theme, save) {
+          document.body.setAttribute('data-theme', theme);
+          updateIcons(theme);
+          updateModalIcons(theme);
+          if (save) {
+            setCookie('theme', theme, 365);
+          }
+        }
+
+        // 테마 토글 버튼 이벤트
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.body.getAttribute('data-theme');
+          setTheme(currentTheme === 'light' ? 'dark' : 'light', true);
+        });
+        modalThemeToggle.addEventListener('click', () => {
+          const currentTheme = document.body.getAttribute('data-theme');
+          setTheme(currentTheme === 'light' ? 'dark' : 'light', true);
+        });
+
+        // 페이지 진입 시 테마 적용 (쿠키/시스템)
+        window.addEventListener('DOMContentLoaded', function() {
+          let theme = getCookie('theme');
+          if (!theme) {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          setTheme(theme, false);
+          if (getCookie('updateModalNoShow') === '1') {
+            updateModal.setAttribute('data-hide', 'true');
+          } else {
+            updateModal.removeAttribute('data-hide');
+          }
+        });
+
+        // Update icons for theme
+        function updateIcons(theme) {
+          if (theme === 'dark') {
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+          } else {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+          }
+        }
+        function updateModalIcons(theme) {
+          if (theme === 'dark') {
+            modalSunIcon.style.display = 'block';
+            modalMoonIcon.style.display = 'none';
+          } else {
+            modalSunIcon.style.display = 'none';
+            modalMoonIcon.style.display = 'block';
+          }
+        }
+
+        // 업데이트 모달 노출/숨김 관리 (쿠키)
+        function getCookie(name) {
+          const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+          return v ? v[2] : null;
+        }
+        function setCookie(name, value, days) {
+          const d = new Date();
+          d.setTime(d.getTime() + (days*24*60*60*1000));
+          document.cookie = name + '=' + value + ';path=/;expires=' + d.toUTCString() + ';';
+        }
+
+        // 모달 닫기
+        modalCloseBtn.addEventListener('click', function() {
+          if (modalNoShow.checked) {
+            setCookie('updateModalNoShow', '1', 1);
+          }
+          updateModal.setAttribute('data-hide', 'true');
+        });
+
+  // 최초 진입시 모달 노출 여부
+  window.addEventListener('DOMContentLoaded', function() {
+    if (getCookie('updateModalNoShow') === '1') {
+      updateModal.setAttribute('data-hide', 'true');
+    } else {
+      updateModal.removeAttribute('data-hide');
+    }
+  });
+  </script>
+</body>
+</html>

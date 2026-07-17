@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 한봄 수학여행 일정 안내</title>
+    <style>
+        @font-face {
+            font-family: 'YeogiOttaeJalnan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+            font-weight: normal;
+            font-display: swap;
+        }
+        
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'NanumSquare', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #1f4e79, #2980b9, #154360);
+            position: relative;
+        }
+        
+        /* 바다 파도 SVG 배경 */
+        .ocean-waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .wave {
+            fill: url(#waveGradient);
+            opacity: 0.8;
+        }
+        
+        .wave1 {
+            animation: wave1 8s ease-in-out infinite;
+        }
+        
+        .wave2 {
+            animation: wave2 6s ease-in-out infinite reverse;
+        }
+        
+        .wave3 {
+            animation: wave3 10s ease-in-out infinite;
+        }
+        
+        @keyframes wave1 {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-50px) translateY(-20px); }
+        }
+        
+        @keyframes wave2 {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(30px) translateY(-15px); }
+        }
+        
+        @keyframes wave3 {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-30px) translateY(-25px); }
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        /* 다크모드 스타일 */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f1419, #1a1a2e, #16213e);
+        }
+        
+        body.dark-mode .main-card {
+            background: rgba(30, 30, 30, 0.95);
+            border: 2px solid rgba(70, 70, 70, 0.3);
+        }
+        
+        body.dark-mode .title {
+            color: #e8f4fd;
+        }
+        
+        body.dark-mode .subtitle {
+            color: #a8d0e6;
+        }
+        
+        body.dark-mode .copyright {
+            color: #bbb;
+        }
+        
+        /* 토글 버튼 스타일 */
+        .theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 50px;
+            height: 25px;
+            background: #ddd;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-slider {
+            width: 19px;
+            height: 19px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background: #444;
+        }
+        
+        body.dark-mode .toggle-slider {
+            transform: translateX(25px);
+            background: #333;
+            color: #ffd700;
+        }
+        
+        .sun-icon, .moon-icon {
+            width: 12px;
+            height: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .sun-icon {
+            opacity: 1;
+        }
+        
+        body.dark-mode .sun-icon {
+            opacity: 0;
+        }
+        
+        .moon-icon {
+            opacity: 0;
+            position: absolute;
+        }
+        
+        body.dark-mode .moon-icon {
+            opacity: 1;
+        }
+        
+        .title {
+            font-family: 'YeogiOttaeJalnan', serif;
+            font-size: 2.5rem;
+            color: #1a252f;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-family: 'YeogiOttaeJalnan', serif;
+            font-size: 1.1rem;
+            color: #1f4e79;
+            margin-bottom: 35px;
+            opacity: 0.8;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-desktop {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            max-width: 300px;
+            border-radius: 12px;
+            margin: 0 auto 20px auto;
+        }
+        
+        .btn-desktop:hover {
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+        }
+        
+        .btn-bigde {
+            background: linear-gradient(135deg, #4285f4, #1976d2);
+        }
+        
+        .btn-bigde:hover {
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+        }
+        
+        .btn-visual {
+            background: linear-gradient(135deg, #e53935, #c62828);
+        }
+        
+        .btn-visual:hover {
+            background: linear-gradient(135deg, #c62828, #b71c1c);
+        }
+        
+        .btn-beauty {
+            background: linear-gradient(135deg, #8e24aa, #6a1b9a);
+        }
+        
+        .btn-beauty:hover {
+            background: linear-gradient(135deg, #6a1b9a, #4a148c);
+        }
+        
+        .copyright {
+            font-size: 0.85rem;
+            color: #666;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+        
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 30px 25px;
+                margin: 15px;
+                border-radius: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .nav-button {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-card {
+                padding: 25px 20px;
+            }
+            
+            .title {
+                font-size: 1.7rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 30px;
+            }
+            
+            .nav-button {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .copyright {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* 와이드 스크린 대응 */
+        @media (min-width: 1920px) {
+            .main-card {
+                max-width: 600px;
+                padding: 50px;
+            }
+            
+            .title {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* 잎사귀 아이콘들 추가 */
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<a href="timeline.html#28" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:rgba(37,99,235,0.92);color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(0,0,0,0.18);font-family:sans-serif;transition:transform 0.2s;">⌛ 타임라인</a>
+    <svg class="ocean-waves" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#3498db;stop-opacity:0.8" />
+                <stop offset="50%" style="stop-color:#2980b9;stop-opacity:0.6" />
+                <stop offset="100%" style="stop-color:#1f4e79;stop-opacity:0.4" />
+            </linearGradient>
+            <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#5dade2;stop-opacity:0.6" />
+                <stop offset="100%" style="stop-color:#3498db;stop-opacity:0.3" />
+            </linearGradient>
+        </defs>
+        
+        <!-- 첫 번째 파도층 -->
+        <path class="wave wave1" fill="url(#waveGradient)" d="M0,400 C300,350 600,450 1200,400 L1200,800 L0,800 Z">
+        </path>
+        
+        <!-- 두 번째 파도층 -->
+        <path class="wave wave2" fill="url(#waveGradient2)" d="M0,500 C400,450 800,550 1200,500 L1200,800 L0,800 Z">
+        </path>
+        
+        <!-- 세 번째 파도층 -->
+        <path class="wave wave3" fill="url(#waveGradient)" d="M0,600 C200,550 1000,650 1200,600 L1200,800 L0,800 Z">
+        </path>
+    </svg>
+
+    <div class="container">
+        <div class="main-card">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <div class="toggle-slider">
+                    <!-- 태양 아이콘 SVG -->
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="5" fill="#FFA500"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#FFA500" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <!-- 달 아이콘 SVG -->
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#FFD700"/>
+                    </svg>
+                </div>
+            </button>
+            
+            <h1 class="title">환영합니다!</h1>
+            <p class="subtitle">2025 한봄 수학여행 일정 안내 사이트</p>
+            
+            <div class="button-container">
+                <button class="nav-button btn-desktop" onclick="location.href='index2.html'">데스크탑/큰 화면 최적화 사이트</button>
+                <button class="nav-button btn-bigde" onclick="location.href='bdsc.html'">빅데/스제</button>
+                <button class="nav-button btn-visual" onclick="location.href='sigak.html'">시각</button>
+                <button class="nav-button btn-beauty" onclick="location.href='char.html'">뷰티/캐릭</button>
+            </div>
+            
+            <div class="copyright">
+                © 2025 한봄 수학여행 일정 안내 사이트<br>
+                공식 사이트 아님, 공식 정보 사용
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            
+            // 테마 상태를 저장 (새로고침 시에도 유지)
+            const isDark = document.body.classList.contains('dark-mode');
+            // 브라우저 스토리지 대신 쿠키 사용
+            document.cookie = `theme=${isDark ? 'dark' : 'light'}; path=/; max-age=31536000`;
+        }
+
+        // 페이지 로드 시 저장된 테마 적용
+        window.addEventListener('load', function() {
+            const cookies = document.cookie.split(';');
+            const themeCookie = cookies.find(cookie => cookie.trim().startsWith('theme='));
+            
+            if (themeCookie && themeCookie.includes('dark')) {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    </script>
+</body>
+</html>

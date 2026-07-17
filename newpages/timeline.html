@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한봄고 수학여행 — 타임라인</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    @font-face {
+      font-family: 'Pretendard-Regular';
+      src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+      font-weight: 400;
+    }
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent2: #3b82f6;
+      --line: #e5e7eb;
+      --radius: 18px;
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --line: #334155;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body {
+      font-family: 'Pretendard-Regular', 'NanumSquare', 'Apple SD Gothic Neo', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+    header {
+      backdrop-filter: saturate(1.1) blur(6px);
+      background: color-mix(in srgb, var(--card) 85%, transparent);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-inner h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .header-inner h1 small {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-left: 8px;
+    }
+    .theme-toggle {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+    }
+    .main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 100%;
+    }
+    .intro {
+      text-align: center;
+      margin: 10px 0 30px;
+    }
+    .intro h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .intro p {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    .timeline-container {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px 24px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .timeline-scroll {
+      overflow-x: auto;
+      padding: 8px 0 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--line);
+    }
+    .timeline-scroll::-webkit-scrollbar { height: 4px; }
+    .timeline-scroll::-webkit-scrollbar-track { background: var(--line); border-radius: 2px; }
+    .timeline-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    .timeline-track {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      min-width: max-content;
+      padding: 0 12px;
+    }
+    .timeline-track::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: var(--line);
+      z-index: 0;
+    }
+    .timeline-node {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 0 10px;
+      min-width: 56px;
+      transition: transform 0.2s;
+    }
+    .timeline-node:hover {
+      transform: translateY(-2px);
+    }
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.3s;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .timeline-node.active .timeline-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+      transform: scale(1.1);
+    }
+    .timeline-node.past .timeline-dot {
+      background: color-mix(in srgb, var(--accent) 15%, transparent);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .timeline-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      text-align: center;
+    }
+    .timeline-node.active .timeline-label {
+      color: var(--accent);
+      font-weight: 800;
+    }
+    .version-info {
+      text-align: center;
+      margin: 16px 0 4px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .version-info strong {
+      color: var(--text);
+    }
+    .pages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .page-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      transition: all 0.25s;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .page-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 15%, transparent);
+      transform: translateY(-2px);
+    }
+    .page-card .icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .page-card .name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .page-card .desc {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .page-card.disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+      filter: grayscale(1);
+    }
+    .page-card.disabled:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: var(--line);
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .controls button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: inherit;
+    }
+    .controls button:hover {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, var(--card));
+    }
+    .controls button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .footer-nav {
+      text-align: center;
+      margin: 30px 0 20px;
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .footer-nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .footer-nav a:hover {
+      text-decoration: underline;
+    }
+    .footer-nav .sep {
+      color: var(--line);
+      margin: 0 10px;
+    }
+    @media (max-width: 600px) {
+      .timeline-container { padding: 20px 12px; }
+      .timeline-node { padding: 0 6px; min-width: 44px; }
+      .timeline-dot { width: 26px; height: 26px; font-size: 9px; }
+      .timeline-label { font-size: 10px; }
+      .pages-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .header-inner h1 { font-size: 16px; }
+      .header-inner h1 small { font-size: 11px; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <header>
+    <div class="header-inner">
+      <h1>2025 한봄고 수학여행 <small>타임라인</small></h1>
+      <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+        <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="intro">
+      <h2>사이트 변천사</h2>
+      <p>수학여행 사이트가 거쳐온 버전들을 한눈에 살펴보세요</p>
+    </div>
+
+    <div class="timeline-container">
+      <div class="timeline-scroll" id="timelineScroll">
+        <div class="timeline-track" id="timelineTrack"></div>
+      </div>
+      <div class="version-info" id="versionInfo"></div>
+      <div class="controls">
+        <button id="prevBtn">← 이전</button>
+        <button id="nextBtn">다음 →</button>
+      </div>
+    </div>
+
+    <div class="pages-grid" id="pagesGrid"></div>
+
+    <div class="footer-nav">
+      <a href="index.html">메인페이지</a>
+      <span class="sep">·</span>
+      <a href="home.html">학과 선택</a>
+      <span class="sep">·</span>
+      <a href="time.html">카운트다운</a>
+    </div>
+  </div>
+
+  <script>
+    const VERSIONS = [
+      { id:'22', label:'v22', files:{ index:'index(22last).html', sigak:'sigak(22last).html', char:'char(22last).html' } },
+      { id:'23', label:'v23', files:{ index:'index(23edit).html', sigak:'sigak(23eidi).html', char:'char(23edit).html' } },
+      { id:'24', label:'v24', files:{ index:'index(24edit).html', sigak:'sigak(24edit).html', char:'char(24edit).html' } },
+      { id:'24-2', label:'v24-2', files:{ index:'index(24-2edit).html', sigak:'sigak(24-2edit).html', char:'char(24-2edit).html' } },
+      { id:'26', label:'v26', files:{ index:'index(26-edit).html', sigak:'sigak(26-edit).html', char:'char(26-edit).html', bdsc:'bdsc(26-edit).html' } },
+      { id:'28', label:'v28', files:{ index:'index(28-edit).html' } },
+      { id:'last', label:'vFinal', files:{ index:'index(last).html' } },
+      { id:'vsarligs', label:'vsarligs', files:{ index:'index_vsarligs.html', sigak:'sigak_vsarligs.html' } },
+      { id:'31', label:'v31', files:{ char:'char(31-edit).html' } },
+      { id:'latest', label:'최신', files:{ index:'index.html', home:'home.html', sigak:'sigak.html', char:'char.html', bdsc:'bdsc.html', time:'time.html', ready:'ready.html', index2:'index2.html' } }
+    ];
+
+    const PAGE_META = {
+      index:{ icon:'🏠', name:'메인페이지', desc:'랜딩 페이지' },
+      home:{ icon:'🏁', name:'학과 선택', desc:'학과 선택 허브' },
+      sigak:{ icon:'🎨', name:'시각디자인과', desc:'B팀 일정' },
+      char:{ icon:'💄', name:'뷰티/캐릭터', desc:'A팀 일정' },
+      bdsc:{ icon:'📊', name:'빅데/스제', desc:'C팀 일정' },
+      time:{ icon:'⏱', name:'카운트다운', desc:'D-Day 타이머' },
+      ready:{ icon:'🔧', name:'준비중', desc:'서비스 준비 페이지' },
+      index2:{ icon:'📄', name:'인덱스2', desc:'대체 메인 페이지' }
+    };
+
+    let currentIdx = VERSIONS.length - 1;
+    const track = document.getElementById('timelineTrack');
+    const pagesGrid = document.getElementById('pagesGrid');
+    const versionInfo = document.getElementById('versionInfo');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function renderTimeline() {
+      track.innerHTML = '';
+      VERSIONS.forEach((v, i) => {
+        const node = document.createElement('div');
+        node.className = 'timeline-node' + (i === currentIdx ? ' active' : '') + (i < currentIdx ? ' past' : '');
+        node.dataset.idx = i;
+        const dot = document.createElement('div');
+        dot.className = 'timeline-dot';
+        dot.textContent = v.label.replace('v','');
+        const label = document.createElement('div');
+        label.className = 'timeline-label';
+        label.textContent = v.label;
+        node.appendChild(dot);
+        node.appendChild(label);
+        node.addEventListener('click', () => selectVersion(i));
+        track.appendChild(node);
+      });
+      const container = document.getElementById('timelineScroll');
+      const activeNode = track.children[currentIdx];
+      if (activeNode) {
+        const scrollLeft = activeNode.offsetLeft - container.offsetWidth / 2 + activeNode.offsetWidth / 2;
+        container.scrollLeft = Math.max(0, scrollLeft);
+      }
+    }
+
+    function selectVersion(idx) {
+      if (idx < 0 || idx >= VERSIONS.length) return;
+      currentIdx = idx;
+      renderTimeline();
+      renderPages();
+      updateControls();
+    }
+
+    function renderPages() {
+      const v = VERSIONS[currentIdx];
+      versionInfo.innerHTML = `현재 시점: <strong>${v.label}</strong>`;
+      pagesGrid.innerHTML = '';
+      Object.keys(PAGE_META).forEach(key => {
+        const meta = PAGE_META[key];
+        const card = document.createElement('a');
+        card.className = 'page-card';
+        const href = v.files[key];
+        if (href) {
+          card.href = href;
+        } else {
+          card.className += ' disabled';
+        }
+        card.innerHTML = `
+          <div class="icon">${meta.icon}</div>
+          <div class="name">${meta.name}</div>
+          <div class="desc">${href ? meta.desc : '해당 버전에 없음'}</div>
+        `;
+        pagesGrid.appendChild(card);
+      });
+    }
+
+    function updateControls() {
+      prevBtn.disabled = currentIdx <= 0;
+      nextBtn.disabled = currentIdx >= VERSIONS.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => selectVersion(currentIdx - 1));
+    nextBtn.addEventListener('click', () => selectVersion(currentIdx + 1));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') selectVersion(currentIdx - 1);
+      if (e.key === 'ArrowRight') selectVersion(currentIdx + 1);
+    });
+
+    // URL 해시(#24, #latest 등)로 특정 버전 선택 지원
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const found = VERSIONS.findIndex(v => v.id === hash);
+      if (found >= 0) currentIdx = found;
+    }
+    selectVersion(currentIdx);
+
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      sunIcon.style.display = theme === 'dark' ? 'none' : 'block';
+      moonIcon.style.display = theme === 'dark' ? 'block' : 'none';
+      try { localStorage.setItem('timelineTheme', theme); } catch(e) {}
+    }
+    const saved = localStorage.getItem('timelineTheme');
+    if (saved) applyTheme(saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) applyTheme('dark');
+    themeToggle.addEventListener('click', () => {
+      const cur = document.body.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>
