@@ -334,6 +334,8 @@ function render(commits, all) {
           const body = document.getElementById('previewBody');
           title.textContent = fname + ' @ ' + c.hash.slice(0,7);
           body.innerHTML = '<div class="loader"><div class="sp"></div><div class="lt">파일 불러오는 중...</div></div>';
+          window._previewOpen = true;
+          location.hash = '#' + fname + ' @ ' + c.hash.slice(0,7);
           overlay.classList.add('show');
           try {
             const res = await fetch(url);
@@ -366,10 +368,18 @@ function render(commits, all) {
   function hideOverlay() {
     overlay.classList.remove('show');
     if (window._blobUrl) { URL.revokeObjectURL(window._blobUrl); window._blobUrl = null; }
+    window._previewOpen = false;
   }
-  document.getElementById('previewClose').addEventListener('click', hideOverlay);
-  overlay.addEventListener('click', (e) => { if (e.target===overlay) hideOverlay(); });
-  document.addEventListener('keydown', (e) => { if (e.key==='Escape') hideOverlay(); });
+  function closePreview() {
+    if (location.hash) history.back();
+    else hideOverlay();
+  }
+  document.getElementById('previewClose').addEventListener('click', closePreview);
+  overlay.addEventListener('click', (e) => { if (e.target===overlay) closePreview(); });
+  document.addEventListener('keydown', (e) => { if (e.key==='Escape') closePreview(); });
+  window.addEventListener('hashchange', () => {
+    if (!location.hash && window._previewOpen) hideOverlay();
+  });
 
   let allCommits = [];
   try {
