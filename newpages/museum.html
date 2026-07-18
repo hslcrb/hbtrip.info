@@ -225,8 +225,22 @@ async function findFileInHistory(targetPath, startHash, commits) {
   const idx = commits.findIndex(c => c.hash.startsWith(startHash));
   if (idx === -1) return null;
   for (let i = idx; i < commits.length; i++) {
-    const files = await fetchDetail(commits[i].hash);
-    if (files && files.some(f => f.path === targetPath)) return commits[i].hash.slice(0, 7);
+    const h = commits[i].hash;
+    const key = 'rawok_' + h.slice(0,7) + '_' + targetPath;
+    let ok = sessionStorage.getItem(key);
+    if (ok === null) {
+      try {
+        const r = await fetch(RAW(h, targetPath), { method: 'HEAD' });
+        ok = r.ok ? '1' : '0';
+      } catch(e) {
+        try {
+          const r2 = await fetch(RAW(h, targetPath));
+          ok = r2.ok ? '1' : '0';
+        } catch(e2) { ok = '0'; }
+      }
+      try { sessionStorage.setItem(key, ok); } catch(e) { console.error('[findFileInHistory] sessionStorage', e); }
+    }
+    if (ok === '1') return h.slice(0, 7);
   }
   return null;
 }
