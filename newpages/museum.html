@@ -206,6 +206,31 @@ function typeLabel(t){return{upload:'📦 Upload',rename:'🔄 Rename',update:'�
 function ext(f){const m=f.match(/\.(\w+)$/);return m?m[1].toUpperCase():'?';}
 function isHtml(f){return /\.html?$/i.test(f);}
 
+function resolvePath(currentFile, link) {
+  if (/^(https?:|#|mailto:|tel:|javascript:)/i.test(link)) return null;
+  if (link.startsWith('/')) return link.slice(1);
+  const dir = currentFile.includes('/') ? currentFile.replace(/\/[^/]+$/, '') : '';
+  const raw = dir ? dir + '/' + link : link;
+  const parts = raw.split('/');
+  const out = [];
+  for (const p of parts) {
+    if (p === '.' || !p) continue;
+    if (p === '..') out.pop();
+    else out.push(p);
+  }
+  return out.join('/');
+}
+
+async function findFileInHistory(targetPath, startHash, commits) {
+  const idx = commits.findIndex(c => c.hash.startsWith(startHash));
+  if (idx === -1) return null;
+  for (let i = idx; i < commits.length; i++) {
+    const files = await fetchDetail(commits[i].hash);
+    if (files && files.some(f => f.path === targetPath)) return commits[i].hash.slice(0, 7);
+  }
+  return null;
+}
+
 async function fetchList() {
   const cached = sessionStorage.getItem('museumList');
   if (cached) { try { return JSON.parse(cached); } catch(e){} }
@@ -341,7 +366,28 @@ function render(commits, all) {
             if (!res.ok) throw new Error('HTTP '+res.status);
             const text = await res.text();
             if (isHtml(fname)) {
-              const blob = new Blob([text], {type:'text/html'});
+              const MUSEUM_URL = location.href.split('#')[0];
+              const re = /<a\s+([^>]*?)href="([^"]+)"([^>]*)>/gi;
+              const parts = [];
+              let lastIdx = 0, m;
+              while ((m = re.exec(text)) !== null) {
+                parts.push(text.slice(lastIdx, m.index));
+                parts.push({ m: m[0], bf: m[1], href: m[2], af: m[3], resolved: resolvePath(fname, m[2]) });
+                lastIdx = m.index + m[0].length;
+              }
+              parts.push(text.slice(lastIdx));
+              await Promise.all(parts.filter(p => p.resolved).map(async p => {
+                p.sha = await findFileInHistory(p.resolved, c.hash, window._allCommits);
+              }));
+              let out = '';
+              for (const p of parts) {
+                if (typeof p === 'string') { out += p; continue; }
+                const newHref = p.sha ? MUSEUM_URL + '#' + p.resolved + ' @ ' + p.sha : p.href;
+                const hasT = /target\s*=/i.test(p.bf) || /target\s*=/i.test(p.af);
+                out += '<a ' + p.bf + 'href="' + newHref + '"' + (hasT ? '' : ' target="_parent"') + p.af + '>';
+              }
+              out = out.replace('<head>', '<head><base target="_parent">');
+              const blob = new Blob([out], {type:'text/html'});
               const u = URL.createObjectURL(blob);
               if (window._blobUrl) URL.revokeObjectURL(window._blobUrl);
               window._blobUrl = u;
@@ -388,6 +434,7 @@ function render(commits, all) {
     return;
   }
 
+  window._allCommits = allCommits;
   buildChart(allCommits);
   let filtered = allCommits;
   function apply() {
