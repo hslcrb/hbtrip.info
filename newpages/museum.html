@@ -233,9 +233,9 @@ async function findFileInHistory(targetPath, startHash, commits) {
 
 async function fetchList() {
   const cached = sessionStorage.getItem('museumList');
-  if (cached) { try { return JSON.parse(cached); } catch(e){} }
+  if (cached) { try { return JSON.parse(cached); } catch(e){ console.error('[fetchList] cached parse 실패', e); } }
   const res = await fetch(API_LIST);
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  if (!res.ok) { const e = new Error(`${res.status} ${res.statusText}`); console.error('[fetchList] API 오류', e.message); throw e; }
   const raw = await res.json();
   const commits = raw.map(c => ({
     hash: c.sha,
@@ -244,18 +244,18 @@ async function fetchList() {
     msg: c.commit.message.split('\n')[0],
     type: commitType(c.commit.message.split('\n')[0])
   }));
-  try { sessionStorage.setItem('museumList', JSON.stringify(commits)); } catch(e) {}
+  try { sessionStorage.setItem('museumList', JSON.stringify(commits)); } catch(e) { console.error('[fetchList] sessionStorage 저장 실패', e); }
   return commits;
 }
 
 async function fetchDetail(hash) {
   const cached = sessionStorage.getItem('detail_' + hash);
-  if (cached) { try { return JSON.parse(cached); } catch(e){} }
+  if (cached) { try { return JSON.parse(cached); } catch(e){ console.error('[fetchDetail] JSON.parse 실패', hash, e); } }
   const res = await fetch(API_DETAIL(hash));
-  if (!res.ok) return null;
+  if (!res.ok) { console.error('[fetchDetail] API 오류', hash, res.status); return null; }
   const d = await res.json();
   const files = (d.files || []).map(f => ({ path: f.filename, status: f.status }));
-  try { sessionStorage.setItem('detail_' + hash, JSON.stringify(files)); } catch(e) {}
+  try { sessionStorage.setItem('detail_' + hash, JSON.stringify(files)); } catch(e) { console.error('[fetchDetail] sessionStorage 저장 실패', hash, e); }
   return files;
 }
 
@@ -329,6 +329,7 @@ function render(commits, all) {
       const loadEl = document.getElementById('load_'+c.hash);
       const frameEl = document.getElementById('frame_'+c.hash);
       if (!files) {
+        console.error('[commit] 상세 불러오기 실패', c.hash);
         if (loadEl) loadEl.innerHTML = '❌ 불러오기 실패';
         return;
       }
@@ -396,6 +397,7 @@ function render(commits, all) {
               body.innerHTML = `<pre class="po-code">${esc(text)}</pre>`;
             }
           } catch(err) {
+            console.error('[preview] raw fetch 실패', url, err);
             body.innerHTML = `<div class="error-box" style="margin:20px"><div class="er">❌ ${esc(err.message)}</div></div>`;
           }
         });
@@ -430,6 +432,7 @@ function render(commits, all) {
   try {
     allCommits = await fetchList();
   } catch(err) {
+    console.error('[init] 커밋 목록 불러오기 실패', err);
     document.getElementById('commitList').innerHTML = `<div class="error-box"><div class="er">❌ ${esc(err.message)}</div><a href="${REPO}/commits/main" target="_blank">→ GitHub에서 보기</a></div>`;
     return;
   }
